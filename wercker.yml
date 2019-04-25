@@ -1,0 +1,65 @@
+box:
+  id: rakutenbr/phoenix-alpine:1.8
+  cmd: /bin/sh
+
+#services:
+#  - id: postgres
+#    tag: 9.6
+#    env:
+#      USER: postgres
+#      PASS: postgres
+#  - id: redis
+#    tag: 2.8
+#  - id: python
+
+#dev:
+#  steps:
+#    - script:
+#      name: Go to Project Root
+#      code: cd $WERCKER_SOURCE_DIR
+#
+#    - script:
+#      name: Download Dependencies
+#      code: MIX_ENV=test mix deps.get
+#
+#    - script:
+#      name: Compile Project
+#      code: MIX_ENV=test mix deps.compile
+#
+#    - internal/shell:
+#      cmd: /bin/zsh
+#      code: "echo 'For an app console run: iex -S mix'"
+
+#build:
+#  steps:
+#    - script:
+#      name: Go to Project Root
+#      code: cd $WERCKER_SOURCE_DIR
+#
+#    - script:
+#      name: Restore Cache
+#      code: |
+#        if [ -d "$WERCKER_CACHE_DIR/deps" ]; then
+#          debug "copying deps directoy from cache."
+#          rm -rf deps
+#          cp -r $WERCKER_CACHE_DIR/deps .
+#        else
+#          debug "Unable to find previous deps directory."
+#        fi
+#    - script:
+#      name: Download Dependencies
+#      code: MIX_ENV=test mix deps.get
+#
+#    - script:
+#      name: Run Test Suite
+#      code: MIX_ENV=test mix test --cover
+#
+#    - script:
+#      name: Run Credo
+#      code: MIX_ENV=test mix credo -C wercker
+#
+#    - script:
+#      name: Save Cache
+#      code: |
+#        #cp -r _build $WERCKER_CACHE_DIR
+#        cp -r deps $WERCKER_CACHE_DIR

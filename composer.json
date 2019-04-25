@@ -1,0 +1,39 @@
+{
+    "name": "rakuten/rakuten-sdk-php",
+    "description": "Cliente em PHP para integração server-side com APIs Rakuten Connector",
+    "keywords": ["libraries", "rakuten", "intermediary", "checkout", "marketplace"],
+    "homepage": "https://digitalcommerce.rakuten.com.br/developers/",
+    "license": "MIT",
+    "type": "libraries",
+    "support": {
+        "issues": "https://github.com/RakutenBrasil/rakuten-sdk-php/issues",
+        "source": "https://github.com/RakutenBrasil/rakuten-sdk-php"
+    },
+    "authors": [
+        {
+            "name": "Alex Silva",
+            "email": "alex.silva@rakuten.com.br"
+        },
+        {
+            "name": "Rakuten",
+            "email": "paytech@rakuten.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8.35 || ^5.7 || ^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rakuten\\Connector\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rakuten\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}
