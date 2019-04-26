@@ -11,10 +11,10 @@ class Environment
     /**
      * @const string
      */
-    const ENVIRONMENT_SANDBOX = 'sandbox';
+    const SANDBOX = 'sandbox';
 
     /**
      * @const string
      */
-    const ENVIRONMENT_PRODUCTION = 'production';
+    const PRODUCTION = 'production';
 }

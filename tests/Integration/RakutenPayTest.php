@@ -16,7 +16,7 @@ class RakutenConnectorTest extends TestCase
     public function testItShouldCreateOrder()
     {
         $reference = "SDK#" . md5(uniqid(rand(), true));
-        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::ENVIRONMENT_SANDBOX);
+        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
         $order = $rakuten
             ->order()
             ->setAmount(200.0)
@@ -86,7 +86,7 @@ class RakutenConnectorTest extends TestCase
 
     public function testGetInterestInstallmentsForCheckout()
     {
-        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::ENVIRONMENT_SANDBOX);
+        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
 
         $response = $rakuten->checkout(5000);
 

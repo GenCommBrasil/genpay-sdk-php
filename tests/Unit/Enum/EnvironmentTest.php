@@ -12,7 +12,7 @@ class EnvironmentTest extends TestCase
 {
     public function testAllConstants()
     {
-        $this->assertEquals('sandbox', Environment::ENVIRONMENT_SANDBOX, "Sandbox");
-        $this->assertEquals('production', Environment::ENVIRONMENT_PRODUCTION, "Production");
+        $this->assertEquals('sandbox', Environment::SANDBOX, "Sandbox");
+        $this->assertEquals('production', Environment::PRODUCTION, "Production");
     }
 }

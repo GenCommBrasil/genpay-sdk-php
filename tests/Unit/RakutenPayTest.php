@@ -19,7 +19,7 @@ class RakutenConnectorTest extends TestCase
             "fake-document",
             "fake-apikey",
             "fake-signature",
-            Environment::ENVIRONMENT_SANDBOX);
+            Environment::SANDBOX);
         $order = $rakutenPay->order();
         $customer = $rakutenPay->customer();
         $billet = $rakutenPay->asBillet();
@@ -43,7 +43,7 @@ class RakutenConnectorTest extends TestCase
         $stubWebservice->setResponse($this->getPayload());
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
-            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::ENVIRONMENT_SANDBOX])
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
             ->setMethods(['getWebservice'])
             ->getMock();
         $stubRakutenPay->expects($this->once())
@@ -67,7 +67,7 @@ class RakutenConnectorTest extends TestCase
             ->method('post');
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
-            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::ENVIRONMENT_SANDBOX])
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
             ->setMethods(['getWebservice'])
             ->getMock();
         $stubRakutenPay->expects($this->once())
@@ -95,7 +95,7 @@ class RakutenConnectorTest extends TestCase
         $stubWebservice->setResponse($this->getDataInstallments());
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
-            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::ENVIRONMENT_SANDBOX])
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
             ->setMethods(['getWebservice'])
             ->getMock();
         $stubRakutenPay->expects($this->once())
@@ -115,7 +115,7 @@ class RakutenConnectorTest extends TestCase
             ->method('get');
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
-            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::ENVIRONMENT_SANDBOX])
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
             ->setMethods(['getWebservice'])
             ->getMock();
         $stubRakutenPay->expects($this->once())

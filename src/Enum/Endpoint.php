@@ -8,8 +8,8 @@ namespace Rakuten\Connector\Enum;
  */
 class Endpoint
 {
-    const ENVIRONMENT_SANDBOX = 'https://oneapi-sandbox.rakutenpay.com.br/';
-    const ENVIRONMENT_PRODUCTION = 'https://api.rakuten.com.br/';
+    const SANDBOX = 'https://oneapi-sandbox.rakutenpay.com.br/';
+    const PRODUCTION = 'https://api.rakuten.com.br/';
 
     const DIRECT_PAYMENT = 'rpay/v1/charges';
     const CHECKOUT = 'rpay/v1/checkout';
@@ -18,8 +18,8 @@ class Endpoint
      * @var array
      */
     private static $environment = [
-        Environment::ENVIRONMENT_SANDBOX => self::ENVIRONMENT_SANDBOX,
-        Environment::ENVIRONMENT_PRODUCTION => self::ENVIRONMENT_PRODUCTION,
+        Environment::SANDBOX => self::SANDBOX,
+        Environment::PRODUCTION => self::PRODUCTION,
     ];
 
     /**
