@@ -19,6 +19,7 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Helper\StringFormat;
 use stdClass;
 
 /**
@@ -99,7 +100,7 @@ class CreditCard extends RakutenPayResource implements PaymentMethod
      */
     public function setHolderDocument($holderDocument)
     {
-        $this->data->holder_document = $holderDocument;
+        $this->data->holder_document = StringFormat::getOnlyNumbers($holderDocument);
 
         return $this;
     }

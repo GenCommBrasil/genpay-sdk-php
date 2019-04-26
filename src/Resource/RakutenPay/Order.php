@@ -20,7 +20,7 @@
 namespace Rakuten\Connector\Resource\RakutenPay;
 
 use Rakuten\Connector\Exception\RakutenException;
-use Rakuten\Connector\RakutenConnector;
+use Rakuten\Connector\RakutenPay;
 use stdClass;
 
 /**
@@ -152,7 +152,7 @@ class Order extends RakutenPayResource
      * @param string $currency
      * @return $this
      */
-    public function setCurrency($currency = RakutenConnector::CURRENCY)
+    public function setCurrency($currency = RakutenPay::CURRENCY)
     {
         $this->data->currency = $currency;
 

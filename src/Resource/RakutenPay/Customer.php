@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Resource\RakutenPay;
 
 use Rakuten\Connector\Enum\Address;
+use Rakuten\Connector\Helper\StringFormat;
 use stdClass;
 
 /**
@@ -131,7 +132,7 @@ class Customer extends RakutenPayResource
      */
     public function setDocument($document)
     {
-        $this->data->document = $document;
+        $this->data->document = StringFormat::getOnlyNumbers($document);
 
         return $this;
     }
