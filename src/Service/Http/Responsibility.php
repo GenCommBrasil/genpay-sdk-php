@@ -19,10 +19,10 @@ class Responsibility
                 return $class::success($http);
             case Status::UNPROCESSABLE:
                 /** returns success because only a few parameters  */
-                return $class::success($http);
+                return $class::error($http);
             case Status::BAD_REQUEST:
                 /** returns success because only a few parameters  */
-                return $class::success($http);
+                return $class::error($http);
             case Status::NOT_FOUND:
                 $error = $class::error($http);
                 throw new RakutenException($error->getMessage(), $error->getCode());

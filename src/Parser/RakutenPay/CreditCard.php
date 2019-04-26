@@ -28,25 +28,20 @@ class CreditCard implements Parser
      */
     public static function success(Webservice $webservice)
     {
-        if ($webservice->getStatus() == Status::OK) {
+        $response = self::getTransactionCreditCard();
+        $data = json_decode($webservice->getResponse(), true);
 
-            $response = self::getTransactionCreditCard();
-            $data = json_decode($webservice->getResponse(), true);
+        $payment = $data["payments"][0];
 
-            $payment = $data["payments"][0];
-
-            return $response->setResult($data['result'])
-                ->setChargeId($data['charge_uuid'])
-                ->setCreditCardNum($payment['credit_card']['number'])
-                ->setStatus($payment['status']);
-        }
-
-        return self::error($webservice);
+        return $response->setResult($data['result'])
+            ->setChargeId($data['charge_uuid'])
+            ->setCreditCardNum($payment['credit_card']['number'])
+            ->setStatus($payment['status']);
     }
 
     /**
      * @param Webservice $webservice
-     * @return mixed|Error
+     * @return Error
      */
     public static function error(Webservice $webservice)
     {

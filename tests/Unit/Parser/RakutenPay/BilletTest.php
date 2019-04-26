@@ -2,6 +2,7 @@
 namespace Rakuten\Tests\Unit\Parser;
 
 use PHPUnit\Framework\TestCase;
+use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Parser\RakutenPay\Billet;
 use Rakuten\Connector\Service\Http\Webservice;
@@ -35,25 +36,13 @@ class BilletTest extends TestCase
 
     public function testShouldErrorAndReturnErrorClass()
     {
-        $this->webservice->setStatus(422);
+        $this->webservice->setStatus(Status::UNPROCESSABLE);
         $this->webservice->setResponse($this->getDataError());
 
         $response = Billet::error($this->webservice);
 
         $this->assertInstanceOf(Error::class, $response);
-        $this->assertEquals(422, $response->getCode(), "Code Status");
-        $this->assertEquals("Sum of payments amount doesnt match with amount", $response->getMessage(), "Error Message");
-    }
-
-    public function testCallMethodSuccessAndReturnErrorClass()
-    {
-        $this->webservice->setStatus(422);
-        $this->webservice->setResponse($this->getDataError());
-
-        $response = Billet::success($this->webservice);
-
-        $this->assertInstanceOf(Error::class, $response);
-        $this->assertEquals(422, $response->getCode(), "Code Status");
+        $this->assertEquals(Status::UNPROCESSABLE, $response->getCode(), "Code Status");
         $this->assertEquals("Sum of payments amount doesnt match with amount", $response->getMessage(), "Error Message");
     }
 

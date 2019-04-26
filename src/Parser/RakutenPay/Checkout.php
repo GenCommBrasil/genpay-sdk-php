@@ -40,7 +40,7 @@ class Checkout extends Error implements Parser
 
     /**
      * @param Webservice $webservice
-     * @return mixed|Error
+     * @return Error
      */
     public static function error(Webservice $webservice)
     {

@@ -28,23 +28,19 @@ class Billet extends Error implements Parser
      */
     public static function success(Webservice $webservice)
     {
-        if ($webservice->getStatus() == Status::OK) {
-            $response = self::getTransactionBillet();
-            $data = json_decode($webservice->getResponse(), true);
-            $payment = $data["payments"][0];
+        $response = self::getTransactionBillet();
+        $data = json_decode($webservice->getResponse(), true);
+        $payment = $data["payments"][0];
 
-            return $response->setResult($data['result'])
-                ->setChargeId($data['charge_uuid'])
-                ->setBillet($payment['billet']['download_url'])
-                ->setBilletUrl($payment['billet']['url']);
-        }
-
-        return self::error($webservice);
+        return $response->setResult($data['result'])
+            ->setChargeId($data['charge_uuid'])
+            ->setBillet($payment['billet']['download_url'])
+            ->setBilletUrl($payment['billet']['url']);
     }
 
     /**
      * @param Webservice $webservice
-     * @return mixed|Error
+     * @return Error
      */
     public static function error(Webservice $webservice)
     {

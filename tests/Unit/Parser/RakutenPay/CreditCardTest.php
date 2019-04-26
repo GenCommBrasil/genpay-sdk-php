@@ -6,6 +6,7 @@ use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Webservice;
 use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Parser\RakutenPay\CreditCard;
+use Rakuten\Connector\Enum\Status;
 
 class CreditCardTest extends TestCase
 {
@@ -35,25 +36,13 @@ class CreditCardTest extends TestCase
 
     public function testShouldErrorAndReturnErrorClass()
     {
-        $this->webservice->setStatus(422);
+        $this->webservice->setStatus(Status::UNPROCESSABLE);
         $this->webservice->setResponse($this->getDataError());
 
         $response = CreditCard::error($this->webservice);
 
         $this->assertInstanceOf(Error::class, $response);
-        $this->assertEquals(422, $response->getCode(), "Code Status");
-        $this->assertEquals("Installments amount doesnt match. Payment credit_card in 3 times of 70.90 should be 212.70", $response->getMessage(), "Error Message");
-    }
-
-    public function testCallMethodSuccessAndReturnErrorClass()
-    {
-        $this->webservice->setStatus(422);
-        $this->webservice->setResponse($this->getDataError());
-
-        $response = CreditCard::success($this->webservice);
-
-        $this->assertInstanceOf(Error::class, $response);
-        $this->assertEquals(422, $response->getCode(), "Code Status");
+        $this->assertEquals(Status::UNPROCESSABLE, $response->getCode(), "Code Status");
         $this->assertEquals("Installments amount doesnt match. Payment credit_card in 3 times of 70.90 should be 212.70", $response->getMessage(), "Error Message");
     }
 
