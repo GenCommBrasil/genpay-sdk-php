@@ -46,6 +46,11 @@ class Billet
     private $billetUrl;
 
     /**
+     * @var string
+     */
+    private $resultMessage;
+
+    /**
      * @return string
      */
     public function getResult()
@@ -75,6 +80,14 @@ class Billet
     public function getBilletUrl()
     {
         return $this->billetUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResultMessage()
+    {
+        return $this->resultMessage;
     }
 
     /**
@@ -114,6 +127,16 @@ class Billet
     public function setBilletUrl($billetUrl)
     {
         $this->billetUrl = $billetUrl;
+        return $this;
+    }
+
+    /**
+     * @param $resultMessage
+     * @return $this
+     */
+    public function setResultMessage($resultMessage)
+    {
+        $this->resultMessage = $resultMessage;
         return $this;
     }
 }

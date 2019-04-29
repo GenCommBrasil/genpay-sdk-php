@@ -51,7 +51,8 @@ class Billet extends Error implements Parser
         return $response->setResult($data['result'])
             ->setChargeId($data['charge_uuid'])
             ->setBillet($payment['billet']['download_url'])
-            ->setBilletUrl($payment['billet']['url']);
+            ->setBilletUrl($payment['billet']['url'])
+            ->setResultMessage(implode(' - ', $data['result_messages']));
     }
 
     /**

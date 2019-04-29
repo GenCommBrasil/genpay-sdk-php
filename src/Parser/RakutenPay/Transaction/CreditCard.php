@@ -46,6 +46,11 @@ class CreditCard
     private $status;
 
     /**
+     * @var string
+     */
+    private $resultMessage;
+
+    /**
      * @return string
      */
     public function getResult()
@@ -114,6 +119,24 @@ class CreditCard
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResultMessage()
+    {
+        return $this->resultMessage;
+    }
+
+    /**
+     * @param string $resultMessage
+     * @return $this
+     */
+    public function setResultMessage($resultMessage)
+    {
+        $this->resultMessage = $resultMessage;
         return $this;
     }
 }
