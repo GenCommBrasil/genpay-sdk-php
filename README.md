@@ -3,6 +3,8 @@
 # Rakuten PHP SDK Client.
 >
 
+[![wercker status](https://app.wercker.com/status/0427e4e65bb1ad0ca4d2e5ed759d1743/m/master "wercker status")](https://app.wercker.com/project/byKey/0427e4e65bb1ad0ca4d2e5ed759d1743)
+
 > O jeito mais simples e rápido de integrar o RakutenPay a sua aplicação PHP
 
 **Instruções**
