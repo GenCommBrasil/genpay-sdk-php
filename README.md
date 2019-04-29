@@ -45,7 +45,7 @@ $rakutenPay = new RakutenPay($document, $apiKey, $signature, Environment::SANDBO
 ### Criando um pedido
 Neste exemplo será criado um pedido.
 ```php
-$order = $rakuten
+$order = $rakutenPay
             ->order()
             ->setAmount(200.0)
             ->setCurrency("BRL")
@@ -65,7 +65,7 @@ $order = $rakuten
                 200.0
             );
 
-$customer = $rakuten
+$customer = $rakutenPay
             ->customer()
             ->setName("Maria")
             ->setBirthDate("1985-04-16")
@@ -102,12 +102,12 @@ $customer = $rakuten
                 "11",
                 "billing");
 
-$payment = $rakuten
+$payment = $rakutenPay
     ->asBillet()
     ->setAmount(200.0)
     ->setExpiresOn("3");
     
-$response = $rakuten->createOrder($order, $customer, $payment);
+$response = $rakutenPay->createOrder($order, $customer, $payment);
 print_r($reponse);
 ```
 
