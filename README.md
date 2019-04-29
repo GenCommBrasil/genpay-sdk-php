@@ -29,7 +29,7 @@
 ```php
 require 'vendor/autoload.php';
 
-use Rauten\Connector\RakutenPay;
+use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Enum\Environment;
 
 $document = '77753821000123';
