@@ -29,7 +29,7 @@ class BilletTest extends TestCase
      */
     private $billet;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->billet = new Billet;
     }

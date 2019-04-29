@@ -35,7 +35,7 @@ class ResponsibilityTest extends TestCase
      */
     private $webservice;
 
-    public function setUp()
+    public function setUp(): void
     {
         $stub = $this->createMock(RakutenPay::class);
         $this->webservice = new Webservice($stub);

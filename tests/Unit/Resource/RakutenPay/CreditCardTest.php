@@ -30,7 +30,7 @@ class CreditCardTest extends TestCase
      */
     private $creditCard;
 
-    public function setUp()
+    public function setUp(): void
     {
         $stub = $this->createMock(RakutenPay::class);
         $this->creditCard = new CreditCard($stub);

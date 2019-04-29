@@ -30,7 +30,7 @@ class BilletTest extends TestCase
      */
     private $billet;
 
-    public function setUp()
+    public function setUp(): void
     {
         $stub = $this->createMock(RakutenPay::class);
         $this->billet = new Billet($stub);
