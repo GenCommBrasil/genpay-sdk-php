@@ -30,7 +30,7 @@ class CustomerTest extends TestCase
      */
     private $customer;
 
-    public function setUp(): void
+    public function setUp()
     {
         $stub = $this->createMock(RakutenPay::class);
         $this->customer = new Customer($stub);

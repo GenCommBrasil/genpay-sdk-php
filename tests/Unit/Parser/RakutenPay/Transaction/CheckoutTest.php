@@ -29,7 +29,7 @@ class CheckoutTest extends TestCase
      */
     private $checkout;
 
-    public function setUp(): void
+    public function setUp()
     {
         $this->checkout = new Checkout();
     }

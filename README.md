@@ -13,7 +13,7 @@
 - [Configurando a autenticação](#configurando-a-autenticação)
 - [Exemplos de Uso](#pedidos):
     - [Pedidos](#pedidos)
-        - [Criação](#criando-um-pedido)
+        - [Criando Pedido no Boleto](#criando-pedido-no-boleto)
         - [Consulta](#consulta)
             - [Juros Comprador](#juros-comprador)
 - [Suporte](#suporte)
@@ -23,8 +23,13 @@
 #### require
 * PHP >= 5.6
 
-#### require-dev
-* phpunit/phpunit ~ 4.8
+## Instalação
+
+Execute em seu shell:
+
+```
+composer require rakuten/rakuten-sdk-php
+```
 
 ## Configurando a autenticação
 
@@ -42,7 +47,7 @@ $rakutenPay = new RakutenPay($document, $apiKey, $signature, Environment::SANDBO
 ```
 
 ## Pedidos
-### Criando um pedido
+### Criando pedido no boleto
 Neste exemplo será criado um pedido.
 ```php
 $order = $rakutenPay

@@ -31,7 +31,7 @@ class OrderTest extends TestCase
      */
     private $order;
 
-    public function setUp(): void
+    public function setUp()
     {
         $stub = $this->createMock(RakutenPay::class);
         $this->order = new Order($stub);
