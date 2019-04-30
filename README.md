@@ -23,6 +23,9 @@
 #### require
 * PHP >= 5.6
 
+#### require-dev
+* phpunit/phpunit ~ 5.7.27
+
 ## Instalação
 
 Execute em seu shell:
