@@ -26,10 +26,10 @@ use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Enum\Environment;
 
 /**
- * Class RakutenConnectorTest
+ * Class RakutenPayTest
  * @package Rakuten\Tests\Integration
  */
-class RakutenConnectorTest extends TestCase
+class RakutenPayTest extends TestCase
 {
     public function testItShouldCreateOrder()
     {

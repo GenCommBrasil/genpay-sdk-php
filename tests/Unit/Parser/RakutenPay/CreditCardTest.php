@@ -35,7 +35,9 @@ class CreditCardTest extends TestCase
 
     public function setUp()
     {
-        $stub = $this->createMock(RakutenPay::class);
+        $stub = $this->getMockBuilder(RakutenPay::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->webservice = new Webservice($stub);
     }
 
