@@ -24,7 +24,7 @@ build:
     - script:
         name: install phpunit
         code: |-
-          curl -L https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit
+          curl -L https://phar.phpunit.de/phpunit-4.8.36.phar -o /usr/local/bin/phpunit
           chmod +x /usr/local/bin/phpunit
     - script:
         name: install composer
