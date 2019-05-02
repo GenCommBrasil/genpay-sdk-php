@@ -20,6 +20,8 @@
 namespace Rakuten\Connector;
 
 use Rakuten\Connector\Enum\Endpoint;
+use Rakuten\Connector\Parser\Error;
+use Rakuten\Connector\Parser\RakutenPay\Authorization;
 use Rakuten\Connector\Parser\RakutenPay\Checkout;
 use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
 use Rakuten\Connector\Resource\RakutenConnector;
@@ -39,29 +41,6 @@ class RakutenPay extends RakutenConnector implements Credential
      * @var \stdClass
      */
     private $data;
-
-    /**
-     * @param $amount
-     * @return mixed
-     * @throws RakutenException
-     */
-    public function checkout($amount)
-    {
-        try {
-            $webservice = $this->getWebservice();
-            $url = sprintf(
-                "%s?%s",
-                Endpoint::buildCheckoutUrl($this->getEnvironment()),
-                sprintf("%s=%s", "amount", $amount)
-            );
-            $webservice->get($url);
-            $response = Responsibility::http($webservice, new Checkout());
-
-            return $response;
-        } catch (RakutenException $e) {
-            throw $e;
-        }
-    }
 
     /**
      * @return Order
@@ -99,7 +78,11 @@ class RakutenPay extends RakutenConnector implements Credential
      * @param Order $order
      * @param Customer $customer
      * @param PaymentMethod $payment
-     * @return mixed
+     *
+     * @return \Rakuten\Connector\Parser\RakutenPay\Transaction\Billet|
+     * \Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard|
+     * Error
+     *
      * @throws RakutenException
      */
     public function createOrder(Order $order, Customer $customer, PaymentMethod $payment)
@@ -122,6 +105,50 @@ class RakutenPay extends RakutenConnector implements Credential
                 $webservice,
                 $transaction
             );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @return \Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization|Error
+     * @throws RakutenException
+     */
+    public function authorizationValidate()
+    {
+        try {
+            $webservice = $this->getWebservice();
+            $webservice->get(Endpoint::authorizationUrl($this->getEnvironment()));
+
+            $response = Responsibility::http(
+                $webservice,
+                new Authorization()
+            );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $amount
+     * @return \Rakuten\Connector\Parser\RakutenPay\Transaction\Checkout|Error
+     * @throws RakutenException
+     */
+    public function checkout($amount)
+    {
+        try {
+            $webservice = $this->getWebservice();
+            $url = sprintf(
+                "%s?%s",
+                Endpoint::buildCheckoutUrl($this->getEnvironment()),
+                sprintf("%s=%s", "amount", $amount)
+            );
+            $webservice->get($url);
+            $response = Responsibility::http($webservice, new Checkout());
 
             return $response;
         } catch (RakutenException $e) {

@@ -40,6 +40,8 @@ class Responsibility
             case Status::BAD_REQUEST:
                 /** returns success because only a few parameters  */
                 return $class::error($http);
+            case Status::FORBIDDEN:
+                return $class::error($http);
             case Status::NOT_FOUND:
                 $error = $class::error($http);
                 throw new RakutenException($error->getMessage(), $error->getCode());

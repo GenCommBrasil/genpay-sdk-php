@@ -41,7 +41,7 @@ class Endpoint
 
     /**
      * @param $environment
-     * @return mixed
+     * @return string
      */
     public static function createChargeUrl($environment)
     {
@@ -50,10 +50,20 @@ class Endpoint
 
     /**
      * @param $environment
-     * @return mixed
+     * @return string
      */
     public static function buildCheckoutUrl($environment)
     {
         return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::CHECKOUT : $environment;
     }
+
+    /**
+     * @param $environment
+     * @return string
+     */
+    public static function authorizationUrl($environment)
+    {
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::DIRECT_PAYMENT : $environment;
+    }
+
 }
