@@ -14,7 +14,8 @@
 - [Exemplos de Uso](#pedidos):
     - [Pedidos](#pedidos)
         - [Criando Pedido no Boleto](#criando-pedido-no-boleto)
-        - [Consulta](#consulta)
+        - [Consultas](#consulta)
+            - [Verificar Credenciais](#verificar-credenciais)
             - [Juros Comprador](#juros-comprador)
 - [Suporte](#suporte)
 
@@ -125,6 +126,13 @@ print_r($reponse);
 ```php
 $amount = 1000
 $response = $rakutenPay->checkout($amount);
+print_r($response);
+```
+
+### Verificar Credenciais
+
+```php
+$response = $rakutenPay->authorizationValidate();
 print_r($response);
 ```
 
