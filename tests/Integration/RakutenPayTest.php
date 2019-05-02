@@ -20,10 +20,13 @@
 namespace Rakuten\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use Rakuten\Connector\Enum\Status;
+use Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\Billet;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\Checkout;
 use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Enum\Environment;
+use Rakuten\Connector\Parser\Error;
 
 /**
  * Class RakutenPayTest
@@ -34,8 +37,8 @@ class RakutenPayTest extends TestCase
     public function testItShouldCreateOrder()
     {
         $reference = "SDK#" . md5(uniqid(rand(), true));
-        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
-        $order = $rakuten
+        $rakutenPay = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $order = $rakutenPay
             ->order()
             ->setAmount(200.0)
             ->setCurrency("BRL")
@@ -54,7 +57,7 @@ class RakutenPayTest extends TestCase
                 200.0,
                 200.0
             );
-        $customer = $rakuten
+        $customer = $rakutenPay
             ->customer()
             ->setName("Maria")
             ->setBirthDate("1985-04-16")
@@ -91,23 +94,43 @@ class RakutenPayTest extends TestCase
                 "11",
                 "billing");
 
-        $payment = $rakuten
+        $payment = $rakutenPay
             ->asBillet()
             ->setAmount(200.0)
             ->setExpiresOn("3");
 
         /** @var Billet $response */
-        $response = $rakuten->createOrder($order, $customer, $payment);
+        $response = $rakutenPay->createOrder($order, $customer, $payment);
 
          $this->assertInstanceOf(Billet::class, $response, "Order Created");
     }
 
     public function testGetInterestInstallmentsForCheckout()
     {
-        $rakuten = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $rakutenPay = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
 
-        $response = $rakuten->checkout(5000);
+        $response = $rakutenPay->checkout(5000);
 
         $this->assertInstanceOf(Checkout::class, $response, "Order Created");
+    }
+
+    public function testItShouldAuthorizationIsReturnStatusOKAndResponseTrue()
+    {
+        $rakutenPay = new RakutenPay("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $response = $rakutenPay->authorizationValidate();
+
+        $this->assertInstanceOf(Authorization::class, $response, "Authorization Class");
+        $this->assertEquals(Status::OK, $response->getStatus(), "Authorization Status");
+        $this->assertTrue($response->getResponse());
+    }
+
+    public function testItShouldAuthorizationNotAuthorized()
+    {
+        $rakutenPay = new RakutenPay("12345678909", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $response = $rakutenPay->authorizationValidate();
+
+        $this->assertInstanceOf(Error::class, $response, "Error Class");
+        $this->assertEquals(Status::FORBIDDEN, $response->getCode(), "Forbidden Status");
+        $this->assertEquals("store_not_found", $response->getMessage(), "Error Message");
     }
 }
