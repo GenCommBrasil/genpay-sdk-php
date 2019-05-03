@@ -49,10 +49,11 @@ class Billet extends Error implements Parser
         $payment = $data["payments"][0];
 
         return $response->setResult($data['result'])
+            ->setStatus($webservice->getStatus())
             ->setChargeId($data['charge_uuid'])
             ->setBillet($payment['billet']['download_url'])
             ->setBilletUrl($payment['billet']['url'])
-            ->setResultMessage(implode(' - ', $data['result_messages']));
+            ->setMessage(implode(' - ', $data['result_messages']));
     }
 
     /**
@@ -64,7 +65,8 @@ class Billet extends Error implements Parser
         $error = new Error();
         $data = json_decode($webservice->getResponse(), true);
 
-        $error->setCode($webservice->getStatus())
+        $error->setStatus($webservice->getStatus())
+            ->setCode($webservice->getStatus())
             ->setMessage(implode(' - ', $data['result_messages']));
 
         return $error;

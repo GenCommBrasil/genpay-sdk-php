@@ -41,10 +41,10 @@ class AuthorizationTest extends TestCase
         $response = true;
         
         $this->authorization->setStatus($status);
-        $this->authorization->setResponse($response);
+        $this->authorization->setMessage($response);
 
         $this->assertInstanceOf(Authorization::class, $this->authorization);
         $this->assertEquals(Status::OK, $this->authorization->getStatus(), "Authorization Transaction Status");
-        $this->assertTrue($this->authorization->getResponse(), "Authorization Transaction Response");
+        $this->assertTrue($this->authorization->getMessage(), "Authorization Transaction Response");
     }
 }

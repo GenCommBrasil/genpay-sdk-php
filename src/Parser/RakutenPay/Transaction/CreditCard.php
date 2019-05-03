@@ -19,12 +19,24 @@
 
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
+use Rakuten\Connector\Parser\Transaction;
+
 /**
  * Class CreditCard
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class CreditCard
+class CreditCard implements Transaction
 {
+    /**
+     * @var int|string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $message;
+
     /**
      * @var string
      */
@@ -41,14 +53,40 @@ class CreditCard
     private $creditCardNum;
 
     /**
-     * @var string
+     * @param int|string $status
+     * @return $this
      */
-    private $status;
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
 
     /**
-     * @var string
+     * @return int|string
      */
-    private $resultMessage;
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
     /**
      * @return string
@@ -101,42 +139,6 @@ class CreditCard
     public function setCreditCardNum($creditCardNum)
     {
         $this->creditCardNum = $creditCardNum;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
-     * @return $this
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getResultMessage()
-    {
-        return $this->resultMessage;
-    }
-
-    /**
-     * @param string $resultMessage
-     * @return $this
-     */
-    public function setResultMessage($resultMessage)
-    {
-        $this->resultMessage = $resultMessage;
         return $this;
     }
 }

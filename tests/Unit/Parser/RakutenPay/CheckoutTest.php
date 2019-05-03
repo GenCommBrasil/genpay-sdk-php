@@ -52,6 +52,7 @@ class CheckoutTest extends TestCase
         $this->assertCount(12, $response->getInstallments());
         $this->assertEquals("credit_card", $response->getMethod());
         $this->assertEquals("success", $response->getResult());
+        $this->assertEmpty($response->getMessage());
     }
 
     public function testShouldErrorAndReturnErrorClass()

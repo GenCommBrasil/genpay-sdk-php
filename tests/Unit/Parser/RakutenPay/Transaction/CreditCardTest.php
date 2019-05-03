@@ -46,11 +46,13 @@ class CreditCardTest extends TestCase
         $this->creditCard->setChargeId($chargeId);
         $this->creditCard->setCreditCardNum($creditCardNum);
         $this->creditCard->setStatus($status);
+        $this->creditCard->setMessage('');
 
         $this->assertInstanceOf(CreditCard::class, $this->creditCard);
         $this->assertEquals($result, $this->creditCard->getResult(), "Credit Card Transaction Result");
         $this->assertEquals($chargeId, $this->creditCard->getChargeId(), "Credit Card Transaction Charge UUID");
         $this->assertEquals($creditCardNum, $this->creditCard->getCreditCardNum(), "Credit Card Transaction Number With Mask");
         $this->assertEquals($status, $this->creditCard->getStatus(), "Credit Card Transaction Status");
+        $this->assertEmpty($this->creditCard->getMessage());
     }
 }

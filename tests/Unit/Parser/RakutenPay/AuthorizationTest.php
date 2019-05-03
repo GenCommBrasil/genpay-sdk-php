@@ -50,7 +50,7 @@ class AuthorizationTest extends TestCase
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization::class, $response);
         $this->assertEquals(Status::OK, $response->getStatus(), "Authorization return Status");
-        $this->assertTrue($response->getResponse(), "Authorization Response");
+        $this->assertTrue($response->getMessage(), "Authorization Response");
     }
 
     public function testShouldErrorAndReturnErrorClass()

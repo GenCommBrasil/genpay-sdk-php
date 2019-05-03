@@ -23,17 +23,41 @@ namespace Rakuten\Connector\Parser;
  * Class Error
  * @package Rakuten\Connector\Parser
  */
-class Error
+class Error implements Transaction
 {
+    /**
+     * @var int
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $message;
+
     /**
      * @var string
      */
     private $code;
 
     /**
-     * @var string
+     * @param $status
+     * @return $this|Transaction
      */
-    private $message;
+    public function setStatus($status)
+    {
+        $this->status = (int) $status;
+
+        return $this;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
     /**
      * @param $message
@@ -42,6 +66,7 @@ class Error
     public function setMessage($message)
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -53,9 +78,14 @@ class Error
         return $this->message;
     }
 
+    /**
+     * @param $code
+     * @return $this
+     */
     public function setCode($code)
     {
         $this->code = $code;
+
         return $this;
     }
 

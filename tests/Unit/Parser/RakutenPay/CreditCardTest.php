@@ -52,6 +52,7 @@ class CreditCardTest extends TestCase
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertEquals('411111******1111', $response->getCreditCardNum(), "Credit Card Number");
         $this->assertEquals('authorized', $response->getStatus(), "Status Code");
+        $this->assertEmpty($response->getMessage(), "Message");
     }
 
     public function testShouldErrorAndReturnErrorClass()

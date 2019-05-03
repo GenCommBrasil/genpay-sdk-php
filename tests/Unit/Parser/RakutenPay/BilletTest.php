@@ -52,6 +52,7 @@ class BilletTest extends TestCase
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertEquals('fake-download-url', $response->getBillet(), "Billet URL");
         $this->assertEquals('fake-url', $response->getBilletUrl(), "Billet URL");
+        $this->assertEmpty($response->getMessage(), "Billet Message");
     }
 
     public function testShouldErrorAndReturnErrorClass()

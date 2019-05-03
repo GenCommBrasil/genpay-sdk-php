@@ -58,10 +58,12 @@ class CheckoutTest extends TestCase
         $this->checkout->setResult($result);
         $this->checkout->setInstallments($installments);
         $this->checkout->setMethod($method);
+        $this->checkout->setMessage('');
 
         $this->assertInstanceOf(Checkout::class, $this->checkout);
         $this->assertCount(2, $this->checkout->getInstallments(), "Checkout Transaction - Count Installments");
         $this->assertEquals($result, $this->checkout->getResult(), "Checkout Transaction Result");
         $this->assertEquals($method, $this->checkout->getMethod(), "Checkout Transaction Method");
+        $this->assertEmpty($this->checkout->getMessage());
     }
 }

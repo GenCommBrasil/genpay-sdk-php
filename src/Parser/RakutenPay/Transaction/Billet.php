@@ -19,12 +19,24 @@
 
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
+use Rakuten\Connector\Parser\Transaction;
+
 /**
  * Class Billet
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Billet
+class Billet implements Transaction
 {
+    /**
+     * @var int|string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $message;
+
     /**
      * @var string
      */
@@ -46,9 +58,40 @@ class Billet
     private $billetUrl;
 
     /**
-     * @var string
+     * @param int|string $status
+     * @return $this
      */
-    private $resultMessage;
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
     /**
      * @return string
@@ -80,14 +123,6 @@ class Billet
     public function getBilletUrl()
     {
         return $this->billetUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getResultMessage()
-    {
-        return $this->resultMessage;
     }
 
     /**
@@ -127,16 +162,6 @@ class Billet
     public function setBilletUrl($billetUrl)
     {
         $this->billetUrl = $billetUrl;
-        return $this;
-    }
-
-    /**
-     * @param $resultMessage
-     * @return $this
-     */
-    public function setResultMessage($resultMessage)
-    {
-        $this->resultMessage = $resultMessage;
         return $this;
     }
 }

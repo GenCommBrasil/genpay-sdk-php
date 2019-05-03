@@ -121,7 +121,7 @@ class RakutenPayTest extends TestCase
 
         $this->assertInstanceOf(Authorization::class, $response, "Authorization Class");
         $this->assertEquals(Status::OK, $response->getStatus(), "Authorization Status");
-        $this->assertTrue($response->getResponse());
+        $this->assertTrue($response->getMessage());
     }
 
     public function testItShouldAuthorizationNotAuthorized()

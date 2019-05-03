@@ -53,7 +53,7 @@ class CreditCard implements Parser
             ->setChargeId($data['charge_uuid'])
             ->setCreditCardNum($payment['credit_card']['number'])
             ->setStatus($payment['status'])
-            ->setResultMessage(implode(' - ', $data['result_messages']));
+            ->setMessage(implode(' - ', $data['result_messages']));
     }
 
     /**
@@ -65,7 +65,8 @@ class CreditCard implements Parser
         $error = new Error();
         $data = json_decode($webservice->getResponse(), true);
 
-        $error->setCode($webservice->getStatus())
+        $error->setStatus($webservice->getStatus())
+            ->setCode($webservice->getStatus())
             ->setMessage(implode(' - ', $data['result_messages']));
 
         return $error;

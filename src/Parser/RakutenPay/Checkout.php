@@ -49,8 +49,10 @@ class Checkout extends Error implements Parser
         $payments = array_shift($data['payments']);
 
         $response->setResult($data['result'])
+            ->setStatus($webservice->getStatus())
             ->setMethod($payments['method'])
-            ->setInstallments($payments['installments']);
+            ->setInstallments($payments['installments'])
+            ->setMessage('');
 
         return $response;
     }
@@ -64,7 +66,8 @@ class Checkout extends Error implements Parser
         $error = new Error();
         $data = json_decode($webservice->getResponse(), true);
 
-        $error->setCode($webservice->getStatus())
+        $error->setStatus($webservice->getStatus())
+            ->setCode($webservice->getStatus())
             ->setMessage(implode(' - ', $data['result_messages']));
 
         return $error;

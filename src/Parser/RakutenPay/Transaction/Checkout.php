@@ -19,12 +19,24 @@
 
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
+use Rakuten\Connector\Parser\Transaction;
+
 /**
  * Class Checkout
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Checkout
+class Checkout implements Transaction
 {
+    /**
+     * @var int|string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $message;
+
     /**
      * @var string
      */
@@ -39,6 +51,42 @@ class Checkout
      * @var string
      */
     private $method;
+
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
     /**
      * @return string

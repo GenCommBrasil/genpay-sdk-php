@@ -17,27 +17,33 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Connector\Parser;
 
-use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Status;
-use Rakuten\Connector\Parser\Error;
-
-class ErrorTest extends TestCase
+/**
+ * Interface Transaction
+ * @package Rakuten\Connector\Parser
+ */
+interface Transaction
 {
-    public function testMethodsGettersAndSetters()
-    {
-        $code = "123";
-        $message = "Sum of payments amount doesn't match with amount";
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function setStatus($status);
 
-        $error = new Error();
+    /**
+     * @return int|string
+     */
+    public function getStatus();
 
-        $error->setCode($code)
-            ->setMessage($message)
-            ->setStatus(Status::FORBIDDEN);
+    /**
+     * @param $message
+     * @return string
+     */
+    public function setMessage($message);
 
-        $this->assertEquals($code, $error->getCode(), "Return Code from error");
-        $this->assertEquals($message, $error->getMessage(), "Return Message from error");
-        $this->assertEquals(Status::FORBIDDEN, $error->getStatus());
-    }
+    /**
+     * @return string
+     */
+    public function getMessage();
 }
