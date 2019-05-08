@@ -117,7 +117,7 @@ $payment = $rakutenPay
     ->setExpiresOn("3");
     
 $response = $rakutenPay->createOrder($order, $customer, $payment);
-print_r($reponse);
+print_r($response);
 ```
 
 ## Consulta
