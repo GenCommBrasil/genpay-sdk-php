@@ -19,6 +19,7 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Enum\Category;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\RakutenPay;
 use stdClass;
@@ -29,14 +30,6 @@ use stdClass;
  */
 class Order extends RakutenPayResource
 {
-    /**
-     * @var array
-     */
-    private $categoryDefault = [
-        'name' => 'Outros',
-        'id' => '99'
-    ];
-
     /**
      * @inheritdoc
      */
@@ -66,7 +59,7 @@ class Order extends RakutenPayResource
         }
 
         if (!count($categories)) {
-            $categories = $this->categoryDefault;
+            $categories = Category::getDefaultCategory();
         }
 
         $item = new stdClass();
