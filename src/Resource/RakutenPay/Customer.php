@@ -72,21 +72,21 @@ class Customer extends RakutenPayResource
     }
 
     /**
-     * @param $reference
-     * @param $number
      * @param $countryCode
      * @param $areaCode
+     * @param $number
+     * @param $reference
      * @param $kind
      * @return $this
      */
-    public function addAPhones($reference, $number, $countryCode, $areaCode, $kind)
+    public function addAPhones($countryCode, $areaCode, $number, $reference, $kind)
     {
         $phone = new stdClass();
         $phone->number = new stdClass();
-        $phone->reference = $reference;
-        $phone->number->number = $number;
         $phone->number->country_code = $countryCode;
         $phone->number->area_code = $areaCode;
+        $phone->number->number = $number;
+        $phone->reference = $reference;
         $phone->kind = $kind;
         $this->data->phones[] = $phone;
 

@@ -74,15 +74,16 @@ class CustomerTest extends TestCase
                 "SP",
                 "Maria",
                 "")
-            ->addAPhones("others",
-                "999999998",
-                "55",
+            ->addAPhones("55",
                 "11",
+                "999999998",
+                "others",
                 "shipping")
-            ->addAPhones("others",
-                "999999998",
+            ->addAPhones(
                 "55",
                 "11",
+                "999999998",
+                "others",
                 "billing");
 
         $data = $this->customer->getData();
