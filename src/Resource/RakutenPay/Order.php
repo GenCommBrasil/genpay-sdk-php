@@ -59,7 +59,7 @@ class Order extends RakutenPayResource
         }
 
         if (!count($categories)) {
-            $categories = Category::getDefaultCategory();
+            $categories[] = Category::getDefaultCategory();
         }
 
         $item = new stdClass();
@@ -67,7 +67,7 @@ class Order extends RakutenPayResource
         $item->reference = $reference;
         $item->description = $description;
         $item->quantity = (int) $quantity;
-        $item->categories[] = $categories;
+        $item->categories = $categories;
         $item->amount = (float) $amount;
         $this->data->order->items[] = $item;
 
