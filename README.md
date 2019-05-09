@@ -100,15 +100,15 @@ $customer = $rakutenPay
                 "SP",
                 "Maria",
                 "")
-            ->addAPhones("others",
-                "999999998",
-                "55",
+            ->addAPhones("55",
                 "11",
+                "999999998",
+                "others",
                 "shipping")
-            ->addAPhones("others",
-                "999999998",
-                "55",
+            ->addAPhones("55",
                 "11",
+                "999999998",
+                "others",
                 "billing");
 
 $payment = $rakutenPay
