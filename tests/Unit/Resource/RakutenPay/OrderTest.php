@@ -46,7 +46,7 @@ class OrderTest extends TestCase
     {
         $amount = 700.00;
         $currency = "BRL";
-        $fingerprint = "c9a3374e5b564eca2e734a81c01f0a54-fodm1ud7nrejul9x1d7";
+        $fingerprint = "fake-fingerprint";
         $webhookUrl = "http://localhost/teste/teste/sdk/";
         $reference = "Pedido#001";
         $itemsAmount = 700;

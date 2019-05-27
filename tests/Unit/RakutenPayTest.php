@@ -179,7 +179,7 @@ class RakutenConnectorTest extends TestCase
               "amount": 200.0
             }
           ],
-          "fingerprint": "c9a3374e5b564eca2e734a81c01f0a54-fodm1ud7nrejul9x1d7",
+          "fingerprint": "fake-fingerprint",
           "commissionings": [],
           "charge_uuid": "4d0a36a0-19ed-49de-8148-645bb7cc9840"
         }';

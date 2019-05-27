@@ -58,7 +58,7 @@ $order = $rakutenPay
             ->order()
             ->setAmount(200.0)
             ->setCurrency("BRL")
-            ->setFingerprint("c9a3374e5b564eca2e734a81c01f0a54-fodm1ud7nrejul9x1d7")
+            ->setFingerprint("fake-fingerprint")
             ->setWebhookUrl("http://intregation.test/sdk/")
             ->setReference($reference)
             ->setItemsAmount(200.0)
