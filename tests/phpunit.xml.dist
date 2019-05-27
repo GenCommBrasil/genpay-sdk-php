@@ -16,15 +16,6 @@
         <testsuite name="unit" suffix=".php">
             <directory>./Unit</directory>
             <exclude>./Unit/Service/Http/CurlRequest.php</exclude>
-            <exclude>./Integration</exclude>
-        </testsuite>
-        <testsuite name="all">
-            <directory>./Integration</directory>
-            <directory>./Unit</directory>
-        </testsuite>
-        <testsuite name="integration">
-            <directory>./Integration</directory>
-            <exclude>./Unit</exclude>
         </testsuite>
     </testsuites>
 
