@@ -45,9 +45,9 @@ class CreditCard extends RakutenPayResource implements PaymentMethod
      */
     protected function setOptions()
     {
-        $this->data->options->save_card = true;
+        $this->data->options->save_card = false;
         $this->data->options->recurrency = false;
-        $this->data->options->new_card = true;
+        $this->data->options->new_card = false;
     }
 
     /**
