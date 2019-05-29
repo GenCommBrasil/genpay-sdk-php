@@ -141,7 +141,7 @@ class CreditCard extends RakutenPayResource implements PaymentMethod
     /**
      * Set Interest Installments only if you use interest
      *
-     * @param float $quantity
+     * @param int $quantity
      * @param float $interestPercent
      * @param float $interestAmount
      * @param float $installmentAmount
@@ -153,10 +153,10 @@ class CreditCard extends RakutenPayResource implements PaymentMethod
             $this->data->installments = new stdClass();
         }
 
-        $this->data->installments->total = (float) $total;
-        $this->data->installments->quantity = (float) $quantity;
+        $this->data->installments->quantity = (int) $quantity;
         $this->data->installments->interest_percent = (float) $interestPercent;
         $this->data->installments->interest_amount = (float) $interestAmount;
         $this->data->installments->installment_amount = (float) $installmentAmount;
+        $this->data->installments->total = (float) $total;
     }
 }
