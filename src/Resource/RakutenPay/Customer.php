@@ -51,7 +51,8 @@ class Customer extends RakutenPayResource
      * @param $state
      * @param $contact
      * @param null $complement
-     * @return $this;
+     * @return $this
+     * @throws \ReflectionException
      */
     public function addAddress($kind, $zipcode, $street, $number, $district, $city, $state, $contact, $complement = null)
     {
@@ -63,7 +64,7 @@ class Customer extends RakutenPayResource
         $address->complement = $complement;
         $address->district = $district;
         $address->city = $city;
-        $address->state = $state;
+        $address->state = Address::convertUf($state);
         $address->contact = $contact;
         $address->country = Address::ADDRESS_COUNTRY;
         $this->data->addresses[] = $address;

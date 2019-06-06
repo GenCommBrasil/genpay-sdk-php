@@ -34,4 +34,27 @@ class AddressTest extends TestCase
         $this->assertEquals("shipping", Address::ADDRESS_SHIPPING, "String lowcase shipping");
         $this->assertEquals("BRA", Address::ADDRESS_COUNTRY, "String uppercase Country BRA");
     }
+
+    /**
+     * @dataProvider getStateProvider
+     */
+    public function testConversionStateToUF($value, $expected)
+    {
+        $this->assertEquals(Address::convertUf($value), $expected);
+    }
+
+    /**
+     * @return array
+     */
+    public function getStateProvider()
+    {
+        return [
+            ["São Paulo", "SP"],
+            ["Rio de Janeiro", "RJ"],
+            ["RJ", "RJ"],
+            ["Amazonas", "AM"],
+            ["PF", "PF"],
+            ["", ""],
+        ];
+    }
 }
