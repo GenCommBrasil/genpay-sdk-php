@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
  * Class Authorization
@@ -28,32 +29,14 @@ use Rakuten\Connector\Parser\Transaction;
 class Authorization implements Transaction
 {
     /**
-     * @var int|string
-     */
-    private $status;
-
-    /**
      * @var string
      */
     private $message;
 
     /**
-     * @param int|string
-     * @return $this
+     * @var Response
      */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+    private $response;
 
     /**
      * @param $message
@@ -71,5 +54,24 @@ class Authorization implements Transaction
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @param Response $response
+     * @return $this
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

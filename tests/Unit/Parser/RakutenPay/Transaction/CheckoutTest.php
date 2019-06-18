@@ -21,6 +21,8 @@ namespace Rakuten\Tests\Unit\Parser\Transaction;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\Checkout;
+use Rakuten\Connector\Service\Http\Response\Response;
+use Rakuten\Connector\Enum\Status;
 
 class CheckoutTest extends TestCase
 {
@@ -54,13 +56,18 @@ class CheckoutTest extends TestCase
             ]
         ];
         $method = "credit_card";
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult(json_encode($installments));
 
         $this->checkout->setResult($result);
         $this->checkout->setInstallments($installments);
         $this->checkout->setMethod($method);
+        $this->checkout->setResponse($response);
         $this->checkout->setMessage('');
 
         $this->assertInstanceOf(Checkout::class, $this->checkout);
+        $this->assertInstanceOf(Response::class, $this->checkout->getResponse());
         $this->assertCount(2, $this->checkout->getInstallments(), "Checkout Transaction - Count Installments");
         $this->assertEquals($result, $this->checkout->getResult(), "Checkout Transaction Result");
         $this->assertEquals($method, $this->checkout->getMethod(), "Checkout Transaction Method");

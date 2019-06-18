@@ -45,7 +45,7 @@ class CreditCard implements Parser
     public static function success(Webservice $webservice)
     {
         $response = self::getTransactionCreditCard();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
 
         $payment = $data["payments"][0];
 
@@ -53,7 +53,8 @@ class CreditCard implements Parser
             ->setChargeId($data['charge_uuid'])
             ->setCreditCardNum($payment['credit_card']['number'])
             ->setStatus($payment['status'])
-            ->setMessage(implode(' - ', $data['result_messages']));
+            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setResponse($webservice->getResponse());
     }
 
     /**
@@ -63,11 +64,13 @@ class CreditCard implements Parser
     public static function error(Webservice $webservice)
     {
         $error = new Error();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
+        $code = isset($data['result_code']['code']) ? $data['result_code']['code'] : "";
 
-        $error->setStatus($webservice->getStatus())
-            ->setCode($webservice->getStatus())
-            ->setMessage(implode(' - ', $data['result_messages']));
+        $error
+            ->setCode($code)
+            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setResponse($webservice->getResponse());
 
         return $error;
     }

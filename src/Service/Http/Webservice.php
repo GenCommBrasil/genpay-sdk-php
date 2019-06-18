@@ -45,7 +45,6 @@ class Webservice extends CurlRequest
             CURLOPT_HEADER => false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_CONNECTTIMEOUT => $timeout,
-            //CURLOPT_TIMEOUT => $timeout
         ];
 
         $methodOptions = $this->getCurlHeader($method, $jsonData);
@@ -64,8 +63,8 @@ class Webservice extends CurlRequest
             throw new RakutenException("CURL can't connect: $errorMessage");
         }
 
-        $this->setStatus($info['http_code']);
-        $this->setResponse($response);
+        $this->response->setStatus($info['http_code']);
+        $this->response->setResult($response);
 
         return true;
     }

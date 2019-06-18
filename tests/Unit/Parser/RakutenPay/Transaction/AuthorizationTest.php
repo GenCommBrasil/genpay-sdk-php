@@ -22,6 +22,7 @@ namespace Rakuten\Tests\Unit\Parser\Transaction;
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class AuthorizationTest extends TestCase
 {
@@ -37,14 +38,16 @@ class AuthorizationTest extends TestCase
 
     public function testItShouldValuesGettersAndSetters()
     {
-        $status = Status::OK;
-        $response = true;
-        
-        $this->authorization->setStatus($status);
-        $this->authorization->setMessage($response);
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult("Authorization Transaction Response");
+
+        $this->authorization->setMessage("Authorization Transaction Response");
+        $this->authorization->setResponse($response);
 
         $this->assertInstanceOf(Authorization::class, $this->authorization);
-        $this->assertEquals(Status::OK, $this->authorization->getStatus(), "Authorization Transaction Status");
-        $this->assertTrue($this->authorization->getMessage(), "Authorization Transaction Response");
+        $this->assertInstanceOf(Response::class, $this->authorization->getResponse());
+        $this->assertEquals(Status::OK, $this->authorization->getResponse()->getStatus(), "Authorization Transaction Status");
+        $this->assertEquals($this->authorization->getMessage(), "Authorization Transaction Response");
     }
 }

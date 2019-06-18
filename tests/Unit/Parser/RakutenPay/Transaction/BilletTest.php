@@ -20,7 +20,9 @@
 namespace Rakuten\Tests\Unit\Parser\Transaction;
 
 use PHPUnit\Framework\TestCase;
+use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\Billet;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class BilletTest extends TestCase
 {
@@ -36,6 +38,10 @@ class BilletTest extends TestCase
 
     public function testItShouldValuesGettersAndSetters()
     {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult("Authorization Transaction Response");
+
         $result = "fake-result";
         $chargeId = "fake-charge-uuid";
         $billet = "fake-billet-download";
@@ -46,8 +52,10 @@ class BilletTest extends TestCase
         $this->billet->setBillet($billet);
         $this->billet->setBilletUrl($billetUrl);
         $this->billet->setMessage('');
+        $this->billet->setResponse($response);
 
         $this->assertInstanceOf(Billet::class, $this->billet);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals($result, $this->billet->getResult(), "Billet Transaction Result");
         $this->assertEquals($chargeId, $this->billet->getChargeId(), "Billet Transaction Charge UUID");
         $this->assertEquals($billet, $this->billet->getBillet(), "Billet Transaction URL Download Billet");

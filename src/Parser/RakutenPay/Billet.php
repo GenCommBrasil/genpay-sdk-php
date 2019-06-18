@@ -45,15 +45,16 @@ class Billet extends Error implements Parser
     public static function success(Webservice $webservice)
     {
         $response = self::getTransactionBillet();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
         $payment = $data["payments"][0];
 
         return $response->setResult($data['result'])
-            ->setStatus($webservice->getStatus())
+            ->setStatus($payment['status'])
             ->setChargeId($data['charge_uuid'])
             ->setBillet($payment['billet']['download_url'])
             ->setBilletUrl($payment['billet']['url'])
-            ->setMessage(implode(' - ', $data['result_messages']));
+            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setResponse($webservice->getResponse());
     }
 
     /**
@@ -63,11 +64,13 @@ class Billet extends Error implements Parser
     public static function error(Webservice $webservice)
     {
         $error = new Error();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
+        $code = isset($data['result_code']['code']) ? $data['result_code']['code'] : "";
 
-        $error->setStatus($webservice->getStatus())
-            ->setCode($webservice->getStatus())
-            ->setMessage(implode(' - ', $data['result_messages']));
+        $error
+            ->setCode($code)
+            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setResponse($webservice->getResponse());
 
         return $error;
     }

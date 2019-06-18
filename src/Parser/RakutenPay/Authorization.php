@@ -44,11 +44,12 @@ class Authorization extends Error implements Parser
      */
     public static function success(Webservice $webservice)
     {
-        $response = self::getTransactionAuthorization();
-        $response->setStatus($webservice->getStatus())
-            ->setMessage(true);
+        $transaction = self::getTransactionAuthorization();
+        $transaction
+            ->setMessage(true)
+            ->setResponse($webservice->getResponse());
 
-        return $response;
+        return $transaction;
     }
 
     /**
@@ -59,9 +60,10 @@ class Authorization extends Error implements Parser
     {
         $error = new Error();
 
-        $error->setStatus($webservice->getStatus())
-            ->setCode($webservice->getStatus())
-            ->setMessage($webservice->getResponse());
+        $error
+            ->setCode($webservice->getResponse()->getStatus())
+            ->setMessage($webservice->getResponse()->getResult())
+            ->setResponse($webservice->getResponse());
 
         return $error;
     }

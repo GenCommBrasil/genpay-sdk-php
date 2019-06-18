@@ -22,22 +22,50 @@ namespace Rakuten\Tests\Unit\Parser;
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\Error;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class ErrorTest extends TestCase
 {
     public function testMethodsGettersAndSetters()
     {
-        $code = "123";
-        $message = "Sum of payments amount doesn't match with amount";
+        $code = "1011";
+        $message = "credit_card_info missing required field(s): installments_quantity, brand and/or token";
 
         $error = new Error();
+        $response = new Response();
+        $response->setStatus(Status::OK)
+            ->setResult($this->getResponseError());
 
         $error->setCode($code)
             ->setMessage($message)
-            ->setStatus(Status::FORBIDDEN);
+            ->setResponse($response);
 
         $this->assertEquals($code, $error->getCode(), "Return Code from error");
         $this->assertEquals($message, $error->getMessage(), "Return Message from error");
-        $this->assertEquals(Status::FORBIDDEN, $error->getStatus());
+        $this->assertInstanceOf('Rakuten\Connector\Service\Http\Response\Response', $error->getResponse());
+    }
+
+    /**
+     * @return string
+     */
+    private function getResponseError()
+    {
+        return '
+            {
+              "result_messages": [
+                "credit_card_info missing required field(s): installments_quantity, brand and/or token"
+              ],
+              "result_code": {
+                "message_error": [
+                  "credit_card_info missing required field(s): installments_quantity, brand and/or token"
+                ],
+                "id": "charge_validation",
+                "code": 1011
+              },
+              "result": "failure",
+              "reference": "",
+              "payments": [],
+              "charge_uuid": ""
+            }';
     }
 }

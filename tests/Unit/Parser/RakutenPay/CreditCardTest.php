@@ -22,33 +22,31 @@ namespace Rakuten\Tests\Unit\Parser;
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Parser\RakutenPay\CreditCard;
 use Rakuten\Connector\Enum\Status;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class CreditCardTest extends TestCase
 {
-    /**
-     * @var Webservice
-     */
-    private $webservice;
-
-    public function setUp()
-    {
-        $stub = $this->getMockBuilder(RakutenPay::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->webservice = new Webservice($stub);
-    }
-
     public function testShouldSucceedAndReturnTransactionCreditCard()
     {
-        $this->webservice->setStatus(200);
-        $this->webservice->setResponse($this->getDataSuccess());
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getDataSuccess());
 
-        $response = CreditCard::success($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->exactly(2))
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = CreditCard::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertEquals('411111******1111', $response->getCreditCardNum(), "Credit Card Number");
         $this->assertEquals('authorized', $response->getStatus(), "Status Code");
@@ -57,13 +55,24 @@ class CreditCardTest extends TestCase
 
     public function testShouldErrorAndReturnErrorClass()
     {
-        $this->webservice->setStatus(Status::UNPROCESSABLE);
-        $this->webservice->setResponse($this->getDataError());
+        $response = new Response();
+        $response->setStatus(Status::UNPROCESSABLE);
+        $response->setResult($this->getDataError());
 
-        $response = CreditCard::error($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->exactly(2))
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = CreditCard::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
-        $this->assertEquals(Status::UNPROCESSABLE, $response->getCode(), "Code Status");
+        $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertEquals(999, $response->getCode(), "Code Status");
         $this->assertEquals("Installments amount doesnt match. Payment credit_card in 3 times of 70.90 should be 212.70", $response->getMessage(), "Error Message");
     }
 

@@ -21,18 +21,19 @@ namespace Rakuten\Connector\Service\Http\Response;
 
 /**
  * Class Response
- * @package Rakuten\Connector\Service
+ * @package Rakuten\Connector\Service\Http\Response
  */
-abstract class Response
+class Response
 {
     /**
      * @var
      */
     private $status;
+
     /**
      * @var
      */
-    private $response;
+    private $result;
 
     /**
      * @return mixed
@@ -44,25 +45,31 @@ abstract class Response
 
     /**
      * @param $status
+     * @return $this
      */
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getResponse()
+    public function getResult()
     {
-        return $this->response;
+        return $this->result;
     }
 
     /**
-     * @param $response
+     * @param $result
+     * @return $this
      */
-    public function setResponse($response)
+    public function setResult($result)
     {
-        $this->response = $response;
+        $this->result = $result;
+
+        return $this;
     }
 }

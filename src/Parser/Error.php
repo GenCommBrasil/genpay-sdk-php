@@ -19,6 +19,8 @@
 
 namespace Rakuten\Connector\Parser;
 
+use Rakuten\Connector\Service\Http\Response\Response;
+
 /**
  * Class Error
  * @package Rakuten\Connector\Parser
@@ -26,27 +28,27 @@ namespace Rakuten\Connector\Parser;
 class Error implements Transaction
 {
     /**
-     * @var int
-     */
-    private $status;
-
-    /**
      * @var string
      */
     private $message;
 
     /**
-     * @var string
+     * @var Response
      */
     private $code;
 
     /**
-     * @param $status
+     * @var Response
+     */
+    private $response;
+
+    /**
+     * @param $code
      * @return $this|Transaction
      */
-    public function setStatus($status)
+    public function setCode($code)
     {
-        $this->status = (int) $status;
+        $this->code = (int) $code;
 
         return $this;
     }
@@ -54,9 +56,9 @@ class Error implements Transaction
     /**
      * @return int|mixed
      */
-    public function getStatus()
+    public function getCode()
     {
-        return $this->status;
+        return $this->code;
     }
 
     /**
@@ -79,21 +81,21 @@ class Error implements Transaction
     }
 
     /**
-     * @param $code
+     * @param Response $response
      * @return $this
      */
-    public function setCode($code)
+    public function setResponse(Response $response)
     {
-        $this->code = $code;
+        $this->response = $response;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return Response
      */
-    public function getCode()
+    public function getResponse()
     {
-        return $this->code;
+        return $this->response;
     }
 }

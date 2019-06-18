@@ -26,10 +26,11 @@ use Rakuten\Connector\Resource\RakutenPay\CreditCard;
 use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Resource\RakutenPay\Customer;
 use Rakuten\Connector\Resource\RakutenPay\Order;
+use Rakuten\Connector\Service\Http\Response\Response;
 use Rakuten\Connector\Service\Http\Webservice;
 use Rakuten\Connector\Enum\Status;
 
-class RakutenConnectorTest extends TestCase
+class RakutenPayTest extends TestCase
 {
     public function testItShouldReturnObjectsInMethods()
     {
@@ -51,14 +52,20 @@ class RakutenConnectorTest extends TestCase
 
     public function testItShouldCreateOrderAsBillet()
     {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getPayload());
+
         $stubWebservice = $this->getMockBuilder(Webservice::class)
             ->disableOriginalConstructor()
-            ->setMethods(['post'])
+            ->setMethods(['post', 'getResponse'])
             ->getMock();
         $stubWebservice->expects($this->once())
-            ->method('post');
-        $stubWebservice->setStatus(Status::OK);
-        $stubWebservice->setResponse($this->getPayload());
+            ->method('post')
+            ->willReturn($this->getPayload());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
             ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
@@ -77,12 +84,20 @@ class RakutenConnectorTest extends TestCase
 
     public function testItShouldCreateOrderAsBilletReturnExceptionError()
     {
+        $response = new Response();
+        $response->setStatus('');
+        $response->setResult('');
+
         $stubWebservice = $this->getMockBuilder(Webservice::class)
             ->disableOriginalConstructor()
-            ->setMethods(['post'])
+            ->setMethods(['post', 'getResponse'])
             ->getMock();
         $stubWebservice->expects($this->once())
             ->method('post');
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
             ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
@@ -103,14 +118,20 @@ class RakutenConnectorTest extends TestCase
 
     public function testItShouldGetInstallmentsInterestForCheckoutAndReturnSuccess()
     {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getDataInstallments());
+
         $stubWebservice = $this->getMockBuilder(Webservice::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get'])
+            ->setMethods(['get', 'getResponse'])
             ->getMock();
         $stubWebservice->expects($this->once())
-            ->method('get');
-        $stubWebservice->setStatus(Status::OK);
-        $stubWebservice->setResponse($this->getDataInstallments());
+            ->method('get')
+            ->willReturn($this->getDataInstallments());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
             ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
@@ -125,12 +146,19 @@ class RakutenConnectorTest extends TestCase
 
     public function testItShouldGetInstallmentsInterestForCheckoutAndReturnException()
     {
+        $response = new Response();
+        $response->setStatus('');
+        $response->setResult('');
+
         $stubWebservice = $this->getMockBuilder(Webservice::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get'])
+            ->setMethods(['get', 'getResponse'])
             ->getMock();
         $stubWebservice->expects($this->once())
             ->method('get');
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
 
         $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
             ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])

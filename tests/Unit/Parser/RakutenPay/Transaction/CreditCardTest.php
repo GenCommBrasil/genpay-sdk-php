@@ -21,6 +21,8 @@ namespace Rakuten\Tests\Unit\Parser\Transaction;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard;
+use Rakuten\Connector\Service\Http\Response\Response;
+use Rakuten\Connector\Enum\Status;
 
 class CreditCardTest extends TestCase
 {
@@ -36,19 +38,24 @@ class CreditCardTest extends TestCase
 
     public function testItShouldValuesGettersAndSetters()
     {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult("Transaction OK");
+
         $result = "fake-result";
         $chargeId = "fake-charge-uuid";
         $creditCardNum = "411111*********1111111";
         $status = "processing";
 
-
         $this->creditCard->setResult($result);
         $this->creditCard->setChargeId($chargeId);
         $this->creditCard->setCreditCardNum($creditCardNum);
         $this->creditCard->setStatus($status);
+        $this->creditCard->setResponse($response);
         $this->creditCard->setMessage('');
 
         $this->assertInstanceOf(CreditCard::class, $this->creditCard);
+        $this->assertInstanceOf(Response::class, $this->creditCard->getResponse());
         $this->assertEquals($result, $this->creditCard->getResult(), "Credit Card Transaction Result");
         $this->assertEquals($chargeId, $this->creditCard->getChargeId(), "Credit Card Transaction Charge UUID");
         $this->assertEquals($creditCardNum, $this->creditCard->getCreditCardNum(), "Credit Card Transaction Number With Mask");
