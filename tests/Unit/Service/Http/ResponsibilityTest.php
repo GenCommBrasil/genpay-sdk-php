@@ -25,7 +25,6 @@ use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
 use Rakuten\Connector\Service\Http\Response\Response;
 
