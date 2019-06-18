@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
  * Class CreditCard
@@ -51,6 +52,11 @@ class CreditCard implements Transaction
      * @var string
      */
     private $creditCardNum;
+
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * @param int|string $status
@@ -140,5 +146,24 @@ class CreditCard implements Transaction
     {
         $this->creditCardNum = $creditCardNum;
         return $this;
+    }
+
+    /**
+     * @param Response $response
+     * @return $this
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

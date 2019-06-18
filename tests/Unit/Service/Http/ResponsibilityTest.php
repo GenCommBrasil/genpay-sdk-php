@@ -27,29 +27,29 @@ use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
 use Rakuten\Connector\RakutenPay;
 use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class ResponsibilityTest extends TestCase
 {
-    /**
-     * @var Webservice
-     */
-    private $webservice;
-
-    public function setUp()
-    {
-        $stub = $this->createMock(RakutenPay::class);
-        $this->webservice = new Webservice($stub);
-    }
-
     /**
      * @dataProvider additionProviderReturnInstanceOf
      */
     public function testShouldReturnInstanceOf($status, $data, $expected)
     {
-        $this->webservice->setStatus($status);
-        $this->webservice->setResponse($data);
+        $response = new Response();
+        $response->setStatus($status);
+        $response->setResult($data);
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
         $creditCard = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
-        $response = Responsibility::http($this->webservice, $creditCard);
+        $response = Responsibility::http($stubWebservice, $creditCard);
 
         $this->assertInstanceOf($expected, $response);
     }
@@ -59,11 +59,21 @@ class ResponsibilityTest extends TestCase
      */
     public function testShouldReturnException($status, $data, $expected)
     {
-        $this->webservice->setStatus($status);
-        $this->webservice->setResponse($data);
+        $response = new Response();
+        $response->setStatus($status);
+        $response->setResult($data);
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
         $creditCard = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
         $this->expectException(RakutenException::class);
-        Responsibility::http($this->webservice, $creditCard);
+        Responsibility::http($stubWebservice, $creditCard);
     }
 
     public function additionProviderReturnInstanceOf()

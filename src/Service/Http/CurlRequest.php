@@ -27,7 +27,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class CurlRequest
  * @package Rakuten\Connector\Service\Http
  */
-abstract class CurlRequest extends Response implements Method
+abstract class CurlRequest implements Method
 {
     /**
      * @var false|resource|null
@@ -40,6 +40,11 @@ abstract class CurlRequest extends Response implements Method
     protected $rakutenConnector;
 
     /**
+     * @var Response
+     */
+    protected $response;
+
+    /**
      * CurlRequest constructor.
      * @param RakutenConnector $rakutenConnector
      */
@@ -47,6 +52,7 @@ abstract class CurlRequest extends Response implements Method
     {
         $this->handle = curl_init();
         $this->rakutenConnector = $rakutenConnector;
+        $this->response = new Response();
     }
 
     /**
@@ -59,6 +65,14 @@ abstract class CurlRequest extends Response implements Method
      * @return mixed
      */
     abstract protected function curlConnection($method, $url, $timeout, $charset, $data = '', $secureGet = true);
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 
     /**
      * @param array $options

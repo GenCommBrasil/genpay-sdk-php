@@ -19,23 +19,14 @@
 
 namespace Rakuten\Connector\Parser;
 
+use Rakuten\Connector\Service\Http\Response\Response;
+
 /**
  * Interface Transaction
  * @package Rakuten\Connector\Parser
  */
 interface Transaction
 {
-    /**
-     * @param $status
-     * @return $this
-     */
-    public function setStatus($status);
-
-    /**
-     * @return int|string
-     */
-    public function getStatus();
-
     /**
      * @param $message
      * @return string
@@ -46,4 +37,14 @@ interface Transaction
      * @return string
      */
     public function getMessage();
+
+    /**
+     * @param Response $response
+     */
+    public function setResponse(Response $response);
+
+    /**
+     * @return Response
+     */
+    public function getResponse();
 }

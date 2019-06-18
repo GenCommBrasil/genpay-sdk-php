@@ -24,31 +24,29 @@ use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Parser\RakutenPay\Checkout;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\RakutenPay;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 class CheckoutTest extends TestCase
 {
-    /**
-     * @var Webservice
-     */
-    private $webservice;
-
-    public function setUp()
-    {
-        $stub = $this->getMockBuilder(RakutenPay::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->webservice = new Webservice($stub);
-    }
-
     public function testShouldSucceedAndReturnTransactionCheckout()
     {
-        $this->webservice->setStatus(Status::OK);
-        $this->webservice->setResponse($this->getData());
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getData());
 
-        $response = Checkout::success($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->exactly(2))
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = Checkout::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Checkout::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertCount(12, $response->getInstallments());
         $this->assertEquals("credit_card", $response->getMethod());
         $this->assertEquals("success", $response->getResult());
@@ -57,12 +55,23 @@ class CheckoutTest extends TestCase
 
     public function testShouldErrorAndReturnErrorClass()
     {
-        $this->webservice->setStatus(Status::BAD_REQUEST);
-        $this->webservice->setResponse($this->getDataError());
+        $response = new Response();
+        $response->setStatus(Status::BAD_REQUEST);
+        $response->setResult($this->getDataError());
 
-        $response = Checkout::error($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->exactly(3))
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = Checkout::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals(Status::BAD_REQUEST, $response->getCode(), "Code Status");
         $this->assertEquals("Amount is missing - Amount must be greater than 0", $response->getMessage(), "Error Message");
     }

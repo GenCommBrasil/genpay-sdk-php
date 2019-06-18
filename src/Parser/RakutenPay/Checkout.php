@@ -45,14 +45,14 @@ class Checkout extends Error implements Parser
     public static function success(Webservice $webservice)
     {
         $response = self::getTransactionCheckout();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
         $payments = array_shift($data['payments']);
 
         $response->setResult($data['result'])
-            ->setStatus($webservice->getStatus())
             ->setMethod($payments['method'])
             ->setInstallments($payments['installments'])
-            ->setMessage('');
+            ->setMessage('')
+            ->setResponse($webservice->getResponse());
 
         return $response;
     }
@@ -64,11 +64,12 @@ class Checkout extends Error implements Parser
     public static function error(Webservice $webservice)
     {
         $error = new Error();
-        $data = json_decode($webservice->getResponse(), true);
+        $data = json_decode($webservice->getResponse()->getResult(), true);
 
-        $error->setStatus($webservice->getStatus())
-            ->setCode($webservice->getStatus())
-            ->setMessage(implode(' - ', $data['result_messages']));
+        $error
+            ->setCode($webservice->getResponse()->getStatus())
+            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setResponse($webservice->getResponse());
 
         return $error;
     }

@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
  * Class Billet
@@ -56,6 +57,11 @@ class Billet implements Transaction
      * @var string
      */
     private $billetUrl;
+
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * @param int|string $status
@@ -163,5 +169,24 @@ class Billet implements Transaction
     {
         $this->billetUrl = $billetUrl;
         return $this;
+    }
+
+    /**
+     * @param Response $response
+     * @return $this
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

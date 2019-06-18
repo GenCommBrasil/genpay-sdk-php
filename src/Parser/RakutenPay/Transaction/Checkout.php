@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
+use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
  * Class Checkout
@@ -27,11 +28,6 @@ use Rakuten\Connector\Parser\Transaction;
  */
 class Checkout implements Transaction
 {
-    /**
-     * @var int|string
-     */
-    private $status;
-
     /**
      * @var string
      */
@@ -53,22 +49,9 @@ class Checkout implements Transaction
     private $method;
 
     /**
-     * @param $status
-     * @return $this
+     * @var Response
      */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+    private $response;
 
     /**
      * @param string $message
@@ -143,5 +126,24 @@ class Checkout implements Transaction
         $this->method = $method;
 
         return $this;
+    }
+
+    /**
+     * @param Response $response
+     * @return $this
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

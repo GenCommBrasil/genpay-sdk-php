@@ -29,31 +29,31 @@ use Rakuten\Connector\Service\Http\Response\Response;
  */
 class Responsibility
 {
-    public static function http(Response $http, $class)
+    public static function http(Webservice $webservice, $class)
     {
-        switch ($http->getStatus()) {
+        switch ($webservice->getResponse()->getStatus()) {
             case Status::OK:
-                return $class::success($http);
+                return $class::success($webservice);
             case Status::UNPROCESSABLE:
                 /** returns success because only a few parameters  */
-                return $class::error($http);
+                return $class::error($webservice);
             case Status::BAD_REQUEST:
                 /** returns success because only a few parameters  */
-                return $class::error($http);
+                return $class::error($webservice);
             case Status::FORBIDDEN:
-                return $class::error($http);
+                return $class::error($webservice);
             case Status::NOT_FOUND:
-                $error = $class::error($http);
+                $error = $class::error($webservice);
                 throw new RakutenException($error->getMessage(), $error->getCode());
             case Status::UNAUTHORIZED:
-                $error = $class::error($http);
+                $error = $class::error($webservice);
                 throw new RakutenException($error->getMessage(), $error->getCode());
             case Status::BAD_GATEWAY:
-                $error = $class::error($http);
+                $error = $class::error($webservice);
                 throw new RakutenException($error->getMessage(), $error->getCode());
             default:
                 unset($class);
-                throw new RakutenException(sprintf("Unknown Error in Responsibility: %s - Status: %s", $http->getResponse(), $http->getStatus()));
+                throw new RakutenException(sprintf("Unknown Error in Responsibility: %s - Status: %s", $webservice->getResponse()->getResult(), $webservice->getResponse()->getStatus()));
         }
     }
 }

@@ -20,45 +20,52 @@
 namespace Rakuten\Tests\Unit\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Parser\RakutenPay\Authorization;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\RakutenPay;
+use Rakuten\Connector\Service\Http\Response\Response;
+use Rakuten\Connector\Enum\Status;
 
 class AuthorizationTest extends TestCase
 {
-    /**
-     * @var Webservice
-     */
-    private $webservice;
-
-    public function setUp()
-    {
-        $stub = $this->getMockBuilder(RakutenPay::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->webservice = new Webservice($stub);
-    }
-
     public function testShouldSucceedAndReturnAuthorizationBillet()
     {
-        $this->webservice->setStatus(Status::OK);
-        $this->webservice->setResponse($this->getDataSuccess());
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getDataSuccess());
 
-        $response = Authorization::success($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->once())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = Authorization::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization::class, $response);
-        $this->assertEquals(Status::OK, $response->getStatus(), "Authorization return Status");
+        $this->assertEquals(Status::OK, $response->getResponse()->getStatus(), "Authorization return Status");
         $this->assertTrue($response->getMessage(), "Authorization Response");
     }
 
     public function testShouldErrorAndReturnErrorClass()
     {
-        $this->webservice->setStatus(Status::FORBIDDEN);
-        $this->webservice->setResponse("store_not_found");
+        $response = new Response();
+        $response->setStatus(Status::FORBIDDEN);
+        $response->setResult("store_not_found");
 
-        $response = Authorization::error($this->webservice);
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getResponse'])
+            ->getMock();
+
+        $stubWebservice->expects($this->exactly(3))
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $response = Authorization::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
         $this->assertEquals(Status::FORBIDDEN, $response->getCode(), "Code Status");
