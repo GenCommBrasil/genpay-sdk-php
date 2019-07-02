@@ -21,6 +21,7 @@ namespace Rakuten\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Environment;
+use Rakuten\Connector\Enum\Refund\Requester;
 use Rakuten\Connector\Resource\RakutenPay\Billet;
 use Rakuten\Connector\Resource\RakutenPay\CreditCard;
 use Rakuten\Connector\RakutenPay;
@@ -54,7 +55,7 @@ class RakutenPayTest extends TestCase
     {
         $response = new Response();
         $response->setStatus(Status::OK);
-        $response->setResult($this->getPayload());
+        $response->setResult($this->getResultCreateOrder());
 
         $stubWebservice = $this->getMockBuilder(Webservice::class)
             ->disableOriginalConstructor()
@@ -62,7 +63,7 @@ class RakutenPayTest extends TestCase
             ->getMock();
         $stubWebservice->expects($this->once())
             ->method('post')
-            ->willReturn($this->getPayload());
+            ->willReturn($this->getResultCreateOrder());
         $stubWebservice->expects($this->any())
             ->method('getResponse')
             ->willReturn($response);
@@ -173,10 +174,142 @@ class RakutenPayTest extends TestCase
         $stubRakutenPay->checkout(1000);
     }
 
+    public function testItShouldCancelOrder()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getResultRefundSuccess());
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getResultRefundSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenPay->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $response = $stubRakutenPay->cancel("fake-charge-uuid", Requester::RAKUTEN, "Comprou errado.");
+
+        $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Refund::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
+        $this->assertCount(1, $response->getRefunds(), "Refunds array");
+        $this->assertCount(4, $response->getStatusHistory(), "Status History");
+        $this->assertEquals('refunded', $response->getStatus(), "Status Code");
+        $this->assertEmpty($response->getMessage(), "Message");
+    }
+
+    public function testItShouldRefundOrder()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getResultRefundSuccess());
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getResultRefundSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenPay->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $refund = $stubRakutenPay->asRefund();
+        $bank  =[
+            'document' => '11111111111',
+            'bank_code' => '341',
+            'bank_agency' => '1234',
+            'bank_number' => '12345678-1',
+
+        ];
+        $refund->setReason("Errado")
+            ->setRequester("rakuten")
+            ->addPayment('fake-payment-id', 200, $bank);
+
+        $response = $stubRakutenPay->refund($refund, "fake-charge-uuid");
+
+        $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Refund::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
+        $this->assertCount(1, $response->getRefunds(), "Refunds array");
+        $this->assertCount(4, $response->getStatusHistory(), "Status History");
+        $this->assertEquals('refunded', $response->getStatus(), "Status Code");
+        $this->assertEmpty($response->getMessage(), "Message");
+    }
+
+    public function testItShouldRefundPartialOrder()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getResultRefundSuccess());
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getResultRefundSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenPay->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $refund = $stubRakutenPay->asRefund();
+        $bank  =[
+            'document' => '11111111111',
+            'bank_code' => '341',
+            'bank_agency' => '1234',
+            'bank_number' => '12345678-1',
+
+        ];
+        $refund->setReason("Errado")
+            ->setRequester("rakuten")
+            ->addPayment('fake-payment-id', 50, $bank);
+
+        $response = $stubRakutenPay->refund($refund, "fake-charge-uuid");
+
+        $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Refund::class, $response);
+        $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
+        $this->assertCount(1, $response->getRefunds(), "Refunds array");
+        $this->assertCount(4, $response->getStatusHistory(), "Status History");
+        $this->assertEquals('refunded', $response->getStatus(), "Status Code");
+        $this->assertEmpty($response->getMessage(), "Message");
+    }
+
     /**
      * @return string
      */
-    public function getPayload()
+    public function getResultCreateOrder()
     {
         return '
         {
@@ -328,6 +461,115 @@ class RakutenPayTest extends TestCase
                  "amount":5.0e3
               }
            ]
+        }';
+
+        return $jsonSuccess;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getResultRefundSuccess()
+    {
+        $jsonSuccess = '
+        {
+          "uuid": "fake-charge-uuid",
+          "subscription": {},
+          "status_history": [
+            {
+              "status": "refunded",
+              "created_at": "2019-07-01T17:30:35-03:00"
+            },
+            {
+              "status": "approved",
+              "created_at": "2019-07-01T17:23:44-03:00"
+            },
+            {
+              "status": "authorized",
+              "created_at": "2019-07-01T17:15:49-03:00"
+            },
+            {
+              "status": "pending",
+              "created_at": "2019-07-01T17:15:49-03:00"
+            }
+          ],
+          "status": "refunded",
+          "shipping": {
+            "time": null,
+            "kind": null,
+            "company": null,
+            "amount": 0.0,
+            "adjustments": []
+          },
+          "refunds": [
+            {
+              "status": "refunded",
+              "requester": "rakuten",
+              "reason": "Errado",
+              "payments": [
+                {
+                  "status": "refunded",
+                  "id": "fake-payment-id",
+                  "amount": 200.0
+                }
+              ],
+              "id": "7766703d-d33c-4fbd-871b-01a93b1511ef",
+              "created_at": "2019-07-01T17:30:35-03:00",
+              "amount": "200.0"
+            }
+          ],
+          "reference": "SDK03",
+          "payments": [
+            {
+              "status_history": [
+                {
+                  "status": "cancelled",
+                  "created_at": "2019-07-01T17:30:35-03:00"
+                },
+                {
+                  "status": "approved",
+                  "created_at": "2019-07-01T17:23:44-03:00"
+                },
+                {
+                  "status": "authorized",
+                  "created_at": "2019-07-01T17:15:49-03:00"
+                },
+                {
+                  "status": "pending",
+                  "created_at": "2019-07-01T17:15:49-03:00"
+                }
+              ],
+              "status": "cancelled",
+              "refundable_amount": 0.0,
+              "reference": "",
+              "method": "billet",
+              "id": "fake-payment-id",
+              "billet": {
+                "url": "https://api-sandbox.rakutenpay.com.br/v1/billets/fake-payment-id",
+                "number": "4221001",
+                "download_url": "https://api-sandbox.rakutenpay.com.br/v1/charges/fake-charge-uuid/billet/download"
+              },
+              "amount": 200.0
+            }
+          ],
+          "order": {
+            "total_amount": 200.0,
+            "shipping_time": null,
+            "shipping_kind": null,
+            "shipping_company": null,
+            "shipping_amount": 0.0,
+            "reference": "SDK03",
+            "items_amount": 200.0,
+            "discount_amount": 0.0
+          },
+          "merchant": {
+            "seller_id": "fake-seller-id",
+            "merchant_id": "fake-merchant-id",
+            "document": "fake-document"
+          },
+          "created_at": "2019-07-01T17:15:49-03:00",
+          "commissionings": [],
+          "amount": "200.0"
         }';
 
         return $jsonSuccess;

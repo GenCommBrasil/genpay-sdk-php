@@ -25,11 +25,17 @@ namespace Rakuten\Connector\Enum;
  */
 class Endpoint
 {
+    const URL_SEPARATOR = '/';
+
     const SANDBOX = 'https://oneapi-sandbox.rakutenpay.com.br/';
     const PRODUCTION = 'https://api.rakuten.com.br/';
 
     const DIRECT_PAYMENT = 'rpay/v1/charges';
     const CHECKOUT = 'rpay/v1/checkout';
+
+    const CANCEL = 'cancel';
+    const REFUND = 'refund';
+    const REFUND_PARTIAL = 'refund_partial';
 
     /**
      * @var array
@@ -64,6 +70,42 @@ class Endpoint
     public static function authorizationUrl($environment)
     {
         return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::DIRECT_PAYMENT : $environment;
+    }
+
+    /**
+     * @param $environment
+     * @param $chargeId
+     * @return string
+     */
+    public static function buildCancelUrl($environment, $chargeId)
+    {
+        $chargeUrl = self::createChargeUrl($environment);
+
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::CANCEL;
+    }
+
+    /**
+     * @param $environment
+     * @param $chargeId
+     * @return string
+     */
+    public static function buildRefundUrl($environment, $chargeId)
+    {
+        $chargeUrl = self::createChargeUrl($environment);
+
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::REFUND;
+    }
+
+    /**
+     * @param $environment
+     * @param $chargeId
+     * @return string
+     */
+    public static function buildRefundPartialUrl($environment, $chargeId)
+    {
+        $chargeUrl = self::createChargeUrl($environment);
+
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::REFUND_PARTIAL;
     }
 
 }

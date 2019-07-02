@@ -48,6 +48,7 @@ class CreditCardTest extends TestCase
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
+        $this->assertEquals('SDG-DSG-DS-G-DS', $response->getPaymentId(), "Payment ID");
         $this->assertEquals('411111******1111', $response->getCreditCardNum(), "Credit Card Number");
         $this->assertEquals('authorized', $response->getStatus(), "Status Code");
         $this->assertEmpty($response->getMessage(), "Message");

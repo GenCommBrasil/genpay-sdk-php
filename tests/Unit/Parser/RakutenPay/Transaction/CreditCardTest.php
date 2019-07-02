@@ -44,11 +44,13 @@ class CreditCardTest extends TestCase
 
         $result = "fake-result";
         $chargeId = "fake-charge-uuid";
+        $paymentId = "fake-payment-id";
         $creditCardNum = "411111*********1111111";
         $status = "processing";
 
         $this->creditCard->setResult($result);
         $this->creditCard->setChargeId($chargeId);
+        $this->creditCard->setPaymentId($paymentId);
         $this->creditCard->setCreditCardNum($creditCardNum);
         $this->creditCard->setStatus($status);
         $this->creditCard->setResponse($response);
@@ -58,6 +60,7 @@ class CreditCardTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->creditCard->getResponse());
         $this->assertEquals($result, $this->creditCard->getResult(), "Credit Card Transaction Result");
         $this->assertEquals($chargeId, $this->creditCard->getChargeId(), "Credit Card Transaction Charge UUID");
+        $this->assertEquals($paymentId, $this->creditCard->getPaymentId(), "Credit Card Payment ID");
         $this->assertEquals($creditCardNum, $this->creditCard->getCreditCardNum(), "Credit Card Transaction Number With Mask");
         $this->assertEquals($status, $this->creditCard->getStatus(), "Credit Card Transaction Status");
         $this->assertEmpty($this->creditCard->getMessage());

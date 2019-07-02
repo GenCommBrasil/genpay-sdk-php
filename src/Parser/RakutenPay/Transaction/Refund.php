@@ -23,10 +23,10 @@ use Rakuten\Connector\Parser\Transaction;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
- * Class Billet
+ * Class Refund
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Billet implements Transaction
+class Refund implements Transaction
 {
     /**
      * @var string
@@ -34,9 +34,14 @@ class Billet implements Transaction
     private $status;
 
     /**
-     * @var string
+     * @var array
      */
-    private $paymentId;
+    private $statusHistory;
+
+    /**
+     * @var array
+     */
+    private $refunds;
 
     /**
      * @var string
@@ -46,27 +51,30 @@ class Billet implements Transaction
     /**
      * @var string
      */
-    private $result;
-
-    /**
-     * @var string
-     */
     private $chargeId;
-
-    /**
-     * @var string
-     */
-    private $billet;
-
-    /**
-     * @var string
-     */
-    private $billetUrl;
 
     /**
      * @var Response
      */
     private $response;
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
     /**
      * @param Response $response
@@ -88,32 +96,6 @@ class Billet implements Transaction
     }
 
     /**
-     * @param string $message
-     * @return $this
-     */
-    public function setMessage($message)
-    {
-        $this->message = $message;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * @param string $status
      * @return $this
      */
@@ -126,27 +108,45 @@ class Billet implements Transaction
     /**
      * @return string
      */
-    public function getPaymentId()
+    public function getStatus()
     {
-        return $this->paymentId;
+        return $this->status;
     }
 
     /**
-     * @param string $paymentId
+     * @return array
+     */
+    public function getStatusHistory()
+    {
+        return $this->statusHistory;
+    }
+
+    /**
+     * @param $statusHistory
      * @return $this
      */
-    public function setPaymentId($paymentId)
+    public function setStatusHistory(array $statusHistory)
     {
-        $this->paymentId = $paymentId;
+        $this->statusHistory = $statusHistory;
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getResult()
+    public function getRefunds()
     {
-        return $this->result;
+        return $this->refunds;
+    }
+
+    /**
+     * @param $refunds
+     * @return $this
+     */
+    public function setRefunds(array $refunds)
+    {
+        $this->refunds = $refunds;
+        return $this;
     }
 
     /**
@@ -158,58 +158,12 @@ class Billet implements Transaction
     }
 
     /**
-     * @return string
-     */
-    public function getBillet()
-    {
-        return $this->billet;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBilletUrl()
-    {
-        return $this->billetUrl;
-    }
-
-    /**
-     * @param $result
-     * @return $this
-     */
-    public function setResult($result)
-    {
-        $this->result = $result;
-        return $this;
-    }
-
-    /**
-     * @param $chargeId
+     * @param string $chargeId
      * @return $this
      */
     public function setChargeId($chargeId)
     {
         $this->chargeId = $chargeId;
-        return $this;
-    }
-
-    /**
-     * @param $billet
-     * @return $this
-     */
-    public function setBillet($billet)
-    {
-        $this->billet = $billet;
-        return $this;
-    }
-
-    /**
-     * @param $billetUrl
-     * @return $this
-     */
-    public function setBilletUrl($billetUrl)
-    {
-        $this->billetUrl = $billetUrl;
         return $this;
     }
 }

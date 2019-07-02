@@ -44,11 +44,13 @@ class BilletTest extends TestCase
 
         $result = "fake-result";
         $chargeId = "fake-charge-uuid";
+        $paymentId = "fake-payment-id";
         $billet = "fake-billet-download";
         $billetUrl = "fake-billet-url";
 
         $this->billet->setResult($result);
         $this->billet->setChargeId($chargeId);
+        $this->billet->setPaymentId($paymentId);
         $this->billet->setBillet($billet);
         $this->billet->setBilletUrl($billetUrl);
         $this->billet->setMessage('');
@@ -58,6 +60,7 @@ class BilletTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals($result, $this->billet->getResult(), "Billet Transaction Result");
         $this->assertEquals($chargeId, $this->billet->getChargeId(), "Billet Transaction Charge UUID");
+        $this->assertEquals($paymentId, $this->billet->getPaymentId(), "Billet Payment ID");
         $this->assertEquals($billet, $this->billet->getBillet(), "Billet Transaction URL Download Billet");
         $this->assertEquals($billetUrl, $this->billet->getBilletUrl(), "Billet Transaction URL Billet");
         $this->assertEmpty($this->billet->getMessage());

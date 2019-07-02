@@ -29,9 +29,14 @@ use Rakuten\Connector\Service\Http\Response\Response;
 class CreditCard implements Transaction
 {
     /**
-     * @var int|string
+     * @var string
      */
     private $status;
+
+    /**
+     * @var string
+     */
+    private $paymentId;
 
     /**
      * @var string
@@ -59,21 +64,22 @@ class CreditCard implements Transaction
     private $response;
 
     /**
-     * @param int|string $status
+     * @param Response $response
      * @return $this
      */
-    public function setStatus($status)
+    public function setResponse(Response $response)
     {
-        $this->status = $status;
+        $this->response = $response;
+
         return $this;
     }
 
     /**
-     * @return int|string
+     * @return Response
      */
-    public function getStatus()
+    public function getResponse()
     {
-        return $this->status;
+        return $this->response;
     }
 
     /**
@@ -92,6 +98,42 @@ class CreditCard implements Transaction
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentId()
+    {
+        return $this->paymentId;
+    }
+
+    /**
+     * @param string $paymentId
+     * @return $this
+     */
+    public function setPaymentId($paymentId)
+    {
+        $this->paymentId = $paymentId;
+        return $this;
     }
 
     /**
@@ -146,24 +188,5 @@ class CreditCard implements Transaction
     {
         $this->creditCardNum = $creditCardNum;
         return $this;
-    }
-
-    /**
-     * @param Response $response
-     * @return $this
-     */
-    public function setResponse(Response $response)
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * @return Response
-     */
-    public function getResponse()
-    {
-        return $this->response;
     }
 }
