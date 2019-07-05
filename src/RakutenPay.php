@@ -31,6 +31,7 @@ use Rakuten\Connector\Resource\RakutenPay\Order;
 use Rakuten\Connector\Resource\RakutenPay\PaymentMethod;
 use Rakuten\Connector\Resource\RakutenPay\Billet;
 use Rakuten\Connector\Resource\RakutenPay\CreditCard;
+use Rakuten\Connector\Resource\RakutenPay\Refund;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
@@ -72,6 +73,14 @@ class RakutenPay extends RakutenConnector implements Credential
     public function asCreditCard()
     {
         return new CreditCard($this);
+    }
+
+    /**
+     * @return Refund
+     */
+    public function asRefund()
+    {
+        return new Refund($this);
     }
 
     /**
@@ -149,6 +158,100 @@ class RakutenPay extends RakutenConnector implements Credential
             );
             $webservice->get($url);
             $response = Responsibility::http($webservice, new Checkout());
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $chargeId
+     * @param $requester
+     * @param $reason
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function cancel($chargeId, $requester, $reason)
+    {
+        try {
+            $data = [
+                'requester' => $requester,
+                'reason' => $reason,
+            ];
+            $webservice = $this->getWebservice();
+            $transaction = ParserFactory::create('Rakuten\Connector\Parser\RakutenPay\Transaction\Refund');
+
+            $data = json_encode($data, JSON_PRESERVE_ZERO_FRACTION);
+            $webservice->post(
+                Endpoint::buildCancelUrl($this->getEnvironment(), $chargeId),
+                $data
+            );
+
+            $response = Responsibility::http(
+                $webservice,
+                $transaction
+            );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param Refund $refund
+     * @param $chargeId
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function refund(Refund $refund, $chargeId)
+    {
+        $this->data = $refund->getData();
+        try {
+            $webservice = $this->getWebservice();
+            $transaction = ParserFactory::create(get_class($refund));
+
+            $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
+            $webservice->post(
+                Endpoint::buildRefundUrl($this->getEnvironment(), $chargeId),
+                $data
+            );
+
+            $response = Responsibility::http(
+                $webservice,
+                $transaction
+            );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param Refund $refund
+     * @param $chargeId
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function refundPartial(Refund $refund, $chargeId)
+    {
+        $this->data = $refund->getData();
+        try {
+            $webservice = $this->getWebservice();
+            $transaction = ParserFactory::create(get_class($refund));
+
+            $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
+            $webservice->post(
+                Endpoint::buildRefundPartialUrl($this->getEnvironment(), $chargeId),
+                $data
+            );
+
+            $response = Responsibility::http(
+                $webservice,
+                $transaction
+            );
 
             return $response;
         } catch (RakutenException $e) {

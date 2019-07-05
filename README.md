@@ -14,6 +14,9 @@
 - [Exemplos de Uso](#pedidos):
     - [Pedidos](#pedidos)
         - [Criando Pedido no Boleto](#criando-pedido-no-boleto)
+        - [Cancelando um Pedido](#cancelando-um-pedido)
+        - [Estorno Total de um Pedido](#estorno-total-de-um-pedido)
+        - [Estorno Parcial de um Pedido](#estorno-parcial-de-um-pedido)
         - [Consultas](#consulta)
             - [Verificar Credenciais](#verificar-credenciais)
             - [Juros Comprador](#juros-comprador)
@@ -117,6 +120,59 @@ $payment = $rakutenPay
     ->setExpiresOn("3");
     
 $response = $rakutenPay->createOrder($order, $customer, $payment);
+print_r($response);
+```
+### Cancelando um Pedido
+Neste exemplo será cancelado um pedido.
+```php
+$response = $rakutenPay->cancel("fake-charge-uuid", Requester::RAKUTEN, "Produto errado.");
+
+print_r($response);
+```
+
+### Estorno Total de um Pedido
+Neste exemplo será feito o estorno total de um pedido.
+```php
+// Parametro Opcional
+$bankAccount = [
+            'document' => '11111111111',
+            'bank_code' => '341',
+            'bank_agency' => '1234',
+            'bank_number' => '12345678-1',
+        ];
+
+$refund = $rakutenPay->asRefund();
+
+$refund
+    ->setReason("Comprou errado.")
+    ->setRequester(Requester::RAKUTEN)
+    ->addPayment('fake-payment-id', 250, $bankAccount);
+
+$response = $rakutenPay->refund($refund, "fake-charge-uuid");
+
+print_r($response);
+```
+
+### Estorno Parcial de um Pedido
+Neste exemplo será feito o estorno parcial de um pedido.
+```php
+// Parametro Opcional
+$bankAccount = [
+            'document' => '11111111111',
+            'bank_code' => '341',
+            'bank_agency' => '1234',
+            'bank_number' => '12345678-1',
+        ];
+
+$refund = $rakutenPay->asRefund();
+
+$refund
+    ->setReason("Comprou errado.")
+    ->setRequester(Requester::RAKUTEN)
+    ->addPayment('fake-payment-id', 50, $bankAccount);
+
+$response = $rakutenPay->refundPartial($refund, "fake-charge-uuid");
+
 print_r($response);
 ```
 

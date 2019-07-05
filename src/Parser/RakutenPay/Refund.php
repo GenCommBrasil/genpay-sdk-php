@@ -21,40 +21,37 @@ namespace Rakuten\Connector\Parser\RakutenPay;
 
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\Parser\RakutenPay\Transaction\Billet as TransactionBillet;
+use Rakuten\Connector\Parser\RakutenPay\Transaction\Refund as TransactionRefund;
 use Rakuten\Connector\Parser\Parser;
 
 /**
- * Class Billet
+ * Class Refund
  * @package Rakuten\Connector\Parser\RakutenPay
  */
-class Billet extends Error implements Parser
+class Refund implements Parser
 {
     /**
-     * @return TransactionBillet
+     * @return TransactionRefund
      */
-    protected static function getTransactionBillet()
+    private static function getTransactionCancel()
     {
-        return new TransactionBillet();
+        return new TransactionRefund();
     }
 
     /**
      * @param Webservice $webservice
-     * @return TransactionBillet
+     * @return TransactionRefund
      */
     public static function success(Webservice $webservice)
     {
-        $response = self::getTransactionBillet();
+        $response = self::getTransactionCancel();
         $data = json_decode($webservice->getResponse()->getResult(), true);
-        $payment = $data["payments"][0];
 
-        return $response->setResult($data['result'])
-            ->setPaymentId($payment['id'])
-            ->setStatus($payment['status'])
-            ->setChargeId($data['charge_uuid'])
-            ->setBillet($payment['billet']['download_url'])
-            ->setBilletUrl($payment['billet']['url'])
-            ->setMessage(implode(' - ', $data['result_messages']))
+        return $response->setStatus($data['status'])
+            ->setChargeId($data['uuid'])
+            ->setStatusHistory($data['status_history'])
+            ->setRefunds($data['refunds'])
+            ->setMessage('')
             ->setResponse($webservice->getResponse());
     }
 

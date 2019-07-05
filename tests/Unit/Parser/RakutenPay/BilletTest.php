@@ -48,6 +48,7 @@ class BilletTest extends TestCase
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Billet::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
+        $this->assertEquals('7bc839c5-991a-40a1-bcad-012c47f384ac', $response->getPaymentId(), "Payment ID");
         $this->assertEquals('fake-download-url', $response->getBillet(), "Billet URL");
         $this->assertEquals('fake-url', $response->getBilletUrl(), "Billet URL");
         $this->assertEmpty($response->getMessage(), "Billet Message");
