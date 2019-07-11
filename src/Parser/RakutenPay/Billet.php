@@ -28,7 +28,7 @@ use Rakuten\Connector\Parser\Parser;
  * Class Billet
  * @package Rakuten\Connector\Parser\RakutenPay
  */
-class Billet extends Error implements Parser
+class Billet implements Parser
 {
     /**
      * @return TransactionBillet
