@@ -28,7 +28,7 @@ use Rakuten\Connector\Parser\Parser;
  * Class Authorization
  * @package Rakuten\Connector\Parser\RakutenPay
  */
-class Authorization extends Error implements Parser
+class Authorization implements Parser
 {
     /**
      * @return TransactionAuthorization
