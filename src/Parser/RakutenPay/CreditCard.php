@@ -54,7 +54,7 @@ class CreditCard implements Parser
             ->setPaymentId($payment['id'])
             ->setCreditCardNum($payment['credit_card']['number'])
             ->setStatus($payment['status'])
-            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setMessage(implode(' - ', $payment['result_messages']))
             ->setResponse($webservice->getResponse());
     }
 

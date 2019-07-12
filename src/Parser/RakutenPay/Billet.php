@@ -54,7 +54,7 @@ class Billet implements Parser
             ->setChargeId($data['charge_uuid'])
             ->setBillet($payment['billet']['download_url'])
             ->setBilletUrl($payment['billet']['url'])
-            ->setMessage(implode(' - ', $data['result_messages']))
+            ->setMessage(implode(' - ', $payment['result_messages']))
             ->setResponse($webservice->getResponse());
     }
 
