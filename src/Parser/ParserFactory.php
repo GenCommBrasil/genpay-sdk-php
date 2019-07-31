@@ -20,6 +20,7 @@
 namespace Rakuten\Connector\Parser;
 
 use Rakuten\Connector\Exception\RakutenException;
+use \ReflectionClass;
 
 /**
  * Class ParserFactory
@@ -28,24 +29,29 @@ use Rakuten\Connector\Exception\RakutenException;
 abstract class ParserFactory
 {
     /**
-     * @param string $class
-     * @return Object
+     * @param $class
+     * @return mixed
      * @throws RakutenException
+     * @throws \ReflectionException
      */
-    public static function create($class)
-    {
-        if (!class_exists($class)) {
-            throw new RakutenException("Class not Exists in TransactionFactory");
-        }
-
-        $class = static::getClass($class);
-
-        return new $class;
-    }
+    abstract public static function create($class);
 
     /**
      * @param $class
      * @return string
+     * @throws \ReflectionException
      */
-    protected abstract static function getClass($class);
+    protected static function getClass($class)
+    {
+        $reflector = new ReflectionClass(get_called_class());
+        $namespace = $reflector->getNamespaceName();
+
+        if (strpos($class, "\\"))
+        {
+            $classArray = explode("\\", $class);
+            $class = array_pop($classArray);
+        }
+
+        return $namespace . "\\" . $class;
+    }
 }
