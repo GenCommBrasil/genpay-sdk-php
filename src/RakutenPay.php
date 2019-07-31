@@ -36,6 +36,10 @@ use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
 
+/**
+ * Class RakutenPay
+ * @package Rakuten\Connector
+ */
 class RakutenPay extends RakutenConnector implements Credential
 {
     /**

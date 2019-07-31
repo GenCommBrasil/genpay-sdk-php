@@ -174,6 +174,64 @@ class RakutenPayTest extends TestCase
         $stubRakutenPay->checkout(1000);
     }
 
+    public function testItShouldGetAuthorizationAndReturnSuccess()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult("Authorization is OK");
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('get');
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenPay->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $response = $stubRakutenPay->authorizationValidate();
+
+        $this->assertEquals(Status::OK, $response->getResponse()->getStatus());
+    }
+
+    public function testItShouldGetAuthorizationAndReturnException()
+    {
+        $response = new Response();
+        $response->setStatus('');
+        $response->setResult('');
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('get');
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenPay = $this->getMockBuilder(RakutenPay::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenPay->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $this->expectExceptionMessage("Unknown Error in Responsibility:  - Status:");
+
+        $stubRakutenPay->authorizationValidate();
+    }
+
     public function testItShouldCancelOrder()
     {
         $response = new Response();

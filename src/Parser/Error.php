@@ -33,7 +33,7 @@ class Error extends Transaction
     private $message;
 
     /**
-     * @var Response
+     * @var string|int
      */
     private $code;
 
@@ -48,7 +48,7 @@ class Error extends Transaction
      */
     public function setCode($code)
     {
-        $this->code = (int) $code;
+        $this->code = $code;
 
         return $this;
     }

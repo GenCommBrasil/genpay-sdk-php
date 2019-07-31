@@ -30,12 +30,16 @@ class Endpoint
     const SANDBOX = 'https://oneapi-sandbox.rakutenpay.com.br/';
     const PRODUCTION = 'https://api.rakuten.com.br/';
 
-    const DIRECT_PAYMENT = 'rpay/v1/charges';
-    const CHECKOUT = 'rpay/v1/checkout';
+    const RAKUTENPAY_DIRECT_PAYMENT = 'rpay/v1/charges';
+    const RAKUTENPAY_CHECKOUT = 'rpay/v1/checkout';
 
-    const CANCEL = 'cancel';
-    const REFUND = 'refund';
-    const REFUND_PARTIAL = 'refund_partial';
+    const RAKUTENPAY_CANCEL = 'cancel';
+    const RAKUTENPAY_REFUND = 'refund';
+    const RAKUTENPAY_REFUND_PARTIAL = 'refund_partial';
+
+    const RAKUTENLOG_CALCULATION = 'logistics/calculation';
+    const RAKUTENLOG_AUTOCOMPLETE = 'logistics/zipcode';
+    const RAKUTENLOG_AUTOCOMPLETE_ONLINE = 'logistics/zipcode/online';
 
     /**
      * @var array
@@ -46,66 +50,89 @@ class Endpoint
     ];
 
     /**
-     * @param $environment
+     * @param string$environment
      * @return string
      */
     public static function createChargeUrl($environment)
     {
-        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::DIRECT_PAYMENT : $environment;
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENPAY_DIRECT_PAYMENT : $environment;
     }
 
     /**
-     * @param $environment
+     * @param string $environment
      * @return string
      */
     public static function buildCheckoutUrl($environment)
     {
-        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::CHECKOUT : $environment;
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENPAY_CHECKOUT : $environment;
     }
 
     /**
-     * @param $environment
+     * @param string $environment
      * @return string
      */
     public static function authorizationUrl($environment)
     {
-        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::DIRECT_PAYMENT : $environment;
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENPAY_DIRECT_PAYMENT : $environment;
     }
 
     /**
-     * @param $environment
-     * @param $chargeId
+     * @param string $environment
+     * @param string $chargeId
      * @return string
      */
     public static function buildCancelUrl($environment, $chargeId)
     {
         $chargeUrl = self::createChargeUrl($environment);
 
-        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::CANCEL;
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::RAKUTENPAY_CANCEL;
     }
 
     /**
-     * @param $environment
-     * @param $chargeId
+     * @param string $environment
+     * @param string $chargeId
      * @return string
      */
     public static function buildRefundUrl($environment, $chargeId)
     {
         $chargeUrl = self::createChargeUrl($environment);
 
-        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::REFUND;
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::RAKUTENPAY_REFUND;
     }
 
     /**
-     * @param $environment
-     * @param $chargeId
+     * @param string $environment
+     * @param string $chargeId
      * @return string
      */
     public static function buildRefundPartialUrl($environment, $chargeId)
     {
         $chargeUrl = self::createChargeUrl($environment);
 
-        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::REFUND_PARTIAL;
+        return $chargeUrl . self::URL_SEPARATOR . $chargeId . self::URL_SEPARATOR . self::RAKUTENPAY_REFUND_PARTIAL;
     }
 
+    /**
+     * @param string $environment
+     * @return string
+     */
+    public static function createCalculationUrl($environment)
+    {
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_CALCULATION : $environment;
+    }
+
+    /**
+     * @param string $environment
+     * @param bool $online
+     * @return string
+     */
+    public static function buildAutocompleteUrl($environment, $online)
+    {
+        if (true === $online) {
+
+            return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_AUTOCOMPLETE_ONLINE : $environment;
+        }
+
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_AUTOCOMPLETE : $environment;
+    }
 }
