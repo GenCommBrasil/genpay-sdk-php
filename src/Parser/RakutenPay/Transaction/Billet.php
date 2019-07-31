@@ -26,7 +26,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class Billet
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Billet implements Transaction
+class Billet extends Transaction
 {
     /**
      * @var string

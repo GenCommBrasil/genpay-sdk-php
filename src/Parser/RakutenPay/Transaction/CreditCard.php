@@ -26,7 +26,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class CreditCard
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class CreditCard implements Transaction
+class CreditCard extends Transaction
 {
     /**
      * @var string

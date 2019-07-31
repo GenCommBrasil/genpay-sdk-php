@@ -25,7 +25,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class Error
  * @package Rakuten\Connector\Parser
  */
-class Error implements Transaction
+class Error extends Transaction
 {
     /**
      * @var string

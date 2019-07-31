@@ -19,6 +19,7 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Resource\Resource;
 use Rakuten\Connector\Enum\Category;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\RakutenPay;
@@ -28,7 +29,7 @@ use stdClass;
  * Class Order
  * @package Rakuten\Connector\Resource\RakutenPay
  */
-class Order extends RakutenPayResource
+class Order extends Resource
 {
     /**
      * @inheritdoc

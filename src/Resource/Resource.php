@@ -17,16 +17,15 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Resource\RakutenPay;
+namespace Rakuten\Connector\Resource;
 
-use Rakuten\Connector\Resource\RakutenConnector;
 use stdClass;
 
 /**
- * Class RakutenPayResource
- * @package Rakuten\Connector\Resource\RakutenPay
+ * Class Resource
+ * @package Rakuten\Connector\Resource
  */
-abstract class RakutenPayResource
+abstract class Resource
 {
     /**
      * @var RakutenConnector
@@ -39,7 +38,7 @@ abstract class RakutenPayResource
     protected $data;
 
     /**
-     * RakutenPayResource constructor.
+     * Resource constructor.
      * @param RakutenConnector $rakutenConnector
      */
     public function __construct(RakutenConnector $rakutenConnector)

@@ -19,13 +19,14 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Resource\Resource;
 use stdClass;
 
 /**
  * Class Refund
  * @package Rakuten\Connector\Resource\RakutenPay
  */
-class Refund extends RakutenPayResource
+class Refund extends Resource
 {
     /**
      * @inheritdoc

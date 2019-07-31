@@ -23,14 +23,14 @@ use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Parser\RakutenPay\Billet;
 use Rakuten\Connector\Parser\RakutenPay\CreditCard;
-use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
+use Rakuten\Connector\Parser\RakutenPay\Factory;
 
-class ParserFactoryTest extends TestCase
+class FactoryTest extends TestCase
 {
     public function testGetClassByNamespace()
     {
-        $parserBillet = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\Billet');
-        $parserCreditCard = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
+        $parserBillet = Factory::create('Rakuten\Connector\Resource\RakutenPay\Billet');
+        $parserCreditCard = Factory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
 
         $this->assertInstanceOf(Billet::class, $parserBillet);
         $this->assertInstanceOf(CreditCard::class, $parserCreditCard);
@@ -40,6 +40,6 @@ class ParserFactoryTest extends TestCase
     {
         $this->expectException(RakutenException::class);
         $this->expectExceptionMessage("Class not Exists in TransactionFactory");
-        ParserFactory::create('Billet');
+        Factory::create('Billet');
     }
 }

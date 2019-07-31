@@ -46,6 +46,7 @@ class AuthorizationTest extends TestCase
         $response = Authorization::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Authorization::class, $response);
+        $this->assertFalse($response->isError());
         $this->assertEquals(Status::OK, $response->getResponse()->getStatus(), "Authorization return Status");
         $this->assertTrue($response->getMessage(), "Authorization Response");
     }
@@ -68,6 +69,7 @@ class AuthorizationTest extends TestCase
         $response = Authorization::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
+        $this->assertTrue($response->isError());
         $this->assertEquals(Status::FORBIDDEN, $response->getCode(), "Code Status");
         $this->assertEquals("store_not_found", $response->getMessage(), "Error Message");
     }

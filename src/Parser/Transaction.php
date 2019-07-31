@@ -25,26 +25,34 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Interface Transaction
  * @package Rakuten\Connector\Parser
  */
-interface Transaction
+abstract class Transaction
 {
     /**
      * @param $message
      * @return string
      */
-    public function setMessage($message);
+    public abstract function setMessage($message);
 
     /**
      * @return string
      */
-    public function getMessage();
+    public abstract function getMessage();
 
     /**
      * @param Response $response
      */
-    public function setResponse(Response $response);
+    public abstract function setResponse(Response $response);
 
     /**
      * @return Response
      */
-    public function getResponse();
+    public abstract function getResponse();
+
+    /**
+     * @return bool
+     */
+    public function isError()
+    {
+        return get_called_class() === Error::class;
+    }
 }

@@ -26,7 +26,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class Refund
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Refund implements Transaction
+class Refund extends Transaction
 {
     /**
      * @var string
