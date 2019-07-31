@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
