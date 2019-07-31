@@ -36,7 +36,6 @@ abstract class ParserFactory
      * @param string $class
      * @return Object
      * @throws RakutenException
-     * @throws \ReflectionException
      */
     public static function create($class)
     {
@@ -52,11 +51,9 @@ abstract class ParserFactory
     /**
      * @param $class
      * @return string
-     * @throws \ReflectionException
      */
     protected static function getClass($class)
     {
-
         if (strpos($class, "\\"))
         {
             $classArray = explode("\\", $class);

@@ -17,45 +17,26 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Resource\RakutenPay;
+namespace Rakuten\Tests\Unit\Parser\RakutenLog;
 
-use Rakuten\Connector\Resource\Resource;
-use stdClass;
+use PHPUnit\Framework\TestCase;
+use Rakuten\Connector\Exception\RakutenException;
+use Rakuten\Connector\Parser\RakutenLog\Calculation;
+use Rakuten\Connector\Parser\RakutenLog\Factory;
 
-/**
- * Class Billet
- * @package Rakuten\Connector\Resource\RakutenPay
- */
-class Billet extends Resource implements PaymentMethod
+class FactoryTest extends TestCase
 {
-    /**
-     * @inheritdoc
-     */
-    protected function initialize()
+    public function testGetClassByNamespace()
     {
-        $this->data = new stdClass();
-        $this->data->method = self::BILLET;
+        $parserCalculation = Factory::create('Rakuten\Connector\Resource\RakutenLog\Calculation');
+
+        $this->assertInstanceOf(Calculation::class, $parserCalculation);
     }
 
-    /**
-     * @param string $expiresOn
-     * @return $this
-     */
-    public function setExpiresOn($expiresOn)
+    public function testGetClassByClassNameAndGenerateException()
     {
-        $this->data->expires_on = $expiresOn;
-
-        return $this;
-    }
-
-    /**
-     * @param float $amount
-     * @return $this
-     */
-    public function setAmount($amount)
-    {
-        $this->data->amount = (float) $amount;
-
-        return $this;
+        $this->expectException(RakutenException::class);
+        $this->expectExceptionMessage("Class not Exists in TransactionFactory");
+        Factory::create('Calculation');
     }
 }
