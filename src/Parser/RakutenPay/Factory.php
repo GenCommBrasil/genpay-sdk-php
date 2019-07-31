@@ -20,7 +20,6 @@
 namespace Rakuten\Connector\Parser\RakutenPay;
 
 use Rakuten\Connector\Parser\ParserFactory;
-use Rakuten\Connector\Exception\RakutenException;
 
 /**
  * Class Factory
@@ -29,19 +28,7 @@ use Rakuten\Connector\Exception\RakutenException;
 abstract class Factory extends ParserFactory
 {
     /**
-     * @param $class
-     * @return mixed
-     * @throws RakutenException
-     * @throws \ReflectionException
+     * @var string
      */
-    public static function create($class)
-    {
-        if (!class_exists($class)) {
-            throw new RakutenException("Class not Exists in TransactionFactory");
-        }
-
-        $class = self::getClass($class);
-
-        return new $class;
-    }
+    protected static $namespace = "Rakuten\Connector\Parser\RakutenPay";
 }
