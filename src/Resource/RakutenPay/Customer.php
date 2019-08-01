@@ -19,6 +19,7 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Resource\Resource;
 use Rakuten\Connector\Enum\Address;
 use Rakuten\Connector\Helper\StringFormat;
 use stdClass;
@@ -27,7 +28,7 @@ use stdClass;
  * Class Customer
  * @package Rakuten\Connector\Resource\RakutenPay
  */
-class Customer extends RakutenPayResource
+class Customer extends Resource
 {
     /**
      * @inheritdoc

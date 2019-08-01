@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\Error;
@@ -47,6 +47,7 @@ class RefundTest extends TestCase
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Refund::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertFalse($response->isError());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertCount(1, $response->getRefunds(), "Refunds array");
         $this->assertCount(4, $response->getStatusHistory(), "Status History");
@@ -73,6 +74,7 @@ class RefundTest extends TestCase
 
         $this->assertInstanceOf(Error::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertTrue($response->isError());
         $this->assertEquals(1000, $response->getCode(), "Code Status");
         $this->assertEquals("Charge not found", $response->getMessage(), "Error Message");
     }

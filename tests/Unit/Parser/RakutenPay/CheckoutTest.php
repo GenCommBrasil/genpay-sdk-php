@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
@@ -46,6 +46,7 @@ class CheckoutTest extends TestCase
         $response = Checkout::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Checkout::class, $response);
+        $this->assertFalse($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertCount(12, $response->getInstallments());
         $this->assertEquals("credit_card", $response->getMethod());
@@ -72,6 +73,7 @@ class CheckoutTest extends TestCase
 
         $this->assertInstanceOf(Error::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertTrue($response->isError());
         $this->assertEquals(Status::BAD_REQUEST, $response->getCode(), "Code Status");
         $this->assertEquals("Amount is missing - Amount must be greater than 0", $response->getMessage(), "Error Message");
     }

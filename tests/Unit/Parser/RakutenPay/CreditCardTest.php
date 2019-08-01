@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\Error;
@@ -47,6 +47,7 @@ class CreditCardTest extends TestCase
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertFalse($response->isError());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertEquals('SDG-DSG-DS-G-DS', $response->getPaymentId(), "Payment ID");
         $this->assertEquals('411111******1111', $response->getCreditCardNum(), "Credit Card Number");
@@ -73,6 +74,7 @@ class CreditCardTest extends TestCase
 
         $this->assertInstanceOf(Error::class, $response);
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertTrue($response->isError());
         $this->assertEquals(999, $response->getCode(), "Code Status");
         $this->assertEquals("Installments amount doesnt match. Payment credit_card in 3 times of 70.90 should be 212.70", $response->getMessage(), "Error Message");
     }

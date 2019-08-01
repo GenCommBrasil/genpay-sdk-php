@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser\Transaction;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay\Transaction;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard;

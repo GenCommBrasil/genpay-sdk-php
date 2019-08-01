@@ -17,56 +17,46 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
+namespace Rakuten\Connector\Parser\RakutenLog\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
- * Class Billet
- * @package Rakuten\Connector\Parser\RakutenPay\Transaction
+ * Class Calculation
+ * @package Rakuten\Connector\Parser\RakutenLog\Transaction
  */
-class Billet extends Transaction
+class Calculation extends Transaction
 {
-    /**
-     * @var string
-     */
-    private $status;
-
-    /**
-     * @var string
-     */
-    private $paymentId;
-
     /**
      * @var string
      */
     private $message;
 
     /**
-     * @var string
-     */
-    private $result;
-
-    /**
-     * @var string
-     */
-    private $chargeId;
-
-    /**
-     * @var string
-     */
-    private $billet;
-
-    /**
-     * @var string
-     */
-    private $billetUrl;
-
-    /**
      * @var Response
      */
     private $response;
+
+    /**
+     * @var string
+     */
+    private $code;
+
+    /**
+     * @var string
+     */
+    private $ownerCode;
+
+    /**
+     * @var string
+     */
+    private $expirationDate;
+
+    /**
+     * @var array
+     */
+    private $shippingOptions = [];
 
     /**
      * @param Response $response
@@ -94,6 +84,7 @@ class Billet extends Transaction
     public function setMessage($message)
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -106,110 +97,78 @@ class Billet extends Transaction
     }
 
     /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
+     * @param $code
      * @return $this
      */
-    public function setStatus($status)
+    public function setCode($code)
     {
-        $this->status = $status;
+        $this->code = $code;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPaymentId()
+    public function getCode()
     {
-        return $this->paymentId;
+        return $this->code;
     }
 
     /**
-     * @param string $paymentId
+     * @param $ownerCode
      * @return $this
      */
-    public function setPaymentId($paymentId)
+    public function setOwnerCode($ownerCode)
     {
-        $this->paymentId = $paymentId;
+        $this->ownerCode = $ownerCode;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getResult()
+    public function getOwnerCode()
     {
-        return $this->result;
+        return $this->ownerCode;
+    }
+
+    /**
+     * @param $expirationDate
+     * @return $this
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getChargeId()
+    public function getExpirationDate()
     {
-        return $this->chargeId;
+        return $this->expirationDate;
     }
 
     /**
-     * @return string
-     */
-    public function getBillet()
-    {
-        return $this->billet;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBilletUrl()
-    {
-        return $this->billetUrl;
-    }
-
-    /**
-     * @param $result
+     * @param array $shippingOptions
      * @return $this
      */
-    public function setResult($result)
+    public function setShippingOptions(array $shippingOptions)
     {
-        $this->result = $result;
+        $this->shippingOptions = $shippingOptions;
+
         return $this;
     }
 
     /**
-     * @param $chargeId
-     * @return $this
+     * @return array
      */
-    public function setChargeId($chargeId)
+    public function getShippingOptions()
     {
-        $this->chargeId = $chargeId;
-        return $this;
-    }
-
-    /**
-     * @param $billet
-     * @return $this
-     */
-    public function setBillet($billet)
-    {
-        $this->billet = $billet;
-        return $this;
-    }
-
-    /**
-     * @param $billetUrl
-     * @return $this
-     */
-    public function setBilletUrl($billetUrl)
-    {
-        $this->billetUrl = $billetUrl;
-        return $this;
+        return $this->shippingOptions;
     }
 }

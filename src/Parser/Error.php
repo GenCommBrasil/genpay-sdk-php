@@ -25,7 +25,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class Error
  * @package Rakuten\Connector\Parser
  */
-class Error implements Transaction
+class Error extends Transaction
 {
     /**
      * @var string
@@ -33,7 +33,7 @@ class Error implements Transaction
     private $message;
 
     /**
-     * @var Response
+     * @var string|int
      */
     private $code;
 
@@ -48,7 +48,7 @@ class Error implements Transaction
      */
     public function setCode($code)
     {
-        $this->code = (int) $code;
+        $this->code = $code;
 
         return $this;
     }

@@ -23,7 +23,7 @@ use Rakuten\Connector\Enum\Endpoint;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Parser\RakutenPay\Authorization;
 use Rakuten\Connector\Parser\RakutenPay\Checkout;
-use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
+use Rakuten\Connector\Parser\RakutenPay\Factory;
 use Rakuten\Connector\Resource\RakutenConnector;
 use Rakuten\Connector\Resource\Credential;
 use Rakuten\Connector\Resource\RakutenPay\Customer;
@@ -36,6 +36,10 @@ use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
 
+/**
+ * Class RakutenPay
+ * @package Rakuten\Connector
+ */
 class RakutenPay extends RakutenConnector implements Credential
 {
     /**
@@ -101,7 +105,7 @@ class RakutenPay extends RakutenConnector implements Credential
         $this->data->payments[] = $payment->getData();
 
         try {
-            $transaction = ParserFactory::create(get_class($payment));
+            $transaction = Factory::create(get_class($payment));
             $webservice = $this->getWebservice();
 
             $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
@@ -180,7 +184,7 @@ class RakutenPay extends RakutenConnector implements Credential
                 'reason' => $reason,
             ];
             $webservice = $this->getWebservice();
-            $transaction = ParserFactory::create('Rakuten\Connector\Parser\RakutenPay\Transaction\Refund');
+            $transaction = Factory::create('Rakuten\Connector\Parser\RakutenPay\Transaction\Refund');
 
             $data = json_encode($data, JSON_PRESERVE_ZERO_FRACTION);
             $webservice->post(
@@ -210,7 +214,7 @@ class RakutenPay extends RakutenConnector implements Credential
         $this->data = $refund->getData();
         try {
             $webservice = $this->getWebservice();
-            $transaction = ParserFactory::create(get_class($refund));
+            $transaction = Factory::create(get_class($refund));
 
             $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
             $webservice->post(
@@ -240,7 +244,7 @@ class RakutenPay extends RakutenConnector implements Credential
         $this->data = $refund->getData();
         try {
             $webservice = $this->getWebservice();
-            $transaction = ParserFactory::create(get_class($refund));
+            $transaction = Factory::create(get_class($refund));
 
             $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
             $webservice->post(

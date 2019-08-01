@@ -17,56 +17,51 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser\RakutenPay\Transaction;
+namespace Rakuten\Connector\Parser\RakutenLog\Transaction;
 
 use Rakuten\Connector\Parser\Transaction;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
- * Class Billet
- * @package Rakuten\Connector\Parser\RakutenPay\Transaction
+ * Class Autocomplete
+ * @package Rakuten\Connector\Parser\RakutenLog\Transaction
  */
-class Billet extends Transaction
+class Autocomplete extends Transaction
 {
-    /**
-     * @var string
-     */
-    private $status;
-
-    /**
-     * @var string
-     */
-    private $paymentId;
-
     /**
      * @var string
      */
     private $message;
 
     /**
-     * @var string
-     */
-    private $result;
-
-    /**
-     * @var string
-     */
-    private $chargeId;
-
-    /**
-     * @var string
-     */
-    private $billet;
-
-    /**
-     * @var string
-     */
-    private $billetUrl;
-
-    /**
      * @var Response
      */
     private $response;
+
+    /**
+     * @var string
+     */
+    private $street;
+
+    /**
+     * @var string
+     */
+    private $district;
+
+    /**
+     * @var string
+     */
+    private $city;
+
+    /**
+     * @var string
+     */
+    private $state;
+
+    /**
+     * @var string
+     */
+    private $zipcode;
 
     /**
      * @param Response $response
@@ -94,6 +89,7 @@ class Billet extends Transaction
     public function setMessage($message)
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -106,110 +102,97 @@ class Billet extends Transaction
     }
 
     /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
+     * @param $street
      * @return $this
      */
-    public function setStatus($status)
+    public function setStreet($street)
     {
-        $this->status = $status;
+        $this->street = $street;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPaymentId()
+    public function getStreet()
     {
-        return $this->paymentId;
+        return $this->street;
     }
 
     /**
-     * @param string $paymentId
+     * @param $district
      * @return $this
      */
-    public function setPaymentId($paymentId)
+    public function setDistrict($district)
     {
-        $this->paymentId = $paymentId;
+        $this->district = $district;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getResult()
+    public function getDistrict()
     {
-        return $this->result;
+        return $this->district;
+    }
+
+    /**
+     * @param $city
+     * @return $this
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getChargeId()
+    public function getCity()
     {
-        return $this->chargeId;
+        return $this->city;
+    }
+
+    /**
+     * @param $state
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getBillet()
+    public function getState()
     {
-        return $this->billet;
+        return $this->state;
+    }
+
+    /**
+     * @param $zipcode
+     * @return $this
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getBilletUrl()
+    public function getZipcode()
     {
-        return $this->billetUrl;
-    }
-
-    /**
-     * @param $result
-     * @return $this
-     */
-    public function setResult($result)
-    {
-        $this->result = $result;
-        return $this;
-    }
-
-    /**
-     * @param $chargeId
-     * @return $this
-     */
-    public function setChargeId($chargeId)
-    {
-        $this->chargeId = $chargeId;
-        return $this;
-    }
-
-    /**
-     * @param $billet
-     * @return $this
-     */
-    public function setBillet($billet)
-    {
-        $this->billet = $billet;
-        return $this;
-    }
-
-    /**
-     * @param $billetUrl
-     * @return $this
-     */
-    public function setBilletUrl($billetUrl)
-    {
-        $this->billetUrl = $billetUrl;
-        return $this;
+        return $this->zipcode;
     }
 }

@@ -30,16 +30,16 @@ class EndpointTest extends TestCase
 {
     public function testUrlsForCreateCharge()
     {
-        $sandbox = Endpoint::SANDBOX . Endpoint::DIRECT_PAYMENT;
-        $production = Endpoint::PRODUCTION . Endpoint::DIRECT_PAYMENT;
+        $sandbox = Endpoint::SANDBOX . Endpoint::RAKUTENPAY_DIRECT_PAYMENT;
+        $production = Endpoint::PRODUCTION . Endpoint::RAKUTENPAY_DIRECT_PAYMENT;
         $this->assertEquals($sandbox, Endpoint::createChargeUrl('sandbox'), 'URL in Sandbox');
         $this->assertEquals($production, Endpoint::createChargeUrl('production'), 'URL in production');
     }
 
     public function testUrlsForCheckout()
     {
-        $sandbox = Endpoint::SANDBOX . Endpoint::CHECKOUT;
-        $production = Endpoint::PRODUCTION . Endpoint::CHECKOUT;
+        $sandbox = Endpoint::SANDBOX . Endpoint::RAKUTENPAY_CHECKOUT;
+        $production = Endpoint::PRODUCTION . Endpoint::RAKUTENPAY_CHECKOUT;
         $this->assertEquals($sandbox, Endpoint::buildCheckoutUrl('sandbox'), 'URL in Sandbox');
         $this->assertEquals($production, Endpoint::buildCheckoutUrl('production'), 'URL in production');
     }

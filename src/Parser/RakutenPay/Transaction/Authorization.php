@@ -26,7 +26,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
  * Class Authorization
  * @package Rakuten\Connector\Parser\RakutenPay\Transaction
  */
-class Authorization implements Transaction
+class Authorization extends Transaction
 {
     /**
      * @var string

@@ -25,7 +25,7 @@ use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Responsibility;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\Parser\RakutenPay\ParserFactory;
+use Rakuten\Connector\Parser\RakutenPay\Factory;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 class ResponsibilityTest extends TestCase
@@ -47,7 +47,7 @@ class ResponsibilityTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $creditCard = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
+        $creditCard = Factory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
         $response = Responsibility::http($stubWebservice, $creditCard);
 
         $this->assertInstanceOf($expected, $response);
@@ -70,7 +70,7 @@ class ResponsibilityTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $creditCard = ParserFactory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
+        $creditCard = Factory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
         $this->expectException(RakutenException::class);
         Responsibility::http($stubWebservice, $creditCard);
     }

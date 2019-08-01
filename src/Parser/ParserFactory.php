@@ -17,16 +17,21 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser\RakutenPay;
+namespace Rakuten\Connector\Parser;
 
 use Rakuten\Connector\Exception\RakutenException;
 
 /**
  * Class ParserFactory
- * @package Rakuten\Connector\Parser\RakutenPay
+ * @package Rakuten\Connector\Parser
  */
 abstract class ParserFactory
 {
+    /**
+     * @var string
+     */
+    protected static $namespace = "namespace_from_domain";
+
     /**
      * @param string $class
      * @return Object
@@ -49,14 +54,12 @@ abstract class ParserFactory
      */
     protected static function getClass($class)
     {
-        $namespace = "Rakuten\Connector\Parser\RakutenPay";
-
         if (strpos($class, "\\"))
         {
             $classArray = explode("\\", $class);
             $class = array_pop($classArray);
         }
 
-        return $namespace . "\\" . $class;
+        return static::$namespace . "\\" . $class;
     }
 }

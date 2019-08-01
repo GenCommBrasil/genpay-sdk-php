@@ -17,42 +17,26 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenLog;
 
-use Rakuten\Connector\Service\Http\Response\Response;
+use PHPUnit\Framework\TestCase;
+use Rakuten\Connector\Exception\RakutenException;
+use Rakuten\Connector\Parser\RakutenLog\Calculation;
+use Rakuten\Connector\Parser\RakutenLog\Factory;
 
-/**
- * Interface Transaction
- * @package Rakuten\Connector\Parser
- */
-abstract class Transaction
+class FactoryTest extends TestCase
 {
-    /**
-     * @param $message
-     * @return string
-     */
-    public abstract function setMessage($message);
-
-    /**
-     * @return string
-     */
-    public abstract function getMessage();
-
-    /**
-     * @param Response $response
-     */
-    public abstract function setResponse(Response $response);
-
-    /**
-     * @return Response
-     */
-    public abstract function getResponse();
-
-    /**
-     * @return bool
-     */
-    public function isError()
+    public function testGetClassByNamespace()
     {
-        return get_called_class() === Error::class;
+        $parserCalculation = Factory::create('Rakuten\Connector\Resource\RakutenLog\Calculation');
+
+        $this->assertInstanceOf(Calculation::class, $parserCalculation);
+    }
+
+    public function testGetClassByClassNameAndGenerateException()
+    {
+        $this->expectException(RakutenException::class);
+        $this->expectExceptionMessage("Class not Exists in TransactionFactory");
+        Factory::create('Calculation');
     }
 }

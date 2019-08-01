@@ -17,7 +17,7 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace Rakuten\Tests\Unit\Parser\RakutenPay;
 
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
@@ -46,6 +46,7 @@ class BilletTest extends TestCase
         $response = Billet::success($stubWebservice);
 
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenPay\Transaction\Billet::class, $response);
+        $this->assertFalse($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals('fake-charge-uuid', $response->getChargeId(), "Charge UUID");
         $this->assertEquals('7bc839c5-991a-40a1-bcad-012c47f384ac', $response->getPaymentId(), "Payment ID");
@@ -72,6 +73,7 @@ class BilletTest extends TestCase
         $response = Billet::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
+        $this->assertTrue($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals(999, $response->getCode(), "Code Status");
         $this->assertEquals("Sum of payments amount doesnt match with amount", $response->getMessage(), "Error Message");

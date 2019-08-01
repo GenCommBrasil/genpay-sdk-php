@@ -19,6 +19,7 @@
 
 namespace Rakuten\Connector\Resource\RakutenPay;
 
+use Rakuten\Connector\Resource\Resource;
 use Rakuten\Connector\Helper\StringFormat;
 use stdClass;
 
@@ -26,7 +27,7 @@ use stdClass;
  * Class CreditCard
  * @package Rakuten\Resource\RakutenPay
  */
-class CreditCard extends RakutenPayResource implements PaymentMethod
+class CreditCard extends Resource implements PaymentMethod
 {
     /**
      * @inheritdoc
@@ -38,6 +39,7 @@ class CreditCard extends RakutenPayResource implements PaymentMethod
         $this->data->method = self::CREDIT_CARD;
         $this->setOptions();
     }
+
     /**
      * Set Options Default
      *

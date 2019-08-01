@@ -17,42 +17,18 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser;
+namespace Rakuten\Connector\Parser\RakutenLog;
 
-use Rakuten\Connector\Service\Http\Response\Response;
+use Rakuten\Connector\Parser\ParserFactory;
 
 /**
- * Interface Transaction
- * @package Rakuten\Connector\Parser
+ * Class Factory
+ * @package Rakuten\Connector\Parser\RakutePay
  */
-abstract class Transaction
+abstract class Factory extends ParserFactory
 {
     /**
-     * @param $message
-     * @return string
+     * @var string
      */
-    public abstract function setMessage($message);
-
-    /**
-     * @return string
-     */
-    public abstract function getMessage();
-
-    /**
-     * @param Response $response
-     */
-    public abstract function setResponse(Response $response);
-
-    /**
-     * @return Response
-     */
-    public abstract function getResponse();
-
-    /**
-     * @return bool
-     */
-    public function isError()
-    {
-        return get_called_class() === Error::class;
-    }
+    protected static $namespace = "Rakuten\Connector\Parser\RakutenLog";
 }
