@@ -141,4 +141,42 @@ class Batch extends Resource
 
         return $this;
     }
+
+    /**
+     * @param string $series
+     * @param string $number
+     * @param string $key
+     * @param string $cfop
+     * @param string $date
+     * @param float $valueBaseICMS
+     * @param float $valueICMS
+     * @param float $valueBaseICMSST
+     * @param float $valueICMSST
+     * @return $this
+     */
+    public function setInvoice(
+        $series,
+        $number,
+        $key,
+        $cfop,
+        $date,
+        $valueBaseICMS,
+        $valueICMS,
+        $valueBaseICMSST,
+        $valueICMSST
+    )
+    {
+        $this->data->order->invoice = new stdClass();
+        $this->data->order->invoice->series = $series;
+        $this->data->order->invoice->number = $number;
+        $this->data->order->invoice->key = $key;
+        $this->data->order->invoice->cfop = $cfop;
+        $this->data->order->invoice->date = $date;
+        $this->data->order->invoice->valueBaseICMS = (float) $valueBaseICMS;
+        $this->data->order->invoice->valueICMS = (float) $valueICMS;
+        $this->data->order->invoice->valueBaseICMSST = (float) $valueBaseICMSST;
+        $this->data->order->invoice->valueICMSST = (float) $valueICMSST;
+
+        return $this;
+    }
 }
