@@ -21,38 +21,38 @@ namespace Rakuten\Connector\Parser\RakutenLog;
 
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\Parser\RakutenLog\Transaction\Calculation as TransactionCalculation;
+use Rakuten\Connector\Parser\RakutenLog\Transaction\Batch as TransactionBatch;
 use Rakuten\Connector\Parser\Parser;
 
 /**
- * Class Calculation
+ * Class Batch
  * @package Rakuten\Connector\Parser\RakutenLog
  */
-class Calculation implements Parser
+class Batch implements Parser
 {
     /**
-     * @return TransactionCalculation
+     * @return TransactionBatch
      */
-    protected static function getTransactionCalculation()
+    protected static function getTransactionBatch()
     {
-        return new TransactionCalculation();
+        return new TransactionBatch();
     }
 
     /**
      * @param Webservice $webservice
-     * @return TransactionCalculation
+     * @return TransactionBatch
      */
     public static function success(Webservice $webservice)
     {
-        $response = self::getTransactionCalculation();
+        $response = self::getTransactionBatch();
         $data = json_decode($webservice->getResponse()->getResult(), true);
-        $shippingOptions = $data['content']['shipping_options'];
+        $content = array_shift($data['content']);
+        $trackingObjects = array_shift($content['tracking_objects']);
 
         return $response->setStatus($data['status'])
-            ->setCode($data['content']['code'])
-            ->setOwnerCode($data['content']['owner_code'])
-            ->setExpirationDate($data['content']['expiration_date'])
-            ->setShippingOptions($shippingOptions)
+            ->setCode($content['code'])
+            ->setTrackingUrl($trackingObjects['tracking_url'])
+            ->setPrintUrl($trackingObjects['print_url'])
             ->setMessage(implode(' - ', $data['messages']))
             ->setResponse($webservice->getResponse());
     }

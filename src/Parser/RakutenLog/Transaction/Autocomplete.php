@@ -41,6 +41,11 @@ class Autocomplete extends Transaction
     /**
      * @var string
      */
+    private $status;
+
+    /**
+     * @var string
+     */
     private $street;
 
     /**
@@ -99,6 +104,25 @@ class Autocomplete extends Transaction
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**

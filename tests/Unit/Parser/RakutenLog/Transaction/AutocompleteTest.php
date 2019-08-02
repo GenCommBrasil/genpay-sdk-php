@@ -41,13 +41,15 @@ class AutocompleteTest extends TestCase
         $response = new Response();
         $response->setStatus(Status::OK);
         $response->setResult("Autocomplete Transaction Response");
-        
+
+        $status = "OK";
         $street = "Rua Bela Cintra";
         $district = "Consolação";
         $city = "São Paulo";
         $state = "SP";
         $zipcode = "01415001";
 
+        $this->autocomplete->setStatus($status);
         $this->autocomplete->setStreet($street);
         $this->autocomplete->setDistrict($district);
         $this->autocomplete->setCity($city);
@@ -58,6 +60,7 @@ class AutocompleteTest extends TestCase
 
         $this->assertInstanceOf(Autocomplete::class, $this->autocomplete);
         $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals($status, $this->autocomplete->getStatus(), "Autocomplete Status");
         $this->assertEquals($street, $this->autocomplete->getStreet(), "Autocomplete Street");
         $this->assertEquals($district, $this->autocomplete->getDistrict(), "Autocomplete District");
         $this->assertEquals($city, $this->autocomplete->getCity(), "Autocomplete City");

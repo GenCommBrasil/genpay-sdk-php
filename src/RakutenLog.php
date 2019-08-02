@@ -24,6 +24,7 @@ use Rakuten\Connector\Parser\RakutenLog\Autocomplete;
 use Rakuten\Connector\Parser\RakutenLog\Factory;
 use Rakuten\Connector\Resource\RakutenConnector;
 use Rakuten\Connector\Resource\Credential;
+use Rakuten\Connector\Resource\RakutenLog\Batch;
 use Rakuten\Connector\Resource\RakutenLog\Calculation;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Service\Http\Responsibility;
@@ -49,6 +50,14 @@ class RakutenLog extends RakutenConnector implements Credential
     }
 
     /**
+     * @return Batch
+     */
+    public function batch()
+    {
+        return new Batch($this);
+    }
+
+    /**
      * @param Calculation $calculation
      * @return mixed
      * @throws RakutenException
@@ -63,6 +72,35 @@ class RakutenLog extends RakutenConnector implements Credential
             $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
             $webservice->post(
                 Endpoint::createCalculationUrl($this->getEnvironment()),
+                $data
+            );
+
+            $response = Responsibility::http(
+                $webservice,
+                $transaction
+            );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param Batch $batch
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function generateBatch(Batch $batch)
+    {
+        $this->data[] = $batch->getData();
+        try {
+            $transaction = Factory::create(get_class($batch));
+            $webservice = $this->getWebservice();
+
+            $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
+            $webservice->post(
+                Endpoint::generateBatchUrl($this->getEnvironment()),
                 $data
             );
 

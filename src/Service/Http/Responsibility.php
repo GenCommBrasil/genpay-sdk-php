@@ -40,7 +40,7 @@ class Responsibility
             case Status::BAD_REQUEST:
                 /** returns success because only a few parameters  */
                 return $class::error($webservice);
-            case Status::FORBIDDEN:
+            case Status::INTERNAL_SERVER_ERROR:
                 return $class::error($webservice);
             case Status::NOT_FOUND:
                 $error = $class::error($webservice);

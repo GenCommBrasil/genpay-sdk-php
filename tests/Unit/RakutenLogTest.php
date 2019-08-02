@@ -27,6 +27,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
 use Rakuten\Connector\Service\Http\Webservice;
 use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\RakutenLog\Transaction\Autocomplete;
+use Rakuten\Connector\Parser\RakutenLog\Transaction\Batch;
 
 class RakutenLogTest extends TestCase
 {
@@ -156,6 +157,71 @@ class RakutenLogTest extends TestCase
         $response = $stubRakutenLog->autocomplete("01415001", true);
     }
 
+    public function testItShouldGenerateBatchAndReturnSuccess()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getBatchSuccess());
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getCalculationSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenLog = $this->getMockBuilder(RakutenLog::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenLog->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $batch = $stubRakutenLog->batch();
+
+        $response = $stubRakutenLog->generateBatch($batch);
+
+        $this->assertInstanceOf(Batch::class, $response);
+        $this->assertFalse($response->isError());
+    }
+
+    public function testItShouldGenerateBatchAndReturnException()
+    {
+        $response = new Response();
+        $response->setStatus('');
+        $response->setResult('');
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getCalculationSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenLog = $this->getMockBuilder(RakutenLog::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenLog->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $this->expectExceptionMessage("Unknown Error in Responsibility:  - Status:");
+
+        $batch = $stubRakutenLog->batch();
+
+        $response = $stubRakutenLog->generateBatch($batch);
+    }
+
     /**
      * @return string
      */
@@ -265,6 +331,48 @@ class RakutenLogTest extends TestCase
             "state": "SP",
             "zipcode": "01415001"
           }
+        }';
+    }
+
+    protected function getBatchSuccess()
+    {
+        return '
+        {
+          "status": "OK",
+          "messages": [],
+          "content": [
+            {
+              "warehouse": {},
+              "tracking_objects": [
+                {
+                  "volume_number": 1,
+                  "tracking_url": "fake-tracking-url",
+                  "print_url": "fake-print-url",
+                  "order_code": "17",
+                  "number": "17"
+                }
+              ],
+              "status_description": "Completo",
+              "status": "Completed",
+              "print_url": "https://logistics-sandbox.rakuten.com.br/print/#/batch/ea06ed55-fb0a-4f14-8d9b-e3ee7a7b3f41/6bbe787f-3c18-483e-8877-4b6c5a96b6b4",
+              "errors": [],
+              "code": "fake-code"
+            }
+          ]
+        }';
+    }
+
+    protected function getBatchError()
+    {
+        return '
+        {
+          "status": "ERROR",
+          "messages": [
+            {
+              "type": "ERROR",
+              "text": "O cálculo código: 89798978979877-098908-9889-899 enviado não existe."
+            }
+          ]
         }';
     }
 }

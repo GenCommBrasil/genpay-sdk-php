@@ -48,6 +48,7 @@ class CalculationTest extends TestCase
         $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenLog\Transaction\Calculation::class, $response);
         $this->assertFalse($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
+        $this->assertEquals('OK', $response->getStatus(), "Calculation Status");
         $this->assertEquals('fake-code', $response->getCode(), "Calculation Code");
         $this->assertEquals('fake-owner-code', $response->getOwnerCode(), "Calculation Onwer Code");
         $this->assertEquals('2019-07-31T11:19:16', $response->getExpirationDate(), "Calculation Expiration Date");
