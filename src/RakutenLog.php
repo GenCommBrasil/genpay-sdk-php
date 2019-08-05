@@ -22,6 +22,7 @@ namespace Rakuten\Connector;
 use Rakuten\Connector\Enum\Endpoint;
 use Rakuten\Connector\Parser\RakutenLog\Autocomplete;
 use Rakuten\Connector\Parser\RakutenLog\Factory;
+use Rakuten\Connector\Parser\RakutenLog\OrderDetail;
 use Rakuten\Connector\Resource\RakutenConnector;
 use Rakuten\Connector\Resource\Credential;
 use Rakuten\Connector\Resource\RakutenLog\Batch;
@@ -125,9 +126,28 @@ class RakutenLog extends RakutenConnector implements Credential
     {
         try {
             $webservice = $this->getWebservice();
-            $url = Endpoint::buildAutocompleteUrl($this->getEnvironment(), $online) . "/" . $zipcode;
+            $url = Endpoint::buildAutocompleteUrl($this->getEnvironment(), $online) . Endpoint::URL_SEPARATOR . $zipcode;
             $webservice->get($url);
             $response = Responsibility::http($webservice, new Autocomplete());
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function orderDetail($orderId)
+    {
+        try {
+            $webservice = $this->getWebservice();
+            $url = Endpoint::buildOrderDetailUrl($this->getEnvironment()) . Endpoint::URL_SEPARATOR . $orderId;
+            $webservice->get($url);
+            $response = Responsibility::http($webservice, new OrderDetail());
 
             return $response;
         } catch (RakutenException $e) {
