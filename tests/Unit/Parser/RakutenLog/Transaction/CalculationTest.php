@@ -42,11 +42,13 @@ class CalculationTest extends TestCase
         $response->setStatus(Status::OK);
         $response->setResult("Calculation Transaction Response");
 
+        $status = "OK";
         $code = "fake-code";
         $ownerCode = "fake-owner-code";
         $shippingOptions = json_decode($this->getShippingOptions(), true);
         $expirationDate = "2019-07-31T11:19:16";
 
+        $this->calculation->setStatus($status);
         $this->calculation->setCode($code);
         $this->calculation->setOwnerCode($ownerCode);
         $this->calculation->setExpirationDate($expirationDate);
@@ -56,6 +58,7 @@ class CalculationTest extends TestCase
 
         $this->assertInstanceOf(Calculation::class, $this->calculation);
         $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals($status, $this->calculation->getStatus(), "Calculation Status Result");
         $this->assertEquals($code, $this->calculation->getCode(), "Calculation Code Result");
         $this->assertEquals($ownerCode, $this->calculation->getOwnerCode(), "Calculation Owner Code");
         $this->assertEquals(Status::OK, $this->calculation->getResponse()->getStatus());

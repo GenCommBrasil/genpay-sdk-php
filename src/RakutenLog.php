@@ -22,8 +22,10 @@ namespace Rakuten\Connector;
 use Rakuten\Connector\Enum\Endpoint;
 use Rakuten\Connector\Parser\RakutenLog\Autocomplete;
 use Rakuten\Connector\Parser\RakutenLog\Factory;
+use Rakuten\Connector\Parser\RakutenLog\OrderDetail;
 use Rakuten\Connector\Resource\RakutenConnector;
 use Rakuten\Connector\Resource\Credential;
+use Rakuten\Connector\Resource\RakutenLog\Batch;
 use Rakuten\Connector\Resource\RakutenLog\Calculation;
 use Rakuten\Connector\Exception\RakutenException;
 use Rakuten\Connector\Service\Http\Responsibility;
@@ -46,6 +48,14 @@ class RakutenLog extends RakutenConnector implements Credential
     public function calculation()
     {
         return new Calculation($this);
+    }
+
+    /**
+     * @return Batch
+     */
+    public function batch()
+    {
+        return new Batch($this);
     }
 
     /**
@@ -78,6 +88,35 @@ class RakutenLog extends RakutenConnector implements Credential
     }
 
     /**
+     * @param Batch $batch
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function generateBatch(Batch $batch)
+    {
+        $this->data[] = $batch->getData();
+        try {
+            $transaction = Factory::create(get_class($batch));
+            $webservice = $this->getWebservice();
+
+            $data = json_encode($this->data, JSON_PRESERVE_ZERO_FRACTION);
+            $webservice->post(
+                Endpoint::generateBatchUrl($this->getEnvironment()),
+                $data
+            );
+
+            $response = Responsibility::http(
+                $webservice,
+                $transaction
+            );
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
      * @param $zipcode
      * @param bool $online
      * @return mixed
@@ -87,9 +126,28 @@ class RakutenLog extends RakutenConnector implements Credential
     {
         try {
             $webservice = $this->getWebservice();
-            $url = Endpoint::buildAutocompleteUrl($this->getEnvironment(), $online) . "/" . $zipcode;
+            $url = Endpoint::buildAutocompleteUrl($this->getEnvironment(), $online) . Endpoint::URL_SEPARATOR . $zipcode;
             $webservice->get($url);
             $response = Responsibility::http($webservice, new Autocomplete());
+
+            return $response;
+        } catch (RakutenException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     * @throws RakutenException
+     */
+    public function orderDetail($orderId)
+    {
+        try {
+            $webservice = $this->getWebservice();
+            $url = Endpoint::buildOrderDetailUrl($this->getEnvironment()) . Endpoint::URL_SEPARATOR . $orderId;
+            $webservice->get($url);
+            $response = Responsibility::http($webservice, new OrderDetail());
 
             return $response;
         } catch (RakutenException $e) {

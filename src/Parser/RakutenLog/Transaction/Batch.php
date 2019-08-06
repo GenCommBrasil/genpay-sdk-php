@@ -23,10 +23,10 @@ use Rakuten\Connector\Parser\Transaction;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
- * Class Calculation
+ * Class Batch
  * @package Rakuten\Connector\Parser\RakutenLog\Transaction
  */
-class Calculation extends Transaction
+class Batch extends Transaction
 {
     /**
      * @var string
@@ -39,7 +39,7 @@ class Calculation extends Transaction
     private $response;
 
     /**
-     * @var string
+     * @var
      */
     private $status;
 
@@ -51,17 +51,12 @@ class Calculation extends Transaction
     /**
      * @var string
      */
-    private $ownerCode;
+    private $trackingUrl;
 
     /**
      * @var string
      */
-    private $expirationDate;
-
-    /**
-     * @var array
-     */
-    private $shippingOptions = [];
+    private $printUrl;
 
     /**
      * @param Response $response
@@ -140,12 +135,12 @@ class Calculation extends Transaction
     }
 
     /**
-     * @param $ownerCode
+     * @param $trackingUrl
      * @return $this
      */
-    public function setOwnerCode($ownerCode)
+    public function setTrackingUrl($trackingUrl)
     {
-        $this->ownerCode = $ownerCode;
+        $this->trackingUrl = $trackingUrl;
 
         return $this;
     }
@@ -153,18 +148,18 @@ class Calculation extends Transaction
     /**
      * @return string
      */
-    public function getOwnerCode()
+    public function getTrackingUrl()
     {
-        return $this->ownerCode;
+        return $this->trackingUrl;
     }
 
     /**
-     * @param $expirationDate
+     * @param $printUrl
      * @return $this
      */
-    public function setExpirationDate($expirationDate)
+    public function setPrintUrl($printUrl)
     {
-        $this->expirationDate = $expirationDate;
+        $this->printUrl = $printUrl;
 
         return $this;
     }
@@ -172,27 +167,8 @@ class Calculation extends Transaction
     /**
      * @return string
      */
-    public function getExpirationDate()
+    public function getPrintUrl()
     {
-        return $this->expirationDate;
-    }
-
-    /**
-     * @param array $shippingOptions
-     * @return $this
-     */
-    public function setShippingOptions(array $shippingOptions)
-    {
-        $this->shippingOptions = $shippingOptions;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getShippingOptions()
-    {
-        return $this->shippingOptions;
+        return $this->printUrl;
     }
 }

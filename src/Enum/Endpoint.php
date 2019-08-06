@@ -40,6 +40,8 @@ class Endpoint
     const RAKUTENLOG_CALCULATION = 'logistics/calculation';
     const RAKUTENLOG_AUTOCOMPLETE = 'logistics/zipcode';
     const RAKUTENLOG_AUTOCOMPLETE_ONLINE = 'logistics/zipcode/online';
+    const RAKUTENLOG_BATCH = 'logistics/batch';
+    const RAKUTENLOG_ORDER_DETAIL = 'logistics/order';
 
     /**
      * @var array
@@ -134,5 +136,23 @@ class Endpoint
         }
 
         return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_AUTOCOMPLETE : $environment;
+    }
+
+    /**
+     * @param string $environment
+     * @return string
+     */
+    public static function generateBatchUrl($environment)
+    {
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_BATCH : $environment;
+    }
+
+    /**
+     * @param string $environment
+     * @return string
+     */
+    public static function buildOrderDetailUrl($environment)
+    {
+        return isset(self::$environment[$environment]) ? self::$environment[$environment] . self::RAKUTENLOG_ORDER_DETAIL : $environment;
     }
 }

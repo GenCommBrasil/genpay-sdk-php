@@ -22,13 +22,13 @@ namespace Rakuten\Tests\Unit\Parser\RakutenLog;
 use PHPUnit\Framework\TestCase;
 use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\Error;
-use Rakuten\Connector\Parser\RakutenLog\Autocomplete;
+use Rakuten\Connector\Parser\RakutenLog\Batch;
 use Rakuten\Connector\Service\Http\Response\Response;
 use Rakuten\Connector\Service\Http\Webservice;
 
-class AutocompleteTest extends TestCase
+class BatchTest extends TestCase
 {
-    public function testShouldSucceedAndReturnTransactionAutocomplete()
+    public function testShouldSucceedAndReturnTransactionBatch()
     {
         $response = new Response();
         $response->setStatus(Status::OK);
@@ -43,18 +43,16 @@ class AutocompleteTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $response = Autocomplete::success($stubWebservice);
+        $response = Batch::success($stubWebservice);
 
-        $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenLog\Transaction\Autocomplete::class, $response);
+        $this->assertInstanceOf(\Rakuten\Connector\Parser\RakutenLog\Transaction\Batch::class, $response);
         $this->assertFalse($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
-        $this->assertEquals('OK', $response->getStatus(), "Autocomplete Status");
-        $this->assertEquals('Rua Bela Cintra', $response->getStreet(), "Autocomplete Street");
-        $this->assertEquals('Consolação', $response->getDistrict(), "Autocomplete District");
-        $this->assertEquals('São Paulo', $response->getCity(), "Autocomplete City");
-        $this->assertEquals('SP', $response->getState(), "Autocomplete State");
-        $this->assertEquals('01415001', $response->getZipcode(), "Autocomplete Zipcode");
-        $this->assertEmpty($response->getMessage(), "Autocomplete Message");
+        $this->assertEquals('OK', $response->getStatus(), "Batch Status");
+        $this->assertEquals('fake-code', $response->getCode(), "Batch Code");
+        $this->assertEquals('fake-tracking-url', $response->getTrackingUrl(), "Batch Tracking URL");
+        $this->assertEquals('fake-print-url', $response->getPrintUrl(), "Batch Expiration Date");
+        $this->assertEmpty($response->getMessage(), "Batch Message");
     }
 
     public function testShouldErrorAndReturnErrorClass()
@@ -72,13 +70,13 @@ class AutocompleteTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $response = Autocomplete::error($stubWebservice);
+        $response = Batch::error($stubWebservice);
 
         $this->assertInstanceOf(Error::class, $response);
         $this->assertTrue($response->isError());
         $this->assertInstanceOf(Response::class, $response->getResponse());
         $this->assertEquals('ERROR', $response->getCode(), "Code Error");
-        $this->assertEquals("CEP  não está em um formato correto! Ex.: 00000000 (sem traço)", $response->getMessage(), "Error Message");
+        $this->assertEquals("O cálculo código: 89798978979877-098908-9889-899 enviado não existe.", $response->getMessage(), "Error Message");
     }
 
     /**
@@ -90,13 +88,25 @@ class AutocompleteTest extends TestCase
         {
           "status": "OK",
           "messages": [],
-          "content": {
-            "street": "Rua Bela Cintra",
-            "district": "Consolação",
-            "city": "São Paulo",
-            "state": "SP",
-            "zipcode": "01415001"
-          }
+          "content": [
+            {
+              "warehouse": {},
+              "tracking_objects": [
+                {
+                  "volume_number": 1,
+                  "tracking_url": "fake-tracking-url",
+                  "print_url": "fake-print-url",
+                  "order_code": "17",
+                  "number": "17"
+                }
+              ],
+              "status_description": "Completo",
+              "status": "Completed",
+              "print_url": "https://logistics-sandbox.rakuten.com.br/print/#/batch/ea06ed55-fb0a-4f14-8d9b-e3ee7a7b3f41/6bbe787f-3c18-483e-8877-4b6c5a96b6b4",
+              "errors": [],
+              "code": "fake-code"
+            }
+          ]
         }';
 
         return $jsonSuccess;
@@ -113,10 +123,10 @@ class AutocompleteTest extends TestCase
           "messages": [
             {
               "type": "ERROR",
-              "text": "CEP  não está em um formato correto! Ex.: 00000000 (sem traço)"
+              "text": "O cálculo código: 89798978979877-098908-9889-899 enviado não existe."
             }
           ]
-        }                       
+        }                        
         ';
 
         return $jsonError;

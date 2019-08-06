@@ -23,10 +23,10 @@ use Rakuten\Connector\Parser\Transaction;
 use Rakuten\Connector\Service\Http\Response\Response;
 
 /**
- * Class Calculation
+ * Class OrderDetail
  * @package Rakuten\Connector\Parser\RakutenLog\Transaction
  */
-class Calculation extends Transaction
+class OrderDetail extends Transaction
 {
     /**
      * @var string
@@ -51,17 +51,37 @@ class Calculation extends Transaction
     /**
      * @var string
      */
-    private $ownerCode;
+    private $calculationCode;
 
     /**
      * @var string
      */
-    private $expirationDate;
+    private $batchCode;
+
+    /**
+     * @var string
+     */
+    private $carrierType;
+
+    /**
+     * @var string
+     */
+    private $trackingUrl;
+
+    /**
+     * @var string
+     */
+    private $printUrl;
 
     /**
      * @var array
      */
-    private $shippingOptions = [];
+    private $customer = [];
+
+    /**
+     * @var array
+     */
+    private $deliveryAddress = [];
 
     /**
      * @param Response $response
@@ -140,12 +160,12 @@ class Calculation extends Transaction
     }
 
     /**
-     * @param $ownerCode
+     * @param $calculationCode
      * @return $this
      */
-    public function setOwnerCode($ownerCode)
+    public function setCalculationCode($calculationCode)
     {
-        $this->ownerCode = $ownerCode;
+        $this->calculationCode = $calculationCode;
 
         return $this;
     }
@@ -153,18 +173,18 @@ class Calculation extends Transaction
     /**
      * @return string
      */
-    public function getOwnerCode()
+    public function getCalculationCode()
     {
-        return $this->ownerCode;
+        return $this->calculationCode;
     }
 
     /**
-     * @param $expirationDate
+     * @param $batchCode
      * @return $this
      */
-    public function setExpirationDate($expirationDate)
+    public function setBatchCode($batchCode)
     {
-        $this->expirationDate = $expirationDate;
+        $this->batchCode = $batchCode;
 
         return $this;
     }
@@ -172,18 +192,75 @@ class Calculation extends Transaction
     /**
      * @return string
      */
-    public function getExpirationDate()
+    public function getBatchCode()
     {
-        return $this->expirationDate;
+        return $this->batchCode;
     }
 
     /**
-     * @param array $shippingOptions
+     * @param $carrierType
      * @return $this
      */
-    public function setShippingOptions(array $shippingOptions)
+    public function setCarrierType($carrierType)
     {
-        $this->shippingOptions = $shippingOptions;
+        $this->carrierType = $carrierType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCarrierType()
+    {
+        return $this->carrierType;
+    }
+
+    /**
+     * @param $trackingUrl
+     * @return $this
+     */
+    public function setTrackingUrl($trackingUrl)
+    {
+        $this->trackingUrl = $trackingUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrackingUrl()
+    {
+        return $this->trackingUrl;
+    }
+
+    /**
+     * @param $printUrl
+     * @return $this
+     */
+    public function setPrintUrl($printUrl)
+    {
+        $this->printUrl = $printUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrintUrl()
+    {
+        return $this->printUrl;
+    }
+
+    /**
+     * @param array $customer
+     * @return $this
+     */
+    public function setCustomer(array $customer)
+    {
+        $this->customer = $customer;
 
         return $this;
     }
@@ -191,8 +268,27 @@ class Calculation extends Transaction
     /**
      * @return array
      */
-    public function getShippingOptions()
+    public function getCustomer()
     {
-        return $this->shippingOptions;
+        return $this->customer;
+    }
+
+    /**
+     * @param array $deliveryAddress
+     * @return $this
+     */
+    public function setDeliveryAddress(array $deliveryAddress)
+    {
+        $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeliveryAddress()
+    {
+        return $this->deliveryAddress;
     }
 }

@@ -47,7 +47,8 @@ class Autocomplete implements Parser
         $response = self::getTransactionAutocomplete();
         $data = json_decode($webservice->getResponse()->getResult(), true);
 
-        return $response->setStreet($data['content']['street'])
+        return $response->setStatus($data['status'])
+            ->setStreet($data['content']['street'])
             ->setDistrict($data['content']['district'])
             ->setCity($data['content']['city'])
             ->setState($data['content']['state'])

@@ -27,6 +27,7 @@ use Rakuten\Connector\Service\Http\Response\Response;
 use Rakuten\Connector\Service\Http\Webservice;
 use Rakuten\Connector\Enum\Status;
 use Rakuten\Connector\Parser\RakutenLog\Transaction\Autocomplete;
+use Rakuten\Connector\Parser\RakutenLog\Transaction\Batch;
 
 class RakutenLogTest extends TestCase
 {
@@ -156,6 +157,106 @@ class RakutenLogTest extends TestCase
         $response = $stubRakutenLog->autocomplete("01415001", true);
     }
 
+    public function testItShouldGenerateBatchAndReturnSuccess()
+    {
+        $response = new Response();
+        $response->setStatus(Status::OK);
+        $response->setResult($this->getBatchSuccess());
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getCalculationSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenLog = $this->getMockBuilder(RakutenLog::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenLog->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $batch = $stubRakutenLog->batch();
+
+        $response = $stubRakutenLog->generateBatch($batch);
+
+        $this->assertInstanceOf(Batch::class, $response);
+        $this->assertFalse($response->isError());
+    }
+
+    public function testItShouldGenerateBatchAndReturnException()
+    {
+        $response = new Response();
+        $response->setStatus('');
+        $response->setResult('');
+
+        $stubWebservice = $this->getMockBuilder(Webservice::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['post', 'getResponse'])
+            ->getMock();
+        $stubWebservice->expects($this->once())
+            ->method('post')
+            ->willReturn($this->getCalculationSuccess());
+        $stubWebservice->expects($this->any())
+            ->method('getResponse')
+            ->willReturn($response);
+
+        $stubRakutenLog = $this->getMockBuilder(RakutenLog::class)
+            ->setConstructorArgs(["fake-document", "fake-apikey", "fake-signature", Environment::SANDBOX])
+            ->setMethods(['getWebservice'])
+            ->getMock();
+        $stubRakutenLog->expects($this->once())
+            ->method('getWebservice')
+            ->willReturn($stubWebservice);
+
+        $this->expectExceptionMessage("Unknown Error in Responsibility:  - Status:");
+
+        $batch = $stubRakutenLog->batch();
+
+        $response = $stubRakutenLog->generateBatch($batch);
+    }
+
+    public function ktestBatch()
+    {
+        $rakuten = new RakutenLog("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $batch = $rakuten->batch()
+            ->setCalculationCode("788bbe63-049e-4fc6-a2be-09b3b25e104b")
+            ->setPostageServiceCode("1260e7a5-edb1-4854-a4f7-60de24cb37dd")
+            ->setOrder("1666000041", "1666000040", 200.83)
+            ->setCustomer("Teste", "Da Silva", "12345678909")
+            ->setDeliveryAddress(
+                "Teste",
+                "TEste da Silva",
+                "Rua Capanema",
+                "500",
+                "Torre New York 6 Andar",
+                "Rua dos Piao",
+                "Rio de Janeiro",
+                "SP",
+                "21920070",
+                "teste@teste.com.br",
+                "1144556677",
+                "1155667788"
+            );
+
+        $rakuten->generateBatch($batch);
+    }
+
+    public function gtestOrderDetail()
+    {
+        $rakuten = new RakutenLog("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
+        $response = $rakuten->orderDetail("1666000041");
+        
+        //TODO remove predie
+        echo "<pre>";die(var_dump($response));
+    }
+
     /**
      * @return string
      */
@@ -265,6 +366,48 @@ class RakutenLogTest extends TestCase
             "state": "SP",
             "zipcode": "01415001"
           }
+        }';
+    }
+
+    protected function getBatchSuccess()
+    {
+        return '
+        {
+          "status": "OK",
+          "messages": [],
+          "content": [
+            {
+              "warehouse": {},
+              "tracking_objects": [
+                {
+                  "volume_number": 1,
+                  "tracking_url": "fake-tracking-url",
+                  "print_url": "fake-print-url",
+                  "order_code": "17",
+                  "number": "17"
+                }
+              ],
+              "status_description": "Completo",
+              "status": "Completed",
+              "print_url": "https://logistics-sandbox.rakuten.com.br/print/#/batch/ea06ed55-fb0a-4f14-8d9b-e3ee7a7b3f41/6bbe787f-3c18-483e-8877-4b6c5a96b6b4",
+              "errors": [],
+              "code": "fake-code"
+            }
+          ]
+        }';
+    }
+
+    protected function getBatchError()
+    {
+        return '
+        {
+          "status": "ERROR",
+          "messages": [
+            {
+              "type": "ERROR",
+              "text": "O cálculo código: 89798978979877-098908-9889-899 enviado não existe."
+            }
+          ]
         }';
     }
 }

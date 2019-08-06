@@ -21,38 +21,42 @@ namespace Rakuten\Connector\Parser\RakutenLog;
 
 use Rakuten\Connector\Parser\Error;
 use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\Parser\RakutenLog\Transaction\Calculation as TransactionCalculation;
+use Rakuten\Connector\Parser\RakutenLog\Transaction\OrderDetail as TransactionOrderDetail;
 use Rakuten\Connector\Parser\Parser;
 
 /**
- * Class Calculation
+ * Class OrderDetail
  * @package Rakuten\Connector\Parser\RakutenLog
  */
-class Calculation implements Parser
+class OrderDetail implements Parser
 {
     /**
-     * @return TransactionCalculation
+     * @return TransactionOrderDetail
      */
-    protected static function getTransactionCalculation()
+    protected static function getTransactionOrderDetail()
     {
-        return new TransactionCalculation();
+        return new TransactionOrderDetail();
     }
 
     /**
      * @param Webservice $webservice
-     * @return TransactionCalculation
+     * @return TransactionOrderDetail
      */
     public static function success(Webservice $webservice)
     {
-        $response = self::getTransactionCalculation();
+        $response = self::getTransactionOrderDetail();
         $data = json_decode($webservice->getResponse()->getResult(), true);
-        $shippingOptions = $data['content']['shipping_options'];
+        $content = $data['content'];
 
         return $response->setStatus($data['status'])
-            ->setCode($data['content']['code'])
-            ->setOwnerCode($data['content']['owner_code'])
-            ->setExpirationDate($data['content']['expiration_date'])
-            ->setShippingOptions($shippingOptions)
+            ->setCode($content['code'])
+            ->setCalculationCode($content['calculation_code'])
+            ->setBatchCode($content['batch_code'])
+            ->setTrackingUrl($content['tracking_print_url'])
+            ->setPrintUrl($content['batch_print_url'])
+            ->setCarrierType($content['carrier_type'])
+            ->setDeliveryAddress($content['delivery_address'])
+            ->setCustomer($content['customer'])
             ->setMessage(implode(' - ', $data['messages']))
             ->setResponse($webservice->getResponse());
     }
