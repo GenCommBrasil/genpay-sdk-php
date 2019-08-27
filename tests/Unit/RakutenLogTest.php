@@ -222,41 +222,6 @@ class RakutenLogTest extends TestCase
         $response = $stubRakutenLog->generateBatch($batch);
     }
 
-    public function ktestBatch()
-    {
-        $rakuten = new RakutenLog("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
-        $batch = $rakuten->batch()
-            ->setCalculationCode("788bbe63-049e-4fc6-a2be-09b3b25e104b")
-            ->setPostageServiceCode("1260e7a5-edb1-4854-a4f7-60de24cb37dd")
-            ->setOrder("1666000041", "1666000040", 200.83)
-            ->setCustomer("Teste", "Da Silva", "12345678909")
-            ->setDeliveryAddress(
-                "Teste",
-                "TEste da Silva",
-                "Rua Capanema",
-                "500",
-                "Torre New York 6 Andar",
-                "Rua dos Piao",
-                "Rio de Janeiro",
-                "SP",
-                "21920070",
-                "teste@teste.com.br",
-                "1144556677",
-                "1155667788"
-            );
-
-        $rakuten->generateBatch($batch);
-    }
-
-    public function gtestOrderDetail()
-    {
-        $rakuten = new RakutenLog("77753821000123", "EBDB6843FAA9073B5AD1929A77CBF86B", "96D9F59946F0CBDBD7D1B0FB5F968AD6", Environment::SANDBOX);
-        $response = $rakuten->orderDetail("1666000041");
-        
-        //TODO remove predie
-        echo "<pre>";die(var_dump($response));
-    }
-
     /**
      * @return string
      */
