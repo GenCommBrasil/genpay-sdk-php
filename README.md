@@ -13,7 +13,7 @@
 - [Configurando a autenticação](#configurando-a-autenticação)
     - [Implementação do RakutenPay](#implementando-rakutenPay)
     - [Implementação do RakutenLogistics](#implementando-rakutenLogistics)
-- [RakutenPay](#RakutenPay):
+- [RakutenPay](#RakutenPay)
     - [Pedidos](#Pedidos)
         - [Criando Pedido no Boleto](#criando-pedido-no-boleto)
         - [Criando Pedido no Cartão de Crédito](#criando-pedido-no-cartão-de-crédito)
