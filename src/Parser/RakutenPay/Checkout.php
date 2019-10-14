@@ -46,11 +46,10 @@ class Checkout implements Parser
     {
         $response = self::getTransactionCheckout();
         $data = json_decode($webservice->getResponse()->getResult(), true);
-        $payments = array_shift($data['payments']);
+        $installments = array_column($data['payments'], 'installments');
 
         $response->setResult($data['result'])
-            ->setMethod($payments['method'])
-            ->setInstallments($payments['installments'])
+            ->setInstallments(array_shift($installments))
             ->setMessage('')
             ->setResponse($webservice->getResponse());
 
