@@ -55,14 +55,12 @@ class CheckoutTest extends TestCase
                 "installment_amount" => 2613.25,
             ]
         ];
-        $method = "credit_card";
         $response = new Response();
         $response->setStatus(Status::OK);
         $response->setResult(json_encode($installments));
 
         $this->checkout->setResult($result);
         $this->checkout->setInstallments($installments);
-        $this->checkout->setMethod($method);
         $this->checkout->setResponse($response);
         $this->checkout->setMessage('');
 
@@ -70,7 +68,6 @@ class CheckoutTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->checkout->getResponse());
         $this->assertCount(2, $this->checkout->getInstallments(), "Checkout Transaction - Count Installments");
         $this->assertEquals($result, $this->checkout->getResult(), "Checkout Transaction Result");
-        $this->assertEquals($method, $this->checkout->getMethod(), "Checkout Transaction Method");
         $this->assertEmpty($this->checkout->getMessage());
     }
 }

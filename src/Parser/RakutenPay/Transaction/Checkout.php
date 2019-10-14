@@ -44,11 +44,6 @@ class Checkout extends Transaction
     private $installments = [];
 
     /**
-     * @var string
-     */
-    private $method;
-
-    /**
      * @var Response
      */
     private $response;
@@ -105,25 +100,6 @@ class Checkout extends Transaction
     public function setInstallments(array $installments)
     {
         $this->installments = $installments;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
-     * @param string $method
-     * @return $this
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
 
         return $this;
     }
