@@ -1,4 +1,4 @@
-<img src="https://gist.githubusercontent.com/alexsantossilva/c1904c36903e94c24d668aca569f8c23/raw/dc993daa4e737025c44f885b335a60828038ef30/genpay.png" align="top>" />
+<img src="https://gist.githubusercontent.com/alexsantossilva/a1bfa0a6e9e6592176f860210a226dfe/raw/374ed1819de58169d05482c8188d6edc8687c2e6/genpay.png" align="top>" />
 
 # GenComm PHP SDK Client.
 >
