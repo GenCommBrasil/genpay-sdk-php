@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Service\Http;
+namespace GenComm\Tests\Unit\Service\Http;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Status;
-use Rakuten\Connector\Exception\RakutenException;
-use Rakuten\Connector\Parser\Error;
-use Rakuten\Connector\Service\Http\Responsibility;
-use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\Parser\RakutenPay\Factory;
-use Rakuten\Connector\Service\Http\Response\Response;
+use GenComm\Enum\Status;
+use GenComm\Exception\GenCommException;
+use GenComm\Parser\Error;
+use GenComm\Service\Http\Responsibility;
+use GenComm\Service\Http\Webservice;
+use GenComm\Parser\GenPay\Factory;
+use GenComm\Service\Http\Response\Response;
 
 class ResponsibilityTest extends TestCase
 {
@@ -47,7 +47,7 @@ class ResponsibilityTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $creditCard = Factory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
+        $creditCard = Factory::create('GenComm\Resource\GenPay\CreditCard');
         $response = Responsibility::http($stubWebservice, $creditCard);
 
         $this->assertInstanceOf($expected, $response);
@@ -70,15 +70,15 @@ class ResponsibilityTest extends TestCase
             ->method('getResponse')
             ->willReturn($response);
 
-        $creditCard = Factory::create('Rakuten\Connector\Resource\RakutenPay\CreditCard');
-        $this->expectException(RakutenException::class);
+        $creditCard = Factory::create('GenComm\Resource\GenPay\CreditCard');
+        $this->expectException(GenCommException::class);
         Responsibility::http($stubWebservice, $creditCard);
     }
 
     public function additionProviderReturnInstanceOf()
     {
         return [
-            [Status::OK, $this->getDataSuccess(), \Rakuten\Connector\Parser\RakutenPay\Transaction\CreditCard::class],
+            [Status::OK, $this->getDataSuccess(), \GenComm\Parser\GenPay\Transaction\CreditCard::class],
             [Status::UNPROCESSABLE, $this->getDataError(), Error::class],
             [Status::BAD_REQUEST, $this->getDataError(), Error::class],
         ];

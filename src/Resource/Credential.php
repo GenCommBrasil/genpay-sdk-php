@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Resource;
+namespace GenComm\Resource;
 
 /**
  * Interface Credential
- * @package Rakuten\Connector\Resource
+ * @package GenComm\Resource
  */
 interface Credential
 {

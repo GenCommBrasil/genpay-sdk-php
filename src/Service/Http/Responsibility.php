@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Service\Http;
+namespace GenComm\Service\Http;
 
-use Rakuten\Connector\Exception\RakutenException;
-use Rakuten\Connector\Enum\Status;
-use Rakuten\Connector\Service\Http\Response\Response;
+use GenComm\Exception\GenCommException;
+use GenComm\Enum\Status;
+use GenComm\Service\Http\Response\Response;
 
 /**
  * Class Responsibility
- * @package Rakuten\Connector\Service\Http
+ * @package GenComm\Service\Http
  */
 class Responsibility
 {
@@ -44,16 +44,16 @@ class Responsibility
                 return $class::error($webservice);
             case Status::NOT_FOUND:
                 $error = $class::error($webservice);
-                throw new RakutenException($error->getMessage(), $error->getCode());
+                throw new GenCommException($error->getMessage(), $error->getCode());
             case Status::UNAUTHORIZED:
                 $error = $class::error($webservice);
-                throw new RakutenException($error->getMessage(), $error->getCode());
+                throw new GenCommException($error->getMessage(), $error->getCode());
             case Status::BAD_GATEWAY:
                 $error = $class::error($webservice);
-                throw new RakutenException($error->getMessage(), $error->getCode());
+                throw new GenCommException($error->getMessage(), $error->getCode());
             default:
                 unset($class);
-                throw new RakutenException(sprintf("Unknown Error in Responsibility: %s - Status: %s", $webservice->getResponse()->getResult(), $webservice->getResponse()->getStatus()));
+                throw new GenCommException(sprintf("Unknown Error in Responsibility: %s - Status: %s", $webservice->getResponse()->getResult(), $webservice->getResponse()->getStatus()));
         }
     }
 }

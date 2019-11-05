@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Service\Http;
+namespace GenComm\Service\Http;
 
-use Rakuten\Connector\Exception\RakutenException;
+use GenComm\Exception\GenCommException;
 
 /**
  * Class Webservice
- * @package Rakuten\Connector\Service\Http\RakutenPay
+ * @package GenComm\Service\Http\GenPay
  */
 class Webservice extends CurlRequest
 {
@@ -35,7 +35,7 @@ class Webservice extends CurlRequest
      * @param string $jsonData
      * @param bool $secureGet
      * @return bool|mixed
-     * @throws RakutenException
+     * @throws GenCommException
      */
     protected function curlConnection($method, $url, $timeout, $charset, $jsonData = '', $secureGet = true)
     {
@@ -60,7 +60,7 @@ class Webservice extends CurlRequest
         $this->close();
 
         if ($error) {
-            throw new RakutenException("CURL can't connect: $errorMessage");
+            throw new GenCommException("CURL can't connect: $errorMessage");
         }
 
         $this->response->setStatus($info['http_code']);
@@ -73,19 +73,19 @@ class Webservice extends CurlRequest
      * @param $method
      * @param string $jsonData
      * @return array
-     * @throws RakutenException
+     * @throws GenCommException
      */
     protected function getCurlHeader($method, $jsonData = '')
     {
-        $auth = $this->rakutenConnector->getDocument() . ':' . $this->rakutenConnector->getApiKey();
+        $auth = $this->genComm->getDocument() . ':' . $this->genComm->getApiKey();
         $authBase64 = base64_encode($auth);
 
         if (strtoupper($method) === 'POST') {
             if (empty($jsonData)) {
-                throw new RakutenException("Payload is empty.");
+                throw new GenCommException("Payload is empty.");
             }
 
-            $signature = hash_hmac('sha256', $jsonData, $this->rakutenConnector->getSignature(), true);
+            $signature = hash_hmac('sha256', $jsonData, $this->genComm->getSignature(), true);
             $signatureBase64 = base64_encode($signature);
 
             return [

@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,18 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Enum;
+namespace GenComm\Enum;
 
 /**
  * Class Endpoint
- * @package Rakuten\Connector\Enum
+ * @package GenComm\Enum
  */
 class Endpoint
 {
     const URL_SEPARATOR = '/';
 
-    const SANDBOX = 'https://oneapi-sandbox.rakutenpay.com.br/';
-    const PRODUCTION = 'https://api.rakuten.com.br/';
+    const SANDBOX = 'https://oneapi-sandbox.genpay.com.br/';
+    const PRODUCTION = 'https://api.gencomm.com.br/';
 
     const RAKUTENPAY_DIRECT_PAYMENT = 'rpay/v1/charges';
     const RAKUTENPAY_CHECKOUT = 'rpay/v1/checkout';

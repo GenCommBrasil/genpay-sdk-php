@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Service\Http;
+namespace GenComm\Service\Http;
 
-use Rakuten\Connector\Exception\RakutenException;
+use GenComm\Exception\GenCommException;
 
 /**
  * Interface Method
- * @package Rakuten\Connector\Service\Http
+ * @package GenComm\Service\Http
  */
 interface Method
 {
@@ -33,7 +33,7 @@ interface Method
      * @param int $timeout
      * @param string $charset
      * @return bool
-     * @throws RakutenException
+     * @throws GenCommException
      */
     public function post($url, $data = '', $timeout = 20, $charset = 'ISO-8859-1');
 
@@ -43,7 +43,7 @@ interface Method
      * @param string $charset
      * @param bool $secureGet
      * @return bool
-     * @throws RakutenException
+     * @throws GenCommException
      */
     public function get($url, $timeout = 20, $charset = 'ISO-8859-1', $secureGet = true);
 }

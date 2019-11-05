@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Enum;
+namespace GenComm\Tests\Unit\Enum;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Endpoint;
+use GenComm\Enum\Endpoint;
 
 /**
  * Class EnvironmentTest
- * @package Rakuten\Tests
+ * @package GenComm\Tests
  */
 class EndpointTest extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Service\Http;
+namespace GenComm\Service\Http;
 
-use Rakuten\Connector\Resource\RakutenConnector;
-use Rakuten\Connector\Exception\RakutenException;
-use Rakuten\Connector\Service\Http\Response\Response;
+use GenComm\Resource\GenComm;
+use GenComm\Exception\GenCommException;
+use GenComm\Service\Http\Response\Response;
 
 /**
  * Class CurlRequest
- * @package Rakuten\Connector\Service\Http
+ * @package GenComm\Service\Http
  */
 abstract class CurlRequest implements Method
 {
@@ -35,9 +35,9 @@ abstract class CurlRequest implements Method
     private $handle = null;
 
     /**
-     * @var RakutenConnector
+     * @var GenComm
      */
-    protected $rakutenConnector;
+    protected $genComm;
 
     /**
      * @var Response
@@ -46,12 +46,12 @@ abstract class CurlRequest implements Method
 
     /**
      * CurlRequest constructor.
-     * @param RakutenConnector $rakutenConnector
+     * @param GenComm $genComm
      */
-    public function __construct(RakutenConnector $rakutenConnector)
+    public function __construct(GenComm $genComm)
     {
         $this->handle = curl_init();
-        $this->rakutenConnector = $rakutenConnector;
+        $this->genComm = $genComm;
         $this->response = new Response();
     }
 
@@ -128,7 +128,6 @@ abstract class CurlRequest implements Method
      * @param int $timeout
      * @param string $charset
      * @return bool
-     * @throws RakutenException
      */
     public function post($url, $data = '', $timeout = 20, $charset = 'ISO-8859-1')
     {
@@ -140,7 +139,7 @@ abstract class CurlRequest implements Method
      * @param int $timeout
      * @param string $charset
      * @return bool
-     * @throws RakutenException
+     * @throws GenCommException
      */
     public function get($url, $timeout = 20, $charset = 'ISO-8859-1', $secureGet = true)
     {

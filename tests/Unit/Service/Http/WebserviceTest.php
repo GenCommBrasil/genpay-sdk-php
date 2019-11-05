@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Service\Http;
+namespace GenComm\Tests\Unit\Service\Http;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Status;
-use Rakuten\Connector\Exception\RakutenException;
-use Rakuten\Connector\Service\Http\Webservice;
-use Rakuten\Connector\RakutenPay;
-use Rakuten\Connector\Enum\Endpoint;
+use GenComm\Enum\Status;
+use GenComm\Exception\GenCommException;
+use GenComm\Service\Http\Webservice;
+use GenComm\GenPay;
+use GenComm\Enum\Endpoint;
 
 class WebserviceTest extends TestCase
 {
@@ -32,9 +32,9 @@ class WebserviceTest extends TestCase
     {
         $info = ['http_code' => Status::OK];
 
-        $rakutenPay = new RakutenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
+        $genPay = new GenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
         $stubWebservice = $this->getMockBuilder(Webservice::class)
-            ->setConstructorArgs([$rakutenPay])
+            ->setConstructorArgs([$genPay])
             ->setMethods(['setOption', 'execute', 'getInfo', 'getErrorCode', 'getErrorMessage', 'close'])
             ->getMock();
 
@@ -59,7 +59,7 @@ class WebserviceTest extends TestCase
             ->willReturn('');
 
         $stubWebservice->post(
-            Endpoint::createChargeUrl($rakutenPay->getEnvironment()),
+            Endpoint::createChargeUrl($genPay->getEnvironment()),
             $this->getPayload());
     }
 
@@ -67,9 +67,9 @@ class WebserviceTest extends TestCase
     {
         $info = ['http_code' => Status::OK];
 
-        $rakutenPay = new RakutenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
+        $genPay = new GenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
         $stubWebservice = $this->getMockBuilder(Webservice::class)
-            ->setConstructorArgs([$rakutenPay])
+            ->setConstructorArgs([$genPay])
             ->setMethods(['setOption', 'execute', 'getInfo', 'getErrorCode', 'getErrorMessage', 'close'])
             ->getMock();
 
@@ -95,7 +95,7 @@ class WebserviceTest extends TestCase
 
         $url = sprintf(
             "%s?%s",
-            Endpoint::buildCheckoutUrl($rakutenPay->getEnvironment()),
+            Endpoint::buildCheckoutUrl($genPay->getEnvironment()),
             sprintf("%s=%s", "amount", 10000)
         );
         $stubWebservice->get($url);
@@ -104,9 +104,9 @@ class WebserviceTest extends TestCase
 
     public function testMethodPostWithWithDataIsEmptyReturnException()
     {
-        $rakutenPay = new RakutenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
+        $genPay = new GenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
         $stubWebservice = $this->getMockBuilder(Webservice::class)
-            ->setConstructorArgs([$rakutenPay])
+            ->setConstructorArgs([$genPay])
             ->setMethods(['setOption', 'execute', 'getInfo', 'getErrorCode', 'getErrorMessage', 'close'])
             ->getMock();
 
@@ -126,11 +126,11 @@ class WebserviceTest extends TestCase
         $stubWebservice->expects($this->never())
             ->method('getErrorMessage');
 
-        $this->expectException(RakutenException::class);
+        $this->expectException(GenCommException::class);
         $this->expectExceptionMessage("Payload is empty.");
 
         $stubWebservice->post(
-            Endpoint::createChargeUrl($rakutenPay->getEnvironment()),
+            Endpoint::createChargeUrl($genPay->getEnvironment()),
             '');
     }
 
@@ -139,9 +139,9 @@ class WebserviceTest extends TestCase
         $info = ['http_code' => Status::OK];
         $errorCode = Status::INTERNAL_SERVER_ERROR;
 
-        $rakutenPay = new RakutenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
+        $genPay = new GenPay("fake-document", "fake-apikey", "fake-signature", "sandbox");
         $stubWebservice = $this->getMockBuilder(Webservice::class)
-            ->setConstructorArgs([$rakutenPay])
+            ->setConstructorArgs([$genPay])
             ->setMethods(['setOption', 'execute', 'getInfo', 'getErrorCode', 'getErrorMessage', 'close'])
             ->getMock();
 
@@ -165,11 +165,11 @@ class WebserviceTest extends TestCase
             ->method('getErrorMessage')
             ->willReturn('Server not Found');
 
-        $this->expectException(RakutenException::class);
+        $this->expectException(GenCommException::class);
         $this->expectExceptionMessage("CURL can't connect: Server not Found");
 
         $stubWebservice->post(
-            Endpoint::createChargeUrl($rakutenPay->getEnvironment()),
+            Endpoint::createChargeUrl($genPay->getEnvironment()),
             $this->getPayload());
     }
 

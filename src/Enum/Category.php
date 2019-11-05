@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Enum;
+namespace GenComm\Enum;
 
-use Rakuten\Connector\Exception\RakutenException;
+use GenComm\Exception\GenCommException;
 
 /**
  * Class Category
- * @package Rakuten\Connector\Enum
+ * @package GenComm\Enum
  */
 class Category
 {
@@ -67,12 +67,12 @@ class Category
      * @param string $id
      * @param string $name
      * @return array
-     * @throws RakutenException
+     * @throws GenCommException
      */
     public static function getCategory($id, $name)
     {
         if (empty($id) && empty($name)) {
-            throw new RakutenException('Error id or name is required.');
+            throw new GenCommException('Error id or name is required.');
         }
 
         return [self::ID => (string) $id, self::NAME => $name];

@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,20 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Resource;
+namespace GenComm\Resource;
 
 use stdClass;
 
 /**
  * Class Resource
- * @package Rakuten\Connector\Resource
+ * @package GenComm\Resource
  */
 abstract class Resource
 {
     /**
-     * @var RakutenConnector
+     * @var GenComm
      */
-    protected $rakutenConnector;
+    protected $genComm;
 
     /**
      * @var \stdClass
@@ -39,11 +39,11 @@ abstract class Resource
 
     /**
      * Resource constructor.
-     * @param RakutenConnector $rakutenConnector
+     * @param GenComm $genComm
      */
-    public function __construct(RakutenConnector $rakutenConnector)
+    public function __construct(GenComm $genComm)
     {
-        $this->rakutenConnector = $rakutenConnector;
+        $this->genComm = $genComm;
         $this->data = new stdClass();
         $this->initialize();
     }

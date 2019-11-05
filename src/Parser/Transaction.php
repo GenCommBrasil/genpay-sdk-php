@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser;
+namespace GenComm\Parser;
 
-use Rakuten\Connector\Service\Http\Response\Response;
+use GenComm\Service\Http\Response\Response;
 
 /**
  * Interface Transaction
- * @package Rakuten\Connector\Parser
+ * @package GenComm\Parser
  */
 abstract class Transaction
 {
