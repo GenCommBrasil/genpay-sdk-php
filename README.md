@@ -225,7 +225,7 @@ print_r($response);
 ### Cancelando um Pedido
 Neste exemplo será cancelado um pedido.
 ```php
-$response = $genPay->cancel("fake-charge-uuid", Requester::MERCHANTGenComm\Tests\Unit\Resource\GenPay\RefundTest, "Produto errado.");
+$response = $genPay->cancel("fake-charge-uuid", Requester::MERCHANT, "Produto errado.");
 
 print_r($response);
 ```
@@ -290,7 +290,7 @@ $response = $genPay->authorizationValidate();
 print_r($response);
 ```
 
-# GenLogistics
+# GenLog
 ### Consultar Endereço
 ```php
 $response = $genLog->autocomplete("01415001");
