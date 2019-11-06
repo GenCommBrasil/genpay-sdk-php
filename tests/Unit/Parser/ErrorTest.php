@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Parser;
+namespace GenComm\Tests\Unit\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Status;
-use Rakuten\Connector\Parser\Error;
-use Rakuten\Connector\Service\Http\Response\Response;
+use GenComm\Enum\Status;
+use GenComm\Parser\Error;
+use GenComm\Service\Http\Response\Response;
 
 class ErrorTest extends TestCase
 {
@@ -42,7 +42,7 @@ class ErrorTest extends TestCase
 
         $this->assertEquals($code, $error->getCode(), "Return Code from error");
         $this->assertEquals($message, $error->getMessage(), "Return Message from error");
-        $this->assertInstanceOf('Rakuten\Connector\Service\Http\Response\Response', $error->getResponse());
+        $this->assertInstanceOf('GenComm\Service\Http\Response\Response', $error->getResponse());
     }
 
     /**

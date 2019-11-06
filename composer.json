@@ -1,22 +1,22 @@
 {
-    "name": "rakuten/rakuten-sdk-php",
-    "description": "Cliente em PHP para integração server-side com APIs Rakuten Connector",
-    "keywords": ["libraries", "rakuten", "intermediary", "checkout", "marketplace"],
-    "homepage": "https://digitalcommerce.rakuten.com.br/developers/",
+    "name": "gencomm/genpay-sdk-php",
+    "description": "Cliente em PHP para integração server-side com APIs GenPay",
+    "keywords": ["libraries", "gencomm", "genpay", "intermediary", "checkout", "marketplace"],
+    "homepage": "https://www.gencomm.com.br/developers/",
     "license": "MIT",
     "type": "libraries",
     "support": {
-        "issues": "https://github.com/RakutenBrasil/rakuten-sdk-php/issues",
-        "source": "https://github.com/RakutenBrasil/rakuten-sdk-php"
+        "issues": "https://github.com/GenCommBrasil/genpay-sdk-php/issues",
+        "source": "https://github.com/GenCommBrasil/genpay-sdk-php"
     },
     "authors": [
         {
             "name": "Alex Silva",
-            "email": "alex.silva@rakuten.com.br"
+            "email": "alex.silva@gencomm.com.br"
         },
         {
-            "name": "Rakuten",
-            "email": "paytech@rakuten.com.br"
+            "name": "GenPay",
+            "email": "paytech@gencomm.com.br"
         }
     ],
     "require": {
@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Rakuten\\Connector\\": "src/"
+            "GenComm\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rakuten\\Tests\\": "tests/"
+            "GenComm\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev"

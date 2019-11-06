@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  ************************************************************************
  */
 
-namespace Rakuten\Tests\Unit\Enum;
+namespace GenComm\Tests\Unit\Enum;
 
 use PHPUnit\Framework\TestCase;
-use Rakuten\Connector\Enum\Category;
-use Rakuten\Connector\Exception\RakutenException;
+use GenComm\Enum\Category;
+use GenComm\Exception\GenCommException;
 
 /**
  * Class CategoryTest
- * @package Rakuten\Tests\Unit\Enum
+ * @package GenComm\Tests\Unit\Enum
  */
 class CategoryTest extends TestCase
 {
@@ -49,7 +49,7 @@ class CategoryTest extends TestCase
 
     public function testGettingCategoryWithVoidParametersAndReturnException()
     {
-        $this->expectException(RakutenException::class);
+        $this->expectException(GenCommException::class);
         $this->expectExceptionMessage("Error id or name is required.");
 
         $category = Category::getCategory('', '');

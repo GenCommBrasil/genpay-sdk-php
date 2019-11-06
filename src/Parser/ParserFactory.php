@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Parser;
+namespace GenComm\Parser;
 
-use Rakuten\Connector\Exception\RakutenException;
+use GenComm\Exception\GenCommException;
 
 /**
  * Class ParserFactory
- * @package Rakuten\Connector\Parser
+ * @package GenComm\Parser
  */
 abstract class ParserFactory
 {
@@ -35,12 +35,12 @@ abstract class ParserFactory
     /**
      * @param string $class
      * @return Object
-     * @throws RakutenException
+     * @throws GenCommException
      */
     public static function create($class)
     {
         if (!class_exists($class)) {
-            throw new RakutenException("Class not Exists in TransactionFactory");
+            throw new GenCommException("Class not Exists in TransactionFactory");
         }
 
         $class = self::getClass($class);

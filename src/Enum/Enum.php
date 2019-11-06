@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2018] [RakutenConnector]
+ * Copyright [2018] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Enum;
+namespace GenComm\Enum;
 
 /**
  * Class Enum
- * @package Rakuten\Connector\Enum
+ * @package GenComm\Enum
  */
 abstract class Enum
 {

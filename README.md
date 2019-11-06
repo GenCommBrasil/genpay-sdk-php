@@ -1,19 +1,19 @@
-<img src="https://gist.githubusercontent.com/alexsantossilva/d714e42d00e8bbaa5bece16e88f4c87f/raw/11cb121c10abcf5cd1a2eaadc9bdf14970ee4900/rakuten-connector-logo.png" align="top>" />
+<img src="https://gist.githubusercontent.com/alexsantossilva/a1bfa0a6e9e6592176f860210a226dfe/raw/374ed1819de58169d05482c8188d6edc8687c2e6/genpay.png" width="300" align="top>" />
 
-# Rakuten PHP SDK Client.
+# GenComm PHP SDK Client.
 >
 
 [![wercker status](https://app.wercker.com/status/0427e4e65bb1ad0ca4d2e5ed759d1743/m/master "wercker status")](https://app.wercker.com/project/byKey/0427e4e65bb1ad0ca4d2e5ed759d1743)
 
-> O jeito mais simples e rápido de integrar o RakutenPay a sua aplicação PHP
+> O jeito mais simples e rápido de integrar o GenPay a sua aplicação PHP
 
 **Instruções**
 
 - [Instalação](#instalação)
 - [Configurando a autenticação](#configurando-a-autenticação)
-    - [Implementação do RakutenPay](#implementando-rakutenPay)
-    - [Implementação do RakutenLogistics](#implementando-rakutenLogistics)
-- [RakutenPay](#RakutenPay)
+    - [Implementação do GenPay](#implementando-GenPay)
+    - [Implementação do GenLog](#implementando-GenLog)
+- [GenPay](#GenPay)
     - [Pedidos](#Pedidos)
         - [Criando Pedido no Boleto](#criando-pedido-no-boleto)
         - [Criando Pedido no Cartão de Crédito](#criando-pedido-no-cartão-de-crédito)
@@ -23,7 +23,7 @@
         - [Consultas](#consulta)
             - [Verificar Credenciais](#verificar-credenciais)
             - [Juros Comprador](#juros-comprador)
-- [RakutenLogistics](#RakutenLogistics)
+- [GenLog](#GenLog)
     - [Consultar Endereço](#consultar-endereço)
     - [Criar Cálculo](#criar-cálculo)
     - [Criar Lote](#criar-lote)
@@ -43,7 +43,7 @@
 Execute em seu shell:
 
 ```
-composer require rakuten/rakuten-sdk-php
+composer require gencomm/gencomm-sdk-php
 ```
 
 ## Configurando a autenticação
@@ -51,30 +51,30 @@ composer require rakuten/rakuten-sdk-php
 ```php
 require 'vendor/autoload.php';
 
-use Rakuten\Connector\RakutenPay;
-use Rakuten\Connector\Enum\Environment;
+use GenComm\GenPay;
+use GenComm\Enum\Environment;
 
 $document = '77753821000123';
 $apiKey = '546JK45NJ6K4N6456JKLN6464J5N';
 $signature = '123IOU3OI2U1IIOU1OI3UIO23';
 ```
 
-### Implementando RakutenPay
+### Implementando GenPay
 ```php
-$rakutenPay = new RakutenPay($document, $apiKey, $signature, Environment::SANDBOX);
+$genPay = new GenPay($document, $apiKey, $signature, Environment::SANDBOX);
 ```
 
-### Implementando RakutenLogistics
+### Implementando GenLog
 ```php
-$rakutenLog = new RakutenLog($document, $apiKey, $signature, Environment::SANDBOX);
+$genLog = new GenLog($document, $apiKey, $signature, Environment::SANDBOX);
 ```
 
-# RakutenPay
+# GenPay
 ## Pedidos
 ### Criando pedido no boleto
 Neste exemplo será criado um pedido.
 ```php
-$order = $rakutenPay
+$order = $genPay
             ->order()
             ->setAmount(200.0)
             ->setCurrency("BRL")
@@ -94,7 +94,7 @@ $order = $rakutenPay
                 200.0
             );
 
-$customer = $rakutenPay
+$customer = $genPay
             ->customer()
             ->setName("Maria")
             ->setBirthDate("1985-04-16")
@@ -131,19 +131,19 @@ $customer = $rakutenPay
                 "others",
                 "billing");
 
-$payment = $rakutenPay
+$payment = $genPay
     ->asBillet()
     ->setAmount(200.0)
     ->setExpiresOn("3");
     
-$response = $rakutenPay->createOrder($order, $customer, $payment);
+$response = $genPay->createOrder($order, $customer, $payment);
 print_r($response);
 ```
 
 ### Criando pedido no cartão de crédito
 Neste exemplo será criado um pedido.
 ```php
-$order = $rakutenPay
+$order = $genPay
             ->order()
             ->setAmount(200.0)
             ->setCurrency("BRL")
@@ -163,7 +163,7 @@ $order = $rakutenPay
                 200.0
             );
 
-$customer = $rakutenPay
+$customer = $genPay
             ->customer()
             ->setName("Maria")
             ->setBirthDate("1985-04-16")
@@ -200,7 +200,7 @@ $customer = $rakutenPay
                 "others",
                 "billing");
 
-$payment = $rakutenPay
+$payment = $genPay
     ->asCreditCard()
     ->setToken("fake-credit-card-token")
     ->setReference("Pedido#01")
@@ -218,14 +218,14 @@ $payment = $rakutenPay
         200
     );
 
-$response = $rakutenPay->createOrder($order, $customer, $payment);
+$response = $genPay->createOrder($order, $customer, $payment);
 print_r($response);
 ```
 
 ### Cancelando um Pedido
 Neste exemplo será cancelado um pedido.
 ```php
-$response = $rakutenPay->cancel("fake-charge-uuid", Requester::RAKUTEN, "Produto errado.");
+$response = $genPay->cancel("fake-charge-uuid", Requester::MERCHANT, "Produto errado.");
 
 print_r($response);
 ```
@@ -241,13 +241,13 @@ $bankAccount = [
             'bank_number' => '12345678-1',
         ];
 
-$refund = $rakutenPay->asRefund();
+$refund = $genPay->asRefund();
 
 $refund->setReason("Comprou errado.")
-    ->setRequester(Requester::RAKUTEN)
+    ->setRequester(Requester::MERCHANT)
     ->addPayment('fake-payment-id', 250, $bankAccount);
 
-$response = $rakutenPay->refund($refund, "fake-charge-uuid");
+$response = $genPay->refund($refund, "fake-charge-uuid");
 
 print_r($response);
 ```
@@ -263,13 +263,13 @@ $bankAccount = [
             'bank_number' => '12345678-1',
         ];
 
-$refund = $rakutenPay->asRefund();
+$refund = $genPay->asRefund();
 
 $refund->setReason("Comprou errado.")
-    ->setRequester(Requester::RAKUTEN)
+    ->setRequester(Requester::MERCHANT)
     ->addPayment('fake-payment-id', 50, $bankAccount);
 
-$response = $rakutenPay->refundPartial($refund, "fake-charge-uuid");
+$response = $genPay->refundPartial($refund, "fake-charge-uuid");
 
 print_r($response);
 ```
@@ -279,24 +279,24 @@ print_r($response);
 
 ```php
 $amount = 1000
-$response = $rakutenPay->checkout($amount);
+$response = $genPay->checkout($amount);
 print_r($response);
 ```
 
 ### Verificar Credenciais
 
 ```php
-$response = $rakutenPay->authorizationValidate();
+$response = $genPay->authorizationValidate();
 print_r($response);
 ```
 
-# RakutenLogistics
+# GenLog
 ### Consultar Endereço
 ```php
-$response = $rakutenLog->autocomplete("01415001");
+$response = $genLog->autocomplete("01415001");
 
 // Parametro Opcional - Autocomplete Online
-$response = $rakutenLog->autocomplete("01415001", true);
+$response = $genLog->autocomplete("01415001", true);
 print_r($response);
 ```
 
@@ -311,7 +311,7 @@ $weight = 1;
 $lenght = 1;
 $height = 1;
 
-$calculation = $rakutenLog->calculation();
+$calculation = $genLog->calculation();
 $calculation->setDestinationZipcode("05001100")
     ->calculation->setPostageServiceCodes(array());
     ->calculation->addProducts(
@@ -324,7 +324,7 @@ $calculation->setDestinationZipcode("05001100")
         $lenght,
         $height
     );
-$response = $rakutenLog->createCalculation($calculation);
+$response = $genLog->createCalculation($calculation);
 print_r($response);
 ```
 
@@ -339,7 +339,7 @@ $valueICMS = 0.50;
 $valueBaseICMSST = 1.0;
 $valueICMSST = 1;
 
-$batch = $rakutenLog->batch();
+$batch = $genLog->batch();
 $batch->setCalculationCode("fake-calculation-code")
     ->setPostageServiceCode("fake-postage-service-code")
     ->setOrder("1666000041", "1666000041", 200.83)
@@ -369,18 +369,18 @@ $batch->setCalculationCode("fake-calculation-code")
         "1144556677",
         "1155667788"
     );
-$response = $rakutenLog->generateBatch($batch);
+$response = $genLog->generateBatch($batch);
 
 print_r($response);
 ```
 
 ### Detalhes do Pedido
 ```php
-$response = $rakutenLog->orderDetail("order-id");
+$response = $genLog->orderDetail("order-id");
 
 print_r($response);
 ```
 
 ## Suporte
 
-Dúvidas ou deseja implementar  o serviço Rakuten Connector acesse [Rakuten Digital Commerce](https://digitalcommerce.rakuten.com.br)
+Dúvidas ou deseja implementar  o serviço GenComm acesse [GenPay](https://www.gencomm.com.br/developers/)

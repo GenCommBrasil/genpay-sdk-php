@@ -1,7 +1,7 @@
 <?php
 /**
  ************************************************************************
- * Copyright [2019] [RakutenConnector]
+ * Copyright [2019] [GenComm]
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,15 @@
  ************************************************************************
  */
 
-namespace Rakuten\Connector\Enum\Refund;
+namespace GenComm\Enum\Refund;
 
 /**
  * Class Requester
- * @package Rakuten\Connector\Enum\Refund
+ * @package GenComm\Enum\Refund
  */
 class Requester
 {
     const CUSTOMER = "customer";
 
     const MERCHANT = "merchant";
-
-    const RAKUTEN = "rakuten";
 }
