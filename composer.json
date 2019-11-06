@@ -1,13 +1,13 @@
 {
-    "name": "gencomm/gencomm-sdk-php",
-    "description": "Cliente em PHP para integração server-side com APIs GenComm",
-    "keywords": ["libraries", "gencomm", "intermediary", "checkout", "marketplace"],
+    "name": "gencomm/genpay-sdk-php",
+    "description": "Cliente em PHP para integração server-side com APIs GenPay",
+    "keywords": ["libraries", "gencomm", "genpay", "intermediary", "checkout", "marketplace"],
     "homepage": "https://www.gencomm.com.br/developers/",
     "license": "MIT",
     "type": "libraries",
     "support": {
-        "issues": "https://github.com/GenCommBrasil/gencomm-sdk-php/issues",
-        "source": "https://github.com/GenCommBrasil/gencomm-sdk-php"
+        "issues": "https://github.com/GenCommBrasil/genpay-sdk-php/issues",
+        "source": "https://github.com/GenCommBrasil/genpay-sdk-php"
     },
     "authors": [
         {
@@ -15,7 +15,7 @@
             "email": "alex.silva@gencomm.com.br"
         },
         {
-            "name": "GenComm",
+            "name": "GenPay",
             "email": "paytech@gencomm.com.br"
         }
     ],

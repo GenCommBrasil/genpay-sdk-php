@@ -383,4 +383,4 @@ print_r($response);
 
 ## Suporte
 
-Dúvidas ou deseja implementar  o serviço GenComm acesse [GenComm Digital Commerce](https://www.gencomm.com.br/developers/)
+Dúvidas ou deseja implementar  o serviço GenComm acesse [GenPay](https://www.gencomm.com.br/developers/)
