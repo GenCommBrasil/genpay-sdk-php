@@ -46,14 +46,4 @@ class CategoryTest extends TestCase
         $this->assertEquals('Categoria Teste', $category[Category::NAME]);
         $this->assertEquals('01', $category[Category::ID]);
     }
-
-    public function testGettingCategoryWithVoidParametersAndReturnException()
-    {
-        $this->expectException(GenCommException::class);
-        $this->expectExceptionMessage("Error id or name is required.");
-
-        $category = Category::getCategory('', '');
-    }
-
-
 }

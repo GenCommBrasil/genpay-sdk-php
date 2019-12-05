@@ -71,8 +71,10 @@ class Category
      */
     public static function getCategory($id, $name)
     {
-        if (empty($id) && empty($name)) {
-            throw new GenCommException('Error id or name is required.');
+        $id = is_string($id) ? trim($id) : $id;
+        $name = trim($name);
+        if (empty($id) || empty($name)) {
+            return [self::ID => self::DEFAULT_ID, self::NAME => self::DEFAULT_NAME];
         }
 
         return [self::ID => (string) $id, self::NAME => $name];
